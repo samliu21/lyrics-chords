@@ -36,13 +36,16 @@ export default function NavContent(props) {
 	let content = (
 		<div style={outerDivStyle}>
 			<div style={leftDivStyle}>
-				<Link
-					to="/"
-					className="navBarLink navBarHover"
-					style={linkStyle}
-				>
-					Home
-				</Link>
+				{!username &&
+				(
+					<Link
+						to="/"
+						className="navBarLink navBarHover"
+						style={linkStyle}
+					>
+						Home
+					</Link>
+				)}
 
 				{/* Only show SongList if user is logged in  */}
 				{username && (

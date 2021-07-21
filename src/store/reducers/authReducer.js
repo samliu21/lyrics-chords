@@ -2,7 +2,7 @@ import { SET_ADMIN, SET_USERNAME } from "../actions/authActions";
 
 const initialStore = {
 	username: null,
-	admin: false,
+	admin: null,
 };
 
 export default function reducer(state = initialStore, action) {

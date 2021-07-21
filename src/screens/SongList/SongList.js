@@ -63,7 +63,7 @@ export default function SongList(props) {
 		const getSongList = async () => {
 			const response = await getUsername();
 
-			if (!isAdmin && response !== username) {
+			if (isAdmin === false && response !== username) {
 				history.push({
 					pathname: "/accounts/unauthenticated",
 					state: {

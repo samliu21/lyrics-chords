@@ -9,8 +9,9 @@ export function setUsername(username) {
 }
 
 export function setAdmin(admin) {
+	const val = admin === null ? null : (admin === true || admin === "True");
 	return {
 		type: SET_ADMIN,
-		admin: admin === true || admin === "True",
+		admin: val,
 	}
 }

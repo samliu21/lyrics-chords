@@ -47,6 +47,7 @@ export default function LogoutButton(props) {
 				}
 			)
 			.then(() => {
+				dispatch(authActions.setAdmin(null));
 				dispatch(authActions.setUsername(null));
 				history.push("/accounts/login");
 			})
