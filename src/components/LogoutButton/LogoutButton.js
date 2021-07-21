@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken, getUsername } from "../../util";
 import { styles } from "./LogoutButtonStyles";
 import * as authActions from "../../store/actions/authActions";
+import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();
@@ -29,14 +30,14 @@ export default function LogoutButton(props) {
 		}
 	}, [username]);
 
-	const logoutHandler = () => {
+	const logoutHandler = async () => {
 		cookie.remove("username");
 		cookie.remove("email");
 		cookie.remove("activated");
 
 		setIsLoggingOut(true);
-		axios
-			.post(
+		try {
+			await axios.post(
 				"/api/auth/logout",
 				{},
 				{
@@ -45,14 +46,17 @@ export default function LogoutButton(props) {
 						"X-CSRFToken": getToken(),
 					},
 				}
-			)
-			.then(() => {
-				dispatch(authActions.setAdmin(null));
-				dispatch(authActions.setUsername(null));
-				history.push("/accounts/login");
-			})
-			.catch(() => alert("There was an error logging out."))
-			.finally(() => setIsLoggingOut(false));
+			);
+			dispatch(authActions.setAdmin(null));
+			dispatch(authActions.setUsername(null));
+			dispatch(songsActions.setFilteredPublicSongs(null));
+
+			history.push("/accounts/login");
+		} catch (err) {
+			alert("There was an error logging out.");
+		} finally {
+			setIsLoggingOut(false);
+		}
 	};
 
 	// If horizontal navbar, show full text
