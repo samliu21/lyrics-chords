@@ -3,7 +3,6 @@ import { Colors } from "../../constants/Colors";
 export const styles = {
 	arrow: {
 		height: "7vmin",
-		paddingRight: "5vw",
 	},
 	artist: {
 		fontSize: "2.5vmin",
@@ -42,5 +41,9 @@ export const styles = {
 		alignItems: "center",
 		justifyContent: "space-between",
 		backgroundColor: "white",
+	},
+	views: {
+		margin: "0 4vw",
+		fontSize: "3.5vmin",
 	},
 }

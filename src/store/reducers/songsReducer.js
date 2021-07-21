@@ -8,7 +8,7 @@ import {
 	GET_USER_SONGS,
 	GET_PUBLIC_SONGS,
 } from "../actions/songsActions";
-import { sortSongs } from "../../util";
+import { sortSongsById } from "../../util";
 
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
@@ -39,8 +39,8 @@ function store(store = initialStore, action) {
 			const filteredUserSongs = store.filteredUserSongs
 				.slice()
 				.concat(action.song);
-			sortSongs(userSongs);
-			sortSongs(filteredUserSongs);
+			sortSongsById(userSongs);
+			sortSongsById(filteredUserSongs);
 
 			return {
 				...store,
@@ -80,8 +80,8 @@ function store(store = initialStore, action) {
 			const updatedFilteredUserSongs = store.filteredUserSongs
 				.filter((song) => song.id !== action.id)
 				.concat(updatedSong);
-			sortSongs(updatedUserSongs);
-			sortSongs(updatedFilteredUserSongs);
+			sortSongsById(updatedUserSongs);
+			sortSongsById(updatedFilteredUserSongs);
 
 			if (store.publicSongs) {
 				const updatedPublicSongs = store.publicSongs.filter(
@@ -96,8 +96,8 @@ function store(store = initialStore, action) {
 					updatedPublicSongs.push(updatedSong);
 					updatedFilteredPublicSongs.push(updatedSong);
 				}
-				sortSongs(updatedPublicSongs);
-				sortSongs(updatedFilteredPublicSongs);
+				sortSongsById(updatedPublicSongs);
+				sortSongsById(updatedFilteredPublicSongs);
 
 				return {
 					...store,
@@ -122,8 +122,8 @@ function store(store = initialStore, action) {
 				const updatedFilteredUserSongs = store.filteredUserSongs
 					.filter((song) => song.id !== action.id)
 					.concat(action.song);
-				sortSongs(updatedUserSongs);
-				sortSongs(updatedFilteredUserSongs);
+				sortSongsById(updatedUserSongs);
+				sortSongsById(updatedFilteredUserSongs);
 
 				if (store.publicSongs) {
 					const updatedPublicSongs = store.publicSongs.filter(
@@ -138,8 +138,8 @@ function store(store = initialStore, action) {
 						updatedPublicSongs.push(action.song);
 						updatedFilteredPublicSongs.push(action.song);
 					}
-					sortSongs(updatedPublicSongs);
-					sortSongs(updatedFilteredPublicSongs);
+					sortSongsById(updatedPublicSongs);
+					sortSongsById(updatedFilteredPublicSongs);
 
 					return {
 						...store,

@@ -76,8 +76,15 @@ export function turnIntoLink(artist, name) {
 }
 
 // Sort songs by order of creation (e.g. id)
-export function sortSongs(list) {
+export function sortSongsById(list) {
 	list.sort((a, b) => a.id < b.id);
+}
+
+// Sort songs by number of views
+export function sortSongsByViews(list) {
+	list.sort(
+		(a, b) => a.views.split("**").length < b.views.split("**").length
+	);
 }
 
 // Get split chords from chords, or set default if null
@@ -139,7 +146,7 @@ export function compareSongsByValue(song1, song2) {
 	}
 	for (const item in song1) {
 		// These values are automatically updated to the database
-		if (item === "name" || item === "artist") {
+		if (item === "name" || item === "artist" || item === "views") {
 			continue;
 		}
 		if (song1[item] !== song2[item]) {

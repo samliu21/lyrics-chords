@@ -16,6 +16,7 @@ import {
 	getUsername,
 	getSplitChords,
 	compareSongsByValue,
+	updateSongAttributeToDatabase,
 } from "../../util";
 
 export default function Song(props) {
@@ -56,6 +57,30 @@ export default function Song(props) {
 	if (switchedName.current && selectedSong) {
 		switchedName.current = false;
 	}
+
+	// Increment views
+	useEffect(() => {
+		const queryUsername = async () => {
+			const username = await getUsername();
+
+			if (selectedSong.views.indexOf(username) === -1) {
+				const newViews = `${selectedSong.views}**${username}`;
+
+				dispatch(
+					songsActions.updateSong(selectedSong.id, "views", newViews)
+				);
+				updateSongAttributeToDatabase(
+					selectedSong.id,
+					"views",
+					newViews
+				);
+			}
+		};
+
+		if (selectedSong) {
+			queryUsername();
+		}
+	}, [selectedSong, dispatch]);
 
 	// On react route change, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {
@@ -161,6 +186,7 @@ export default function Song(props) {
 
 	// Allows components to change hasUnsavedChanges
 	const setUnsavedChanges = (value) => {
+		console.log("Umm how?");
 		if (hasUnsavedChanges.current !== value) {
 			hasUnsavedChanges.current = value;
 		}

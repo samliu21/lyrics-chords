@@ -17,6 +17,9 @@ export default function SongBlock(props) {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
+	const path = history.location.pathname.split("/");
+	const location = path[path.length - 1];
+
 	// Delete song request
 	function deleteHandler() {
 		try {
@@ -86,7 +89,7 @@ export default function SongBlock(props) {
 					/>
 					{props.public && (
 						<div className="italic" style={styles.creator}>
-							Created by{" "}
+							Created by&nbsp;
 							<span style={styles.creatorName}>
 								{props.item.creator}
 							</span>
@@ -102,6 +105,11 @@ export default function SongBlock(props) {
 					alt="Arrow"
 				/>
 			</div>
+			{location === "public" && (
+				<p style={styles.views}>
+					{props.item.views.split("**").length - 1}
+				</p>
+			)}
 		</div>
 	);
 }

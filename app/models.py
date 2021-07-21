@@ -9,6 +9,7 @@ class Song(models.Model):
 	chords = models.TextField(default="", blank=True)
 	strumming_pattern = models.CharField(max_length=30, default="", blank=True)
 	public = models.BooleanField(default=False)
+	views = models.TextField(default="", blank=True)
 
 	def __str__(self):
 		return self.name 

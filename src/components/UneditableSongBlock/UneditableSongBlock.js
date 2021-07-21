@@ -7,6 +7,9 @@ import { turnIntoLink } from "../../util";
 export default function UneditableSongBlock(props) {
 	const history = useHistory();
 
+	const path = history.location.pathname.split("/");
+	const location = path[path.length - 1];
+
 	// Redirect on arrow click
 	const redirectHandler = async () => {
 		const link = turnIntoLink(props.item.artist, props.item.name);
@@ -20,7 +23,7 @@ export default function UneditableSongBlock(props) {
 					<h2 style={styles.name}>{props.item.name}</h2>
 					<p style={styles.artist}>{props.item.artist}</p>
 					<div className="italic" style={styles.creator}>
-						Created by{" "}
+						Created by&nbsp;
 						<span style={styles.creatorName}>
 							{props.item.creator}
 						</span>
@@ -35,6 +38,11 @@ export default function UneditableSongBlock(props) {
 					alt="Arrow"
 				/>
 			</div>
+			{location === "public" && (
+				<p style={styles.views}>
+					{props.item.views.split("**").length - 1}
+				</p>
+			)}
 		</div>
 	);
 }

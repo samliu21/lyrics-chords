@@ -32,7 +32,6 @@ export const styles = {
 		justifyContent: "flex-end",
 		cursor: "pointer",
 		marginLeft: 10,
-		marginRight: "4vw",
 	},
 	name: {
 		fontSize: "4vmin",
@@ -52,5 +51,9 @@ export const styles = {
 	},
 	trashCan: {
 		cursor: "pointer",
+	},
+	views: {
+		margin: "0 4vw",
+		fontSize: "3.5vmin",
 	},
 }

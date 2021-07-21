@@ -29,7 +29,7 @@ export default function SearchBar(props) {
 		});
 
 		return () => unlisten();
-	}, []);
+	}, [history]);
 
 	// Set search text on change
 	const inputChangeHandler = (e) => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, sortSongs } from "../../util";
+import { getToken, sortSongsById, sortSongsByViews } from "../../util";
 
 export const ADD_SONG = "ADD_SONG";
 export const GET_USER_SONGS = "GET_USER_SONGS";
@@ -18,7 +18,7 @@ export function getUserSongs() {
 			});
 
 			const userSongs = response.data;
-			sortSongs(userSongs);
+			sortSongsById(userSongs);
 
 			dispatch({
 				type: GET_USER_SONGS,
@@ -39,7 +39,7 @@ export function getPublicSongs() {
 			});
 
 			const publicSongs = response.data;
-			sortSongs(publicSongs);
+			sortSongsByViews(publicSongs);
 
 			dispatch({
 				type: GET_PUBLIC_SONGS,
