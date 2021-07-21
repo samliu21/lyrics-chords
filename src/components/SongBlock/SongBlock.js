@@ -10,7 +10,12 @@ import {
 	turnIntoLink,
 	updateSongAttributeToDatabase,
 } from "../../util";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {
+	AiOutlineEye,
+	AiOutlineEyeInvisible,
+	AiOutlineStar,
+	AiFillStar,
+} from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
 
 export default function SongBlock(props) {
@@ -52,10 +57,38 @@ export default function SongBlock(props) {
 		);
 	};
 
+	// Favourite handler
+	const favouriteHandler = () => {
+		updateSongAttributeToDatabase(
+			props.item.id,
+			"is_favourite",
+			!props.item.is_favourite
+		);
+
+		dispatch(
+			actions.updateSong(
+				props.item.id,
+				"is_favourite",
+				!props.item.is_favourite
+			)
+		);
+	};
+
 	return (
 		<div style={styles.songContainer}>
 			<div style={styles.horizontal}>
 				<div className="vertical" style={styles.buttonContainer}>
+					{props.item.is_favourite ? (
+						<AiFillStar
+							onClick={favouriteHandler}
+							style={styles.star}
+						/>
+					) : (
+						<AiOutlineStar
+							onClick={favouriteHandler}
+							style={styles.star}
+						/>
+					)}
 					{props.item.public ? (
 						<AiOutlineEye
 							onClick={publicHandler}

@@ -19,7 +19,8 @@ export const styles = {
 	},
 	eye: {
 		cursor: "pointer",
-		marginBottom: 15,
+		marginBottom: 10,
+		marginTop: 10,
 	},
 	horizontal: {
 		display: "flex",
@@ -49,6 +50,9 @@ export const styles = {
 		alignItems: "center",
 		justifyContent: "space-between",
 		backgroundColor: "white",
+	},
+	star: {
+		cursor: "pointer",
 	},
 	trashCan: {
 		cursor: "pointer",

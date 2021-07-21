@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as songsActions from "../../store/actions/songsActions";
+import { useHistory } from "react-router-dom";
 
 import SongBlock from "../../components/SongBlock/SongBlock";
 import AddSongButton from "../../components/AddSongButton/AddSongButton";
 import { styles } from "./SongListStyles";
 import { getUsername, getActivationStatus } from "../../util";
-import { useHistory } from "react-router-dom";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function SongList(props) {
 	const { username } = props.match.params;
 
+	const [isFavourites, setIsFavourites] = useState(false);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
 	const history = useHistory();
@@ -22,14 +23,26 @@ export default function SongList(props) {
 
 	let condition;
 	if (all) {
-		condition = (state) => state.songs.filteredUserSongs;
-	} else {
 		condition = (state) =>
-			state.songs.filteredUserSongs
+			isFavourites && state.songs.filteredSongs
 				? state.songs.filteredUserSongs.filter(
-						(song) => song.creator === username
+						(song) => song.is_favourite
 				  )
-				: null;
+				: state.songs.filteredUserSongs;
+	} else {
+		condition = (state) => {
+			if (!state.songs.filteredUserSongs) {
+				return null;
+			} else if (isFavourites) {
+				return state.songs.filteredUserSongs.filter(
+					(song) => song.is_favourite && song.creator === username
+				);
+			} else {
+				return state.songs.filteredUserSongs.filter(
+					(song) => song.creator === username
+				);
+			}
+		};
 	}
 
 	const songList = useSelector(condition);
@@ -89,12 +102,30 @@ export default function SongList(props) {
 		return <LoadingCircle />;
 	}
 
+	// Handle favourites click
+	const favouritesHandler = () => {
+		setIsFavourites((state) => !state);
+	};
+
 	return (
 		<div style={styles.container}>
-			<AddSongButton />
+			<div
+				style={styles.buttonContainer}
+			>
+				{!all && (
+					<p className="important" onClick={favouritesHandler}>
+						{isFavourites ? "ALL" : "FAVOURITES"}
+					</p>
+				)}
+				<AddSongButton />
+			</div>
 			<SearchBar />
 
-			<h1 style={styles.title}>{all ? "All Songs" : "Your Songs"}</h1>
+			<h1 style={styles.title}>
+				{all
+					? "All Songs"
+					: "Your " + (isFavourites ? "Favourite " : "") + "Songs"}
+			</h1>
 
 			{songList.map((item) => (
 				<SongBlock key={item.id} item={item} />

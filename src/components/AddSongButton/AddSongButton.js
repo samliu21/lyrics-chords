@@ -29,7 +29,11 @@ export default function AddSongButton() {
 	return (
 		<div>
 			{isAdding && <LoadingCircle />}
-			<span style={styles.addSong} onClick={addSongHandler}>
+			<span
+				className="important"
+				style={styles.addSong}
+				onClick={addSongHandler}
+			>
 				ADD SONG
 			</span>
 		</div>

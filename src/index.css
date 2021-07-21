@@ -25,8 +25,11 @@ h2 {
 	color: var(--accent);
 }
 
-.semi-bold {
-	font-weight: 500;
+.important {
+	color: var(--primary);
+	font-size: 3.5vmin;
+	font-weight: bold;
+	cursor: pointer;
 }
 .pointer {
 	cursor: pointer;
