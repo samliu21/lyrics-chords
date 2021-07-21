@@ -2,14 +2,17 @@ import axios from "axios";
 import React, { createRef } from "react";
 import { getToken } from "../../util";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
 
 import { styles } from "./PasswordChangeStyles";
+import * as authActions from "../../store/actions/authActions";
 
 export default function PasswordChange(props) {
 	const password = createRef();
 	const retypedPassword = createRef();
 
 	const history = useHistory();
+	const dispatch = useDispatch();
 
 	const changePasswordHandler = async () => {
 		const params = props.match.params;
@@ -25,7 +28,7 @@ export default function PasswordChange(props) {
 
 		try {
 			const response = await axios.post(
-				"/api/auth/email/change-password",
+				"/api/auth/email/password-change",
 				{
 					uid: uid,
 					token: token,
@@ -40,6 +43,8 @@ export default function PasswordChange(props) {
 			);
 
 			alert(response.data);
+			dispatch(authActions.setAdmin(null));
+			dispatch(authActions.setUsername(null));
 
 			history.push("/accounts/login");
 		} catch (err) {

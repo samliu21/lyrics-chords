@@ -7,5 +7,6 @@ urlpatterns = [
 	path('is_activated', views.get_is_activated),
 	path('resend-activation', views.resend_activation),
 	path('password-reset', views.send_password_reset),
-	path('change-password', views.change_password),
+	path('password-change', views.password_change),
+	path('password-change-link', views.password_change_link),
 ]

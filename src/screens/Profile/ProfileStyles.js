@@ -1,7 +1,9 @@
 export const styles = {
 	container: {
-		display: "flex",
 		padding: "6vmin",
+	},
+	profile: {
+		display: "flex",
 	},
 	name: {
 		fontSize: "4vmin",

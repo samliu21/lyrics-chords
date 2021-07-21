@@ -67,7 +67,7 @@ def auth_login(request):
 				return HttpResponseBadRequest("Those credentials do not exist.")
 
 		login(request, user)
-		return HttpResponse(f'{username}**{user.email}**{user.is_superuser}')
+		return HttpResponse(f'{user.username}**{user.email}**{user.is_superuser}')
 	except Exception:
 		return HttpResponseBadRequest("An error occurred.");
 

@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from emailauth.tokens import ConfirmEmailTokenGenerator
 from django.utils.encoding import force_text
@@ -88,7 +88,7 @@ def send_password_reset(request):
 
 # Get the uid and token from request body and check the valididty of the token
 @require_POST
-def change_password(request):
+def password_change(request):
 	body = json.loads(request.body)
 	uidb64 = body.get('uid')
 	token = body.get('token')
@@ -103,7 +103,20 @@ def change_password(request):
 	except:
 		user = None
 	if user is not None and password_reset_token.check_token(user, token):
+		logout(request)
 		user.set_password(password)
 		user.save()
+
 		return HttpResponse("New password has been set!")
 	return HttpResponseBadRequest("Password reset failed. Please try again.")
+
+def password_change_link(request):
+	if not request.user.is_authenticated:
+		return HttpResponseBadRequest('You are not authenticated.')
+	try:
+		token = password_reset_token.make_token(request.user)
+		uid = urlsafe_base64_encode(force_bytes(request.user.pk))
+		link = '/accounts/password-change/{}/{}'.format(uid, token)
+		return HttpResponse(link)
+	except:
+		return HttpResponseBadRequest('An error occurred.')

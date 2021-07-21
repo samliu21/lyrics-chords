@@ -9,6 +9,7 @@ import { getUsername } from "../../util";
 export default function Profile(props) {
 	const username = props.match.params.username;
 	const [songCount, setSongCount] = useState();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const history = useHistory();
 
@@ -59,27 +60,45 @@ export default function Profile(props) {
 		getCount();
 	}, [username, history]);
 
+	const changePasswordHandler = async () => {
+		setIsLoading(true);
+		const response = await axios.get(
+			"/api/auth/email/password-change-link"
+		);
+		const link = response.data;
+		setIsLoading(false);
+
+		history.push(link);
+	};
+
 	if (!songCount) {
 		return <LoadingCircle />;
 	}
 
 	return (
 		<div style={styles.container}>
-			<img
-				src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
-				alt="profile-pic"
-				style={styles.picture}
-			/>
-			<div>
-				<h2 style={styles.name} className="italic">
-					{username}
-				</h2>
-				<p>
-					<span className="italic">Songsheets created:</span>
-					&nbsp;&nbsp;
-					{songCount}
-				</p>
+			{isLoading && <LoadingCircle />}
+
+			<div style={styles.profile}>
+				<img
+					src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
+					alt="profile-pic"
+					style={styles.picture}
+				/>
+				<div>
+					<h2 style={styles.name} className="italic">
+						{username}
+					</h2>
+					<p>
+						<span className="italic">Songsheets created:</span>
+						&nbsp;&nbsp;
+						{songCount}
+					</p>
+				</div>
 			</div>
+			<p className="important" onClick={changePasswordHandler}>
+				CHANGE PASSWORD
+			</p>
 		</div>
 	);
 }
