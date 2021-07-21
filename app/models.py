@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import User
 
 class Song(models.Model):
 	name = models.CharField(max_length=100, blank=True)
@@ -14,3 +15,8 @@ class Song(models.Model):
 
 	def __str__(self):
 		return self.name 
+
+class View(models.Model):
+	user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+	song = models.ForeignKey(Song, on_delete=models.DO_NOTHING)
+	value = models.IntegerField(default=0)

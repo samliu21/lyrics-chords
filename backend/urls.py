@@ -12,6 +12,7 @@ router.register(r'songs', views.SongViewSet, basename="songs")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+	path('api/views/increment', views.increment_view),
 	path('api/lyrics/<str:info>', views.fetch_lyrics),
 	path('api/auth/', include('authentication.urls')),
 	path('api/', include(router.urls)),

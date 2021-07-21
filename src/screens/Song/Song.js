@@ -18,7 +18,9 @@ import {
 	getSplitChords,
 	compareSongsByValue,
 	updateSongAttributeToDatabase,
+	getToken,
 } from "../../util";
+import axios from "axios";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -63,6 +65,22 @@ export default function Song(props) {
 	useEffect(() => {
 		const queryUsername = async () => {
 			const username = await getUsername();
+			console.log(selectedSong);
+
+			const response = await axios.post(
+				"/api/views/increment",
+				{
+					songId: selectedSong.id,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getToken(),
+					},
+				}
+			);
+			console.log(response.data);
 
 			if (selectedSong.views.indexOf(username) === -1) {
 				const newViews = `${selectedSong.views}**${username}`;
@@ -70,11 +88,11 @@ export default function Song(props) {
 				dispatch(
 					songsActions.updateSong(selectedSong.id, "views", newViews)
 				);
-				updateSongAttributeToDatabase(
-					selectedSong.id,
-					"views",
-					newViews
-				);
+				// updateSongAttributeToDatabase(
+				// 	selectedSong.id,
+				// 	"views",
+				// 	newViews
+				// );
 			}
 		};
 
