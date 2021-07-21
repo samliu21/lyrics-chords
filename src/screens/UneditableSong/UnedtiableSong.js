@@ -61,11 +61,11 @@ export default function UneditableSong(props) {
 				dispatch(
 					songsActions.updatePublicSong(selectedSong.id, "views", newViews)
 				);
-				// updateSongAttributeToDatabase(
-				// 	selectedSong.id,
-				// 	"views",
-				// 	newViews
-				// );
+				updateSongAttributeToDatabase(
+					selectedSong.id,
+					"views",
+					newViews
+				);
 			}
 		};
 
