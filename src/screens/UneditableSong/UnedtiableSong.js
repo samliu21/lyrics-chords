@@ -7,7 +7,12 @@ import { useHistory } from "react-router";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import { styles } from "./UneditableSongStyles";
-import { turnIntoLink, getSplitChords } from "../../util";
+import {
+	turnIntoLink,
+	getSplitChords,
+	getUsername,
+	updateSongAttributeToDatabase,
+} from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 
 export default function UneditableSong(props) {
@@ -43,6 +48,31 @@ export default function UneditableSong(props) {
 	if (!selectedSong && songLink && stateReceived) {
 		history.push("/songs/public");
 	}
+
+	// Increment views
+	useEffect(() => {
+		const queryUsername = async () => {
+			const username = await getUsername();
+
+			if (selectedSong.views.indexOf(username) === -1) {
+				const newViews = `${selectedSong.views}**${username}`;
+				console.log(newViews);
+
+				dispatch(
+					songsActions.updatePublicSong(selectedSong.id, "views", newViews)
+				);
+				// updateSongAttributeToDatabase(
+				// 	selectedSong.id,
+				// 	"views",
+				// 	newViews
+				// );
+			}
+		};
+
+		if (selectedSong) {
+			queryUsername();
+		}
+	}, [selectedSong, dispatch]);
 
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
@@ -95,7 +125,7 @@ export default function UneditableSong(props) {
 		<div>
 			<div id="songRoot" style={styles.container}>
 				<InfoBar selectedSong={selectedSong} />
-				
+
 				<h1 style={styles.title}>{selectedSong.name}</h1>
 				<h2 style={styles.artist}>{selectedSong.artist}</h2>
 

@@ -187,7 +187,6 @@ export default function Song(props) {
 
 	// Allows components to change hasUnsavedChanges
 	const setUnsavedChanges = (value) => {
-		console.log("Umm how?");
 		if (hasUnsavedChanges.current !== value) {
 			hasUnsavedChanges.current = value;
 		}
