@@ -104,12 +104,12 @@ export default function SongBlock(props) {
 					style={styles.arrow}
 					alt="Arrow"
 				/>
+				{location === "public" && (
+					<p style={styles.views}>
+						{props.item.views.split("**").length - 1}
+					</p>
+				)}
 			</div>
-			{location === "public" && (
-				<p style={styles.views}>
-					{props.item.views.split("**").length - 1}
-				</p>
-			)}
 		</div>
 	);
 }

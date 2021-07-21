@@ -10,6 +10,7 @@ import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import PulledLyricsBlock from "../../components/PulledLyricsBlock/PulledLyricsBlock";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import SaveBar from "../../components/SaveBar/SaveBar";
+import InfoBar from "../../components/InfoBar/InfoBar";
 import { styles } from "./SongStyles";
 import {
 	turnIntoLink,
@@ -209,6 +210,8 @@ export default function Song(props) {
 	return (
 		<div id="songRoot" style={styles.container}>
 			{isFetching && <LoadingCircle />}
+
+			<InfoBar selectedSong={selectedSong} />
 
 			<SaveBar
 				item={selectedSong}

@@ -8,6 +8,7 @@ import StrummingPatternBlock from "../../components/StrummingPatternBlock/Strumm
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import { styles } from "./UneditableSongStyles";
 import { turnIntoLink, getSplitChords } from "../../util";
+import InfoBar from "../../components/InfoBar/InfoBar";
 
 export default function UneditableSong(props) {
 	const linkUsername = useRef(props.match.params.username);
@@ -93,6 +94,8 @@ export default function UneditableSong(props) {
 	return (
 		<div>
 			<div id="songRoot" style={styles.container}>
+				<InfoBar selectedSong={selectedSong} />
+				
 				<h1 style={styles.title}>{selectedSong.name}</h1>
 				<h2 style={styles.artist}>{selectedSong.artist}</h2>
 

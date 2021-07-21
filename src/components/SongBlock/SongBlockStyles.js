@@ -30,8 +30,9 @@ export const styles = {
 		flex: 1,
 		flexGrow: 1,
 		justifyContent: "flex-end",
+		alignItems: "center",
 		cursor: "pointer",
-		marginLeft: 10,
+		marginRight: "4vw",
 	},
 	name: {
 		fontSize: "4vmin",
@@ -53,7 +54,7 @@ export const styles = {
 		cursor: "pointer",
 	},
 	views: {
-		margin: "0 4vw",
+		marginLeft: "4vw",
 		fontSize: "3.5vmin",
 	},
 }
