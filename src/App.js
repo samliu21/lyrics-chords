@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { HashRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import { IconContext } from "react-icons";
 import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import { HashRouter } from "react-router-dom";
 
-import { store, persistor } from "./store/store";
-import LongRouter from "./components/LongRouter/LongRouter";
-import ThinRouter from "./components/ThinRouter/ThinRouter";
 import { Colors } from "./constants/Colors";
 import LoadingCircle from "./components/LoadingCircle/LoadingCircle";
+import Router from "./components/Router/Router";
+import { persistor, store } from "./store/store";
 
 export default function App() {
 	// Orientation state
@@ -30,14 +29,16 @@ export default function App() {
 		size: "1.5em",
 	};
 
-	// Return a different route based on the orientation
-	// LongRouter = landscape, ThinRouter = portrait
 	return (
+		// Redux provider 
 		<Provider store={store}>
+			{/* Redux persistor  */}
 			<PersistGate persistor={persistor} loading={<LoadingCircle />}>
+				{/* Redux router  */}
 				<HashRouter>
+					{/* Default icon values  */}
 					<IconContext.Provider value={iconValues}>
-						{orientation ? <LongRouter /> : <ThinRouter />}
+						{orientation ? <Router horizontal /> : <Router />}
 					</IconContext.Provider>
 				</HashRouter>
 			</PersistGate>
