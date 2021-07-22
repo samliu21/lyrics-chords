@@ -88,10 +88,6 @@ export default function SongList(props) {
 				});
 				return;
 			}
-
-			if (!songList) {
-				dispatch(songsActions.getUserSongs());
-			}
 		};
 
 		getSongList();

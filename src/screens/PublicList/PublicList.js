@@ -47,14 +47,6 @@ export default function PublicList() {
 	}, [filteredPublicSongs, dispatch]);
 
 	useEffect(() => {
-		if (!filteredPublicSongs) {
-			dispatch(songsActions.getPublicSongs());
-		}
-
-		// return () => dispatch(songsActions.setFilteredPublicSongs("reset"))
-	}, [dispatch, filteredPublicSongs]);
-
-	useEffect(() => {
 		return () => dispatch(songsActions.setFilteredPublicSongs("reset"));
 	}, [dispatch]);
 

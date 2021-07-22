@@ -41,9 +41,8 @@ export default function Song(props) {
 
 	const selectedSong = useSelector((state) => {
 		// On app refresh, redux state is reset, and state reverts to its initial store
-		// If state is empty, we issue a fetch songs request
+		// If state is empty, we wait for request to be issued
 		if (!state.songs.userSongs) {
-			dispatch(songsActions.getUserSongs());
 			return null;
 		} else {
 			stateReceived.current = true;
@@ -71,7 +70,7 @@ export default function Song(props) {
 
 				dispatch(songsActions.incrementView(selectedSong.id));
 			} catch (err) {
-				console.log(err.response.data);
+				console.log(err.response ? err.response.data : err.message);
 			}
 		};
 

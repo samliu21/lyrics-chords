@@ -26,8 +26,7 @@ export default function UneditableSong(props) {
 		// On app refresh, redux state is reset, and state reverts to its initial store
 		// If state is empty, we issue a fetch songs request
 		if (!state.songs.publicSongs) {
-			dispatch(songsActions.getPublicSongs());
-			return;
+			return null;
 		} else {
 			if (!stateReceived) {
 				setStateReceived(true);

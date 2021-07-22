@@ -54,17 +54,15 @@ function store(store = initialStore, action) {
 		return {
 			...store,
 			userSongs: store.userSongs.filter((song) => song.id !== action.id),
-			publicSongs: store.publicSongs
-				? store.publicSongs.filter((song) => song.id !== action.id)
-				: null,
+			publicSongs: store.publicSongs.filter(
+				(song) => song.id !== action.id
+			),
 			filteredUserSongs: store.filteredUserSongs.filter(
 				(song) => song.id !== action.id
 			),
-			filteredPublicSongs: store.filteredPublicSongs
-				? store.filteredPublicSongs.filter(
-						(song) => song.id !== action.id
-				  )
-				: null,
+			filteredPublicSongs: store.filteredPublicSongs.filter(
+				(song) => song.id !== action.id
+			),
 		};
 	} else if (action.type === UPDATE_SONG) {
 		const updatedSong = {
@@ -84,35 +82,27 @@ function store(store = initialStore, action) {
 		sortSongsById(updatedUserSongs);
 		sortSongsById(updatedFilteredUserSongs);
 
-		if (store.publicSongs) {
-			const updatedPublicSongs = store.publicSongs.filter(
-				(song) => song.id !== action.id
-			);
-			const updatedFilteredPublicSongs = store.filteredPublicSongs.filter(
-				(song) => song.id !== action.id
-			);
+		const updatedPublicSongs = store.publicSongs.filter(
+			(song) => song.id !== action.id
+		);
+		const updatedFilteredPublicSongs = store.filteredPublicSongs.filter(
+			(song) => song.id !== action.id
+		);
 
-			if (updatedSong.public) {
-				updatedPublicSongs.push(updatedSong);
-				updatedFilteredPublicSongs.push(updatedSong);
-			}
-			sortSongsById(updatedPublicSongs);
-			sortSongsById(updatedFilteredPublicSongs);
-
-			return {
-				...store,
-				userSongs: updatedUserSongs,
-				publicSongs: updatedPublicSongs,
-				filteredUserSongs: updatedFilteredUserSongs,
-				filteredPublicSongs: updatedFilteredPublicSongs,
-			};
-		} else {
-			return {
-				...store,
-				userSongs: updatedUserSongs,
-				filteredUserSongs: updatedFilteredUserSongs,
-			};
+		if (updatedSong.public) {
+			updatedPublicSongs.push(updatedSong);
+			updatedFilteredPublicSongs.push(updatedSong);
 		}
+		sortSongsById(updatedPublicSongs);
+		sortSongsById(updatedFilteredPublicSongs);
+
+		return {
+			...store,
+			userSongs: updatedUserSongs,
+			publicSongs: updatedPublicSongs,
+			filteredUserSongs: updatedFilteredUserSongs,
+			filteredPublicSongs: updatedFilteredPublicSongs,
+		};
 	} else if (action.type === UPDATE_PUBLIC_SONG) {
 		const updatedPublicSong = {
 			...store.publicSongs.find((song) => song.id === action.id),
@@ -144,35 +134,27 @@ function store(store = initialStore, action) {
 		sortSongsById(updatedUserSongs);
 		sortSongsById(updatedFilteredUserSongs);
 
-		if (store.publicSongs) {
-			const updatedPublicSongs = store.publicSongs.filter(
-				(song) => song.id !== action.id
-			);
-			const updatedFilteredPublicSongs = store.filteredPublicSongs.filter(
-				(song) => song.id !== action.id
-			);
+		const updatedPublicSongs = store.publicSongs.filter(
+			(song) => song.id !== action.id
+		);
+		const updatedFilteredPublicSongs = store.filteredPublicSongs.filter(
+			(song) => song.id !== action.id
+		);
 
-			if (action.song.public) {
-				updatedPublicSongs.push(action.song);
-				updatedFilteredPublicSongs.push(action.song);
-			}
-			sortSongsById(updatedPublicSongs);
-			sortSongsById(updatedFilteredPublicSongs);
-
-			return {
-				...store,
-				userSongs: updatedUserSongs,
-				publicSongs: updatedPublicSongs,
-				filteredUserSongs: updatedFilteredUserSongs,
-				filteredPublicSongs: updatedFilteredPublicSongs,
-			};
-		} else {
-			return {
-				...store,
-				userSongs: updatedUserSongs,
-				filteredUserSongs: updatedFilteredUserSongs,
-			};
+		if (action.song.public) {
+			updatedPublicSongs.push(action.song);
+			updatedFilteredPublicSongs.push(action.song);
 		}
+		sortSongsById(updatedPublicSongs);
+		sortSongsById(updatedFilteredPublicSongs);
+
+		return {
+			...store,
+			userSongs: updatedUserSongs,
+			publicSongs: updatedPublicSongs,
+			filteredUserSongs: updatedFilteredUserSongs,
+			filteredPublicSongs: updatedFilteredPublicSongs,
+		};
 	} else if (action.type === SET_FILTERED_PUBLIC_SONGS) {
 		if (action.songs === "reset") {
 			return {
@@ -205,9 +187,11 @@ function store(store = initialStore, action) {
 			...store,
 			views: {
 				...store.views,
-				[action.id]: store.views[action.id] ? store.views[action.id] + 1 : 0,
-			}
-		}
+				[action.id]: store.views[action.id]
+					? store.views[action.id] + 1
+					: 0,
+			},
+		};
 	} else {
 		return store;
 	}

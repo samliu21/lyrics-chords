@@ -110,7 +110,7 @@ export function deleteSong(id) {
 				},
 			});
 		} catch (err) {
-			console.log(err.message);
+			console.log(err.response ? err.response.data : err.message);
 			throw err;
 		}
 	};
