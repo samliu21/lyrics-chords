@@ -27,6 +27,7 @@ export default function Song(props) {
 	const viewAdded = useRef(false);
 
 	// If pulled lyrics are being fetched, use Fetching... text
+	const isViewOnly = useSelector((state) => state.selectedSong.isSongPageView);
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
@@ -38,8 +39,8 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-	const songLink = path[path.length - 1];
-	const creator = path[path.length - 2];
+	const songLink = isViewOnly ? path[path.length - 2] : path[path.length - 1];
+	const creator = isViewOnly ? path[path.length - 3] : path[path.length - 2];
 
 	const selectedSong = useSelector((state) => {
 		// On app refresh, redux state is reset, and state reverts to its initial store
