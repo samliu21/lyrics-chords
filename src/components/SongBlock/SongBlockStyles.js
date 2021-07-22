@@ -36,6 +36,10 @@ export const styles = {
 		justifyContent: "flex-end",
 		marginRight: "4vw",
 	},
+	infoContainer: {
+		display: "flex",
+		flexDirection: "column",
+	},
 	name: {
 		fontSize: "4vmin",
 		color: Colors.accent,

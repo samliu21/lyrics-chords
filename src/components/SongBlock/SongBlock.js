@@ -44,7 +44,11 @@ export default function SongBlock(props) {
 	// Go to song page handler
 	const redirectHandler = async () => {
 		const link = turnIntoLink(props.item.artist, props.item.name);
-		history.push(`/songs/${props.item.creator}/${link}`);
+		history.push(
+			props.editable
+				? `/songs/${props.item.creator}/${link}`
+				: `/songs/${props.item.creator}/${link}/view`
+		);
 	};
 
 	// Public handler
@@ -140,7 +144,7 @@ export default function SongBlock(props) {
 					</div>
 				)}
 
-				<div>
+				<div style={styles.infoContainer}>
 					{/* Title and artist  */}
 					<input
 						style={styles.name}

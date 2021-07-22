@@ -30,6 +30,7 @@ export default function Song(props) {
 	const isViewOnly = useSelector(
 		(state) => state.selectedSong.isSongPageView
 	);
+	const songLink = useSelector((state) => state.selectedSong.songLink);
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
@@ -41,11 +42,14 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-	const songLink = isViewOnly ? path[path.length - 2] : path[path.length - 1];
+	// const songLink = isViewOnly ? path[path.length - 2] : path[path.length - 1];
 	const creator = isViewOnly ? path[path.length - 3] : path[path.length - 2];
+	// console.log(creator);
 
 	const selectedSong = useSelector((state) => {
-		const list = isViewOnly ? state.songs.publicSongs : state.songs.userSongs;
+		const list = isViewOnly
+			? state.songs.publicSongs
+			: state.songs.userSongs;
 		// On app refresh, redux state is reset, and state reverts to its initial store
 		// If state is empty, we wait for request to be issued
 		if (!list) {
@@ -56,6 +60,7 @@ export default function Song(props) {
 
 		return list.find((song) => {
 			const link = turnIntoLink(song.artist, song.name);
+
 			return link === songLink && song.creator === creator;
 		});
 	});
@@ -88,30 +93,32 @@ export default function Song(props) {
 
 	// On react route change, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {
-		const unblock = history.block(() => {
-			const ogSong = originalSong.current;
+		if (!isViewOnly) {
+			const unblock = history.block(() => {
+				const ogSong = originalSong.current;
 
-			if (
-				hasUnsavedChanges.current ||
-				!compareSongsByValue(ogSong, selectedSong)
-			) {
-				// Prompt the user for confirmation
-				const response = window.confirm(
-					"You have unsaved changes! Are you sure you want to leave?"
-				);
+				if (
+					hasUnsavedChanges.current ||
+					!compareSongsByValue(ogSong, selectedSong)
+				) {
+					// Prompt the user for confirmation
+					const response = window.confirm(
+						"You have unsaved changes! Are you sure you want to leave?"
+					);
 
-				// Replace redux state with most recently saved form
-				if (response) {
-					dispatch(songsActions.replaceSong(ogSong.id, ogSong));
+					// Replace redux state with most recently saved form
+					if (response) {
+						dispatch(songsActions.replaceSong(ogSong.id, ogSong));
+					}
+					return response;
 				}
-				return response;
-			}
 
-			return true;
-		});
+				return true;
+			});
 
-		return () => unblock();
-	}, [selectedSong, history, dispatch]);
+			return () => unblock();
+		}
+	}, [selectedSong, history, dispatch, isViewOnly]);
 
 	// Show are you sure you want to leave upon refresh or closing the page (not for react routing)
 	const componentCleanup = useCallback(
@@ -129,15 +136,20 @@ export default function Song(props) {
 
 	// On page refresh or x, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {
-		window.addEventListener("beforeunload", componentCleanup);
+		if (isViewOnly) {
+			window.addEventListener("beforeunload", componentCleanup);
 
-		return () =>
-			window.removeEventListener("beforeunload", componentCleanup);
+			return () =>
+				window.removeEventListener("beforeunload", componentCleanup);
+		}
 	}, [componentCleanup]);
 
 	// Check that the user is authenticated
 	useEffect(() => {
 		const validateUsername = async () => {
+			if (path[path.length - 1] === "view") {
+				return;
+			}
 			const linkUsername = props.match.params.username;
 
 			const username = await getUsername();
@@ -148,7 +160,7 @@ export default function Song(props) {
 			}
 		};
 
-		if (!isAdmin) {
+		if (!isAdmin && !isViewOnly) {
 			validateUsername();
 		}
 	}, [props.match.params.username, history, songLink, isAdmin]);
@@ -156,6 +168,11 @@ export default function Song(props) {
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
 		const songExists = async () => {
+			// Press public song, back, song again
+			if (path[path.length - 1] === "view") {
+				return;
+			}
+
 			// If the songs are still being fetched, an undefined selectedSong should not trigger a redirect
 			// Only if songs have been fetched and there still is no match for the URL parameters, should we redirect
 			if (!selectedSong && stateReceived.current) {
