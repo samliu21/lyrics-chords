@@ -27,7 +27,9 @@ export default function Song(props) {
 	const viewAdded = useRef(false);
 
 	// If pulled lyrics are being fetched, use Fetching... text
-	const isViewOnly = useSelector((state) => state.selectedSong.isSongPageView);
+	const isViewOnly = useSelector(
+		(state) => state.selectedSong.isSongPageView
+	);
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
@@ -234,6 +236,9 @@ export default function Song(props) {
 		return <LoadingCircle />;
 	}
 
+	const editableKwargs = isViewOnly ? {} : { editable: true };
+	const inputKwargs = isViewOnly ? { readOnly: true } : {};
+
 	return (
 		<div id="songRoot" style={styles.container}>
 			{isFetching && <LoadingCircle />}
@@ -242,11 +247,13 @@ export default function Song(props) {
 			<InfoBar selectedSong={selectedSong} />
 
 			{/* Save bar  */}
-			<SaveBar
-				item={selectedSong}
-				setUnsavedChanges={setUnsavedChanges}
-				onSave={updateOriginalSong}
-			/>
+			{!isViewOnly && (
+				<SaveBar
+					item={selectedSong}
+					setUnsavedChanges={setUnsavedChanges}
+					onSave={updateOriginalSong}
+				/>
+			)}
 
 			{/* Title  */}
 			<input
@@ -256,6 +263,7 @@ export default function Song(props) {
 				onKeyDown={preventEnterHandler}
 				onBlur={inputBlur}
 				ref={nameRef}
+				{...inputKwargs}
 			/>
 
 			{/* Artist  */}
@@ -266,24 +274,27 @@ export default function Song(props) {
 				onKeyDown={preventEnterHandler}
 				onBlur={inputBlur}
 				ref={artistRef}
+				{...inputKwargs}
 			/>
 
 			<StrummingPatternBlock
 				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
-				editable
+				{...editableKwargs}
 			/>
 
 			<LyricsBlock
 				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
-				editable
+				{...editableKwargs}
 			/>
 
-			<PulledLyricsBlock
-				selectedSong={selectedSong}
-				setUnsavedChanges={setUnsavedChanges}
-			/>
+			{!isViewOnly && (
+				<PulledLyricsBlock
+					selectedSong={selectedSong}
+					setUnsavedChanges={setUnsavedChanges}
+				/>
+			)}
 		</div>
 	);
 }
