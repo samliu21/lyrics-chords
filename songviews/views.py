@@ -19,7 +19,6 @@ def increment_view(request):
 		existing_value = qs.filter(Q(user=request.user) & Q(song=song_id))
 
 		if len(existing_value) == 0:
-			print("Song id fault?")
 			song = Song.objects.get(id=song_id)
 			v = View(user=request.user, song=song)
 			v.save()

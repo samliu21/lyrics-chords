@@ -187,7 +187,7 @@ function store(store = initialStore, action) {
 			...store,
 			views: {
 				...store.views,
-				[action.id]: store.views[action.id]
+				[action.id]: store.views[action.id] !== undefined
 					? store.views[action.id] + 1
 					: 0,
 			},
