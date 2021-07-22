@@ -52,7 +52,7 @@ export default function Router(props) {
 		const updateRedux = () => {
 			const URL = window.location.href.split("/");
 			// E.g. ["http:", "", "localhost:3000", "#", "songs", 1, "adele-hello"]
-			if (URL.length === 0 && URL[4] === "songs") {
+			if (URL.length === 7 && URL[4] === "songs") {
 				dispatch(selectedSongActions.setIsSongPage(true));
 				dispatch(selectedSongActions.setIsSongPageView(false));
 

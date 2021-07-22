@@ -80,6 +80,7 @@ export function addSong(username) {
 				chords: "",
 				strumming_pattern: "",
 				is_favourite: false,
+				public: false,
 			};
 
 			dispatch({
@@ -165,5 +166,5 @@ export function incrementView(id) {
 	return {
 		type: INCREMENT_VIEW,
 		id: id,
-	}
+	};
 }

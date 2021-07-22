@@ -73,7 +73,7 @@ export default function Song(props) {
 			}
 		};
 
-		if (selectedSong) {
+		if (selectedSong && selectedSong.public) {
 			databaseCall();
 		}
 	}, [selectedSong, dispatch]);

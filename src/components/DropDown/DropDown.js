@@ -15,10 +15,7 @@ export default function DropDown() {
 
 	const selectedSong = useSelector((state) => {
 		if (state.songs.userSongs) {
-			return state.songs.userSongs.find((song) => {
-				const link = turnIntoLink(song.artist, song.name);
-				return link === songLink;
-			});
+			return state.songs.userSongs.find((song) => song.id === +songLink);
 		} else {
 			return [];
 		}
@@ -44,7 +41,9 @@ export default function DropDown() {
 				)
 			);
 		} catch (err) {
-			const errorText = err.response ? err.response.data : "An error occurred.";
+			const errorText = err.response
+				? err.response.data
+				: "An error occurred.";
 			dispatch(
 				songsActions.updateSong(
 					selectedSong.id,

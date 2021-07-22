@@ -46,9 +46,6 @@ export default function SongBlock(props) {
 			alert("Please enter a song name and artist before proceeding!");
 			return;
 		}
-		const link = turnIntoLink(props.item.artist, props.item.name);
-		console.log(`/songs/${props.item.creator}/${props.item.id}`);
-		console.log(props.editable);
 		history.push(
 			props.editable
 				? `/songs/${props.item.creator}/${props.item.id}`
