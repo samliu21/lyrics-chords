@@ -49,7 +49,7 @@ export default function LogoutButton(props) {
 			);
 			dispatch(authActions.setAdmin(null));
 			dispatch(authActions.setUsername(null));
-			dispatch(songsActions.setFilteredPublicSongs(null));
+			// dispatch(songsActions.setFilteredPublicSongs(null));
 
 			history.push("/accounts/login");
 		} catch (err) {
