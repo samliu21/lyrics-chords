@@ -77,16 +77,9 @@ export default function SongList(props) {
 			const response = await getUsername();
 
 			if (isAdmin === false && response !== username) {
-				history.push({
-					pathname: "/accounts/unauthenticated",
-					state: {
-						url: !response
-							? "/accounts/login"
-							: `/songs/${response}`,
-						message: "This is not your account",
-					},
-				});
-				return;
+				history.push(
+					response ? `/songs/${response}` : "/accounts/login"
+				);
 			}
 		};
 

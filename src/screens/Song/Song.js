@@ -9,8 +9,6 @@ import {
 	getSplitChords,
 	getUsername,
 	incrementViewCount,
-	turnIntoLink,
-	updateSongAttributeToDatabase,
 } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
@@ -23,7 +21,6 @@ import { styles } from "./SongStyles";
 export default function Song(props) {
 	const stateReceived = useRef(false);
 	const hasUnsavedChanges = useRef(false);
-	const viewAdded = useRef(false);
 
 	// If pulled lyrics are being fetched, use Fetching... text
 	const isViewOnly = useSelector(
@@ -41,7 +38,6 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-	const creator = isViewOnly ? path[path.length - 3] : path[path.length - 2];
 
 	const selectedSong = useSelector((state) => {
 		const list = isViewOnly
@@ -56,8 +52,9 @@ export default function Song(props) {
 		}
 
 		const id = +props.match.params.id;
+		const username = props.match.params.username;
 		return list.find((song) => {
-			return song.id === id;
+			return song.id === id && song.creator === username;
 		});
 	});
 
@@ -66,7 +63,6 @@ export default function Song(props) {
 	// Increment views
 	useEffect(() => {
 		const databaseCall = async () => {
-			viewAdded.current = true;
 			try {
 				await incrementViewCount(selectedSong.id);
 
@@ -77,7 +73,7 @@ export default function Song(props) {
 			}
 		};
 
-		if (selectedSong && !viewAdded.current) {
+		if (selectedSong) {
 			databaseCall();
 		}
 	}, [selectedSong, dispatch]);
@@ -138,16 +134,19 @@ export default function Song(props) {
 	// Check that the user is authenticated
 	useEffect(() => {
 		const validateUsername = async () => {
+			// Double check (important!! if you press song -> back button -> same song again)
 			if (path[path.length - 1] === "view") {
 				return;
 			}
+
 			const linkUsername = props.match.params.username;
 
 			const username = await getUsername();
-			// Redirect if usernames don't line up
+			// Redirect to view only if usernames don't line up
 			if (linkUsername !== username) {
-				// Attempt to redirect to view page (if the user wants to share and displays a public link), but if song truly doesn't exist, will be handled there
-				history.push(`/songs/${linkUsername}/${songLink}/view`);
+				const id = props.match.params.id;
+
+				history.push(`/songs/${linkUsername}/${id}/view`);
 			}
 		};
 
@@ -159,8 +158,11 @@ export default function Song(props) {
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
 		const songExists = async () => {
-			// Press public song, back, song again
+			// If song doesn't exist in view only page as well
 			if (path[path.length - 1] === "view") {
+				if (!selectedSong && stateReceived) {
+					history.push("/songs/public");
+				}
 				return;
 			}
 
@@ -168,8 +170,10 @@ export default function Song(props) {
 			// Only if songs have been fetched and there still is no match for the URL parameters, should we redirect
 			if (!selectedSong && stateReceived.current) {
 				const linkUsername = props.match.params.username;
+				const id = props.match.params.id;
+
 				// Attempt to redirect to view page (if the user wants to share and displays a public link), but if song truly doesn't exist, will be handled there
-				history.push(`/songs/${linkUsername}/${songLink}/view`);
+				history.push(`/songs/${linkUsername}/${id}/view`);
 			} else if (selectedSong) {
 				if (!originalSong.current) {
 					originalSong.current = selectedSong;
@@ -207,6 +211,8 @@ export default function Song(props) {
 
 	// Enter causes blur
 	const preventEnterHandler = (event) => {
+		setUnsavedChanges(true);
+
 		if (event.key === "Enter") {
 			event.preventDefault();
 			event.target.blur();
@@ -228,7 +234,6 @@ export default function Song(props) {
 		const val = name !== selectedSong.name ? name : artist;
 
 		dispatch(songsActions.updateSong(id, choice, val));
-		updateSongAttributeToDatabase(id, choice, val);
 	};
 
 	if (!selectedSong) {

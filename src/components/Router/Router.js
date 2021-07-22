@@ -19,7 +19,6 @@ import PublicList from "../../screens/PublicList/PublicList";
 import PasswordReset from "../../screens/PasswordReset/PasswordReset";
 import PasswordChange from "../../screens/PasswordChange/PasswordChange";
 import Profile from "../../screens/Profile/Profile";
-import RedirectScreen from "../RedirectScreen/RedirectScreen";
 import SongList from "../../screens/SongList/SongList";
 import Song from "../../screens/Song/Song";
 
@@ -99,11 +98,6 @@ export default function Router(props) {
 			/>
 			<Route
 				exact
-				path="/accounts/unauthenticated"
-				component={RedirectScreen}
-			/>
-			<Route
-				exact
 				path="/accounts/confirm-email"
 				component={ConfirmEmail}
 			/>
@@ -125,11 +119,6 @@ export default function Router(props) {
 				path={["/songs/:username/:id", "/songs/:username/:id/view"]}
 				component={Song}
 			/>
-			{/* <Route
-				exact
-				path="/songs/:username/:song/view"
-				component={UneditableSong}
-			/> */}
 			<Route component={ErrorScreen} />
 		</Switch>
 	);
