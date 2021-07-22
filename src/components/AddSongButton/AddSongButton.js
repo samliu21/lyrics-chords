@@ -12,18 +12,14 @@ export default function AddSongButton() {
 	const dispatch = useDispatch();
 
 	// Add new song to backend
-	function addSongHandler() {
+	async function addSongHandler() {
 		setIsAdding(true);
 
-		getUsername()
-			.then((username) => {
-				localStorage.removeItem(username);
+		const username = await getUsername();
+		localStorage.removeItem(username);
 
-				dispatch(actions.addSong(username));
-			})
-			.finally(() => {
-				setTimeout(() => setIsAdding(false), 500);
-			});
+		dispatch(actions.addSong(username));
+		setTimeout(() => setIsAdding(false), 500);
 	}
 
 	return (

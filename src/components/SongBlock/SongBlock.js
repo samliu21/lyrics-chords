@@ -28,14 +28,13 @@ export default function SongBlock(props) {
 	const artistRef = createRef();
 
 	// Delete song
-	function deleteHandler() {
+	async function deleteHandler() {
 		try {
 			dispatch(songsActions.deleteSong(props.item.id));
 
 			// Reset localStorage element containing the number of songsheets to display in the profile page
-			getUsername().then((username) => {
-				localStorage.removeItem(username);
-			});
+			const username = await getUsername()
+			localStorage.removeItem(username);
 		} catch (err) {
 			alert("There was an error deleting the song");
 		}
