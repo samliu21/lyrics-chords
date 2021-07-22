@@ -151,8 +151,7 @@ export default function Song(props) {
 
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
-		// Validate that one of the user's song matches the songLink
-		const authenticated = async () => {
+		const songExists = async () => {
 			// If the songs are still being fetched, an undefined selectedSong should not trigger a redirect
 			// Only if songs have been fetched and there still is no match for the URL parameters, should we redirect
 			if (!selectedSong && stateReceived.current) {
@@ -174,7 +173,7 @@ export default function Song(props) {
 
 		// If name was switched, the info must be validated
 		if (!switchedName.current) {
-			authenticated();
+			songExists();
 		}
 	}, [
 		selectedSong,
@@ -238,14 +237,17 @@ export default function Song(props) {
 		<div id="songRoot" style={styles.container}>
 			{isFetching && <LoadingCircle />}
 
+			{/* Information about creator  */}
 			<InfoBar selectedSong={selectedSong} />
 
+			{/* Save bar  */}
 			<SaveBar
 				item={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
 				onSave={updateOriginalSong}
 			/>
 
+			{/* Title  */}
 			<input
 				style={styles.title}
 				defaultValue={selectedSong.name}
@@ -255,6 +257,7 @@ export default function Song(props) {
 				ref={nameRef}
 			/>
 
+			{/* Artist  */}
 			<input
 				style={styles.artist}
 				defaultValue={selectedSong.artist}
