@@ -55,6 +55,8 @@ export default function SongBlock(props) {
 		dispatch(
 			actions.updateSong(props.item.id, "public", !props.item.public)
 		);
+
+		dispatch(actions.incrementView(props.item.id));
 	};
 
 	// Favourite handler
@@ -138,9 +140,7 @@ export default function SongBlock(props) {
 					alt="Arrow"
 				/>
 				{location === "public" && props.views !== null && (
-					<p style={styles.views}>
-						{props.views}
-					</p>
+					<p style={styles.views}>{props.views}</p>
 				)}
 			</div>
 		</div>

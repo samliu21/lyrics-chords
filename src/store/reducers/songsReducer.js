@@ -205,7 +205,7 @@ function store(store = initialStore, action) {
 			...store,
 			views: {
 				...store.views,
-				[action.id]: store.views[action.id] + 1,
+				[action.id]: store.views[action.id] ? store.views[action.id] + 1 : 0,
 			}
 		}
 	} else {

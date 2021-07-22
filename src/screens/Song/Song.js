@@ -18,6 +18,7 @@ import {
 	getSplitChords,
 	compareSongsByValue,
 	getToken,
+	incrementViewCount,
 } from "../../util";
 import axios from "axios";
 
@@ -66,19 +67,7 @@ export default function Song(props) {
 		const databaseCall = async () => {
 			viewAdded.current = true;
 			try {
-				await axios.post(
-					"/api/views/increment",
-					{
-						songId: selectedSong.id,
-					},
-					{
-						withCredentials: true,
-						headers: {
-							"Content-Type": "application/json",
-							"X-CSRFToken": getToken(),
-						},
-					}
-				);
+				incrementViewCount(selectedSong.id);
 
 				dispatch(songsActions.incrementView(selectedSong.id));
 			} catch (err) {

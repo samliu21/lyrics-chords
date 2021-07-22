@@ -167,3 +167,24 @@ export async function getActivationStatus(ignoreCookie = false) {
 		throw err;
 	}
 }
+
+// Increment view count for a particular song
+export async function incrementViewCount(id) {
+	try {
+		await axios.post(
+			"/api/views/increment",
+			{
+				songId: id,
+			},
+			{
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
+					"X-CSRFToken": getToken(),
+				},
+			}
+		);
+	} catch (err) {
+		throw err;
+	}
+}

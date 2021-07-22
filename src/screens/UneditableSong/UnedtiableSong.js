@@ -8,7 +8,7 @@ import { useHistory } from "react-router";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import { styles } from "./UneditableSongStyles";
-import { turnIntoLink, getSplitChords, getToken } from "../../util";
+import { turnIntoLink, getSplitChords, getToken, incrementViewCount } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 
 export default function UneditableSong(props) {
@@ -52,20 +52,8 @@ export default function UneditableSong(props) {
 		const databaseCall = async () => {
 			viewAdded.current = true;
 			try {
-				await axios.post(
-					"/api/views/increment",
-					{
-						songId: selectedSong.id,
-					},
-					{
-						withCredentials: true,
-						headers: {
-							"Content-Type": "application/json",
-							"X-CSRFToken": getToken(),
-						},
-					}
-				);
-				
+				incrementViewCount(selectedSong.id);
+
 				dispatch(songsActions.incrementView(selectedSong.id));
 			} catch (err) {
 				console.log(err.response ? err.response.data : err.message);

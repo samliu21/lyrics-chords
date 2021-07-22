@@ -12,11 +12,12 @@ import { getToken } from "../../util";
 
 export default function PublicList() {
 	const isAdmin = useSelector((state) => state.auth.admin);
+	const views = useSelector((state) => state.songs.views);
+	// const condition = views ? 
 	const filteredPublicSongs = useSelector(
 		(state) => state.songs.filteredPublicSongs
 	);
 	const username = useSelector((state) => state.auth.username);
-	const views = useSelector((state) => state.songs.views);
 
 	const dispatch = useDispatch();
 
