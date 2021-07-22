@@ -47,10 +47,12 @@ export default function SongBlock(props) {
 			return;
 		}
 		const link = turnIntoLink(props.item.artist, props.item.name);
+		console.log(`/songs/${props.item.creator}/${props.item.id}`);
+		console.log(props.editable);
 		history.push(
 			props.editable
-				? `/songs/${props.item.creator}/${link}`
-				: `/songs/${props.item.creator}/${link}/view`
+				? `/songs/${props.item.creator}/${props.item.id}`
+				: `/songs/${props.item.creator}/${props.item.id}/view`
 		);
 	};
 

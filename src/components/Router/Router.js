@@ -52,8 +52,8 @@ export default function Router(props) {
 	useEffect(() => {
 		const updateRedux = () => {
 			const URL = window.location.href.split("/");
-			// E.g. ["http:", "", "localhost:3000", "#", "songs", "samliu12", "adele-hello"]
-			if (URL.length === 7 && URL[4] === "songs") {
+			// E.g. ["http:", "", "localhost:3000", "#", "songs", 1, "adele-hello"]
+			if (URL.length === 0 && URL[4] === "songs") {
 				dispatch(selectedSongActions.setIsSongPage(true));
 				dispatch(selectedSongActions.setIsSongPageView(false));
 
@@ -122,7 +122,7 @@ export default function Router(props) {
 			<Route exact path="/songs/:username" component={SongList} />
 			<Route
 				exact
-				path={["/songs/:username/:song", "/songs/:username/:song/view"]}
+				path={["/songs/:username/:id", "/songs/:username/:id/view"]}
 				component={Song}
 			/>
 			{/* <Route

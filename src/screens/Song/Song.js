@@ -56,10 +56,9 @@ export default function Song(props) {
 			stateReceived.current = true;
 		}
 
+		const id = +props.match.params.id;
 		return list.find((song) => {
-			const link = turnIntoLink(song.artist, song.name);
-
-			return link === songLink && song.creator === creator;
+			return song.id === id;
 		});
 	});
 
