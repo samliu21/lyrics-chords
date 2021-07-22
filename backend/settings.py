@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 	'whitenoise.runserver_nostatic',
 	'app',
 	'authentication',
+	'songviews'
 ]
 
 MIDDLEWARE = [
@@ -162,7 +163,6 @@ AUTHENTICATION_BACKENDS = ['authentication.manager.CustomBackend']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-	
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

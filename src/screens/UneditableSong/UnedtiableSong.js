@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as selectedSongActions from "../../store/actions/selectedSongActions";
@@ -7,16 +8,12 @@ import { useHistory } from "react-router";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import { styles } from "./UneditableSongStyles";
-import {
-	turnIntoLink,
-	getSplitChords,
-	getUsername,
-	updateSongAttributeToDatabase,
-} from "../../util";
+import { turnIntoLink, getSplitChords, getToken } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 
 export default function UneditableSong(props) {
 	const linkUsername = useRef(props.match.params.username);
+	const viewAdded = useRef(false);
 
 	const songLink = useSelector((state) => state.selectedSong.songLink);
 	const [isRendering, setIsRendering] = useState(true);
@@ -50,29 +47,34 @@ export default function UneditableSong(props) {
 	}
 
 	// Increment views
+	// Increment views
 	useEffect(() => {
-		const queryUsername = async () => {
-			const username = await getUsername();
-
-			if (selectedSong.views.indexOf(username) === -1) {
-				const newViews = `${selectedSong.views}**${username}`;
-				console.log(newViews);
-
-				dispatch(
-					songsActions.updatePublicSong(selectedSong.id, "views", newViews)
+		const databaseCall = async () => {
+			viewAdded.current = true;
+			try {
+				const response = await axios.post(
+					"/api/views/increment",
+					{
+						songId: selectedSong.id,
+					},
+					{
+						withCredentials: true,
+						headers: {
+							"Content-Type": "application/json",
+							"X-CSRFToken": getToken(),
+						},
+					}
 				);
-				updateSongAttributeToDatabase(
-					selectedSong.id,
-					"views",
-					newViews
-				);
+				console.log(response.data);
+			} catch (err) {
+				console.log(err.response ? err.response.data : err.message);
 			}
 		};
 
-		if (selectedSong) {
-			queryUsername();
+		if (selectedSong && !viewAdded.current) {
+			databaseCall();
 		}
-	}, [selectedSong, dispatch]);
+	}, [selectedSong]);
 
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {

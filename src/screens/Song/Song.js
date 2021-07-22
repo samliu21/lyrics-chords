@@ -17,7 +17,6 @@ import {
 	getUsername,
 	getSplitChords,
 	compareSongsByValue,
-	updateSongAttributeToDatabase,
 	getToken,
 } from "../../util";
 import axios from "axios";
@@ -26,6 +25,7 @@ export default function Song(props) {
 	const stateReceived = useRef(false);
 	const switchedName = useRef(false);
 	const hasUnsavedChanges = useRef(false);
+	const viewAdded = useRef(false);
 
 	// If pulled lyrics are being fetched, use Fetching... text
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
@@ -63,43 +63,32 @@ export default function Song(props) {
 
 	// Increment views
 	useEffect(() => {
-		const queryUsername = async () => {
-			const username = await getUsername();
-			console.log(selectedSong);
-
-			const response = await axios.post(
-				"/api/views/increment",
-				{
-					songId: selectedSong.id,
-				},
-				{
-					withCredentials: true,
-					headers: {
-						"Content-Type": "application/json",
-						"X-CSRFToken": getToken(),
+		const databaseCall = async () => {
+			viewAdded.current = true;
+			try {
+				const response = await axios.post(
+					"/api/views/increment",
+					{
+						songId: selectedSong.id,
 					},
-				}
-			);
-			console.log(response.data);
-
-			if (selectedSong.views.indexOf(username) === -1) {
-				const newViews = `${selectedSong.views}**${username}`;
-
-				dispatch(
-					songsActions.updateSong(selectedSong.id, "views", newViews)
+					{
+						withCredentials: true,
+						headers: {
+							"Content-Type": "application/json",
+							"X-CSRFToken": getToken(),
+						},
+					}
 				);
-				// updateSongAttributeToDatabase(
-				// 	selectedSong.id,
-				// 	"views",
-				// 	newViews
-				// );
+				console.log(response.data);
+			} catch (err) {
+				console.log(err.response.data);
 			}
 		};
 
-		if (selectedSong) {
-			queryUsername();
+		if (selectedSong && !viewAdded.current) {
+			databaseCall();
 		}
-	}, [selectedSong, dispatch]);
+	}, [selectedSong]);
 
 	// On react route change, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {

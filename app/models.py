@@ -10,13 +10,7 @@ class Song(models.Model):
 	chords = models.TextField(default="", blank=True)
 	strumming_pattern = models.CharField(max_length=30, default="", blank=True)
 	public = models.BooleanField(default=False)
-	views = models.TextField(default="", blank=True)
 	is_favourite = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.name 
-
-class View(models.Model):
-	user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-	song = models.ForeignKey(Song, on_delete=models.DO_NOTHING)
-	value = models.IntegerField(default=0)

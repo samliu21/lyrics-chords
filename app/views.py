@@ -2,18 +2,16 @@ from django.http.response import HttpResponseBadRequest
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from django.http import HttpResponse
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
-from django.db.models import Q
 
 from .serializers import SongSerializer
-from .models import Song, View
+from .models import Song 
 from backend.settings import API_KEY
 
-import json
 import lyricsgenius as lg
 
 CACHE_TIME = 10
@@ -80,22 +78,3 @@ def fetch_lyrics(request, info):
 		return HttpResponse(lyrics)
 	except:
 		return HttpResponseBadRequest("There was an error retrieving the lyrics. Please check your spelling and spacing to make sure there isn't a typo. If not, please try again in a few moments.")
-
-@require_POST
-def increment_view(request):
-	try:
-		body = json.loads(request.body)
-		song_id = body.get('songId')
-		song = Song.objects.get(id=song_id)
-
-		qs = View.objects.all()
-		existing_value = qs.filter(Q(user=request.user) & Q(song=song))
-
-		if len(existing_value) == 0:
-			v = View(user=request.user, song=song, value=1)
-			v.save()
-			return HttpResponse('View has been recorded.')
-		return HttpResponse('Already in the database.')
-	except Exception as e:
-		print(e)
-		return HttpResponseBadRequest('An error occurred')

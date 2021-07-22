@@ -79,7 +79,6 @@ export function addSong(username) {
 				pulled_lyrics: "",
 				chords: "",
 				strumming_pattern: "",
-				views: "",
 				is_favourite: false,
 			};
 
