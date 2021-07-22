@@ -19,6 +19,7 @@ const initialStore = {
 	publicSongs: null,
 	filteredUserSongs: null,
 	filteredPublicSongs: null,
+	views: null,
 };
 
 function store(store = initialStore, action) {

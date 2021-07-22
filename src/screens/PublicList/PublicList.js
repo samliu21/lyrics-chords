@@ -64,6 +64,7 @@ export default function PublicList() {
 	return (
 		<div style={styles.container}>
 			<SearchBar public />
+
 			<h1 style={styles.title}>Public Songs</h1>
 
 			{filteredPublicSongs.map((song) => {
@@ -82,6 +83,7 @@ export default function PublicList() {
 						<UneditableSongBlock
 							key={song.id}
 							id={song.id}
+							views={viewsDict ? viewsDict[song.id] : null}
 							item={song}
 						/>
 					);
