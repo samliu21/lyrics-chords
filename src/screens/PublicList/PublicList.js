@@ -44,7 +44,7 @@ export default function PublicList() {
 		if (filteredPublicSongs && !views) {
 			database();
 		}
-	}, [filteredPublicSongs, dispatch]);
+	}, [filteredPublicSongs, dispatch, views]);
 
 	useEffect(() => {
 		return () => dispatch(songsActions.setFilteredPublicSongs("reset"));

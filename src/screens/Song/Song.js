@@ -17,10 +17,8 @@ import {
 	getUsername,
 	getSplitChords,
 	compareSongsByValue,
-	getToken,
 	incrementViewCount,
 } from "../../util";
-import axios from "axios";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -77,7 +75,7 @@ export default function Song(props) {
 		if (selectedSong && !viewAdded.current) {
 			databaseCall();
 		}
-	}, [selectedSong]);
+	}, [selectedSong, dispatch]);
 
 	// On react route change, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {

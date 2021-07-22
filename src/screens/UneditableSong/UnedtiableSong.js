@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as selectedSongActions from "../../store/actions/selectedSongActions";
@@ -8,7 +7,7 @@ import { useHistory } from "react-router";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import { styles } from "./UneditableSongStyles";
-import { turnIntoLink, getSplitChords, getToken, incrementViewCount } from "../../util";
+import { turnIntoLink, getSplitChords, incrementViewCount } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 
 export default function UneditableSong(props) {
@@ -46,7 +45,6 @@ export default function UneditableSong(props) {
 	}
 
 	// Increment views
-	// Increment views
 	useEffect(() => {
 		const databaseCall = async () => {
 			viewAdded.current = true;
@@ -62,7 +60,7 @@ export default function UneditableSong(props) {
 		if (selectedSong && !viewAdded.current) {
 			databaseCall();
 		}
-	}, [selectedSong]);
+	}, [selectedSong, dispatch]);
 
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {

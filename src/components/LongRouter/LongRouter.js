@@ -30,7 +30,7 @@ export default function LongRouter() {
 	useEffect(() => {
 		dispatch(songsActions.getPublicSongs());
 		dispatch(songsActions.getUserSongs());
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		const updateRedux = () => {

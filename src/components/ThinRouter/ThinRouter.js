@@ -37,7 +37,7 @@ export default function ThinRouter() {
 	useEffect(() => {
 		dispatch(songsActions.getPublicSongs());
 		dispatch(songsActions.getUserSongs());
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		const updateRedux = () => {
