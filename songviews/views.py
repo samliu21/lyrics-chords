@@ -1,11 +1,11 @@
-from django.views.decorators.http import require_GET, require_POST
-from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.db.models import Q
+from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET, require_POST
 
 import json
-from app.models import Song
 from .models import View
+from app.models import Song
 
 @require_POST
 def increment_view(request):

@@ -1,9 +1,10 @@
-from pathlib import Path
-import os
-import dotenv
 from django.core.management.utils import get_random_secret_key
-import django_heroku
+
 import dj_database_url
+import django_heroku
+import dotenv
+import os
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -159,7 +160,7 @@ CSRF_COOKIE_SECURE = True
 
 AUTH_USER_MODEL = 'authentication.User'
 
-AUTHENTICATION_BACKENDS = ['authentication.manager.CustomBackend']
+AUTHENTICATION_BACKENDS = ['authentication.backend.CustomBackend']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

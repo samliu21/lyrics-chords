@@ -1,20 +1,16 @@
-from django.contrib.auth import get_user_model, logout
-from django.http.response import HttpResponse, HttpResponseBadRequest
-from emailauth.tokens import ConfirmEmailTokenGenerator
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth import login
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
+from django.contrib.auth import get_user_model, logout, login
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import send_mail
+from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.utils.encoding import force_text, force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.http import require_POST
-import json
+from emailauth.tokens import ConfirmEmailTokenGenerator
 
+import json
 from backend.settings import EMAIL_HOST_USER, BACKEND, FRONTEND
 
 account_activation_token = ConfirmEmailTokenGenerator()
-
 password_reset_token = PasswordResetTokenGenerator()
 
 # Decode the user id and obtain the corresponding user

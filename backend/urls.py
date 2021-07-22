@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
-from rest_framework import routers
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
+from rest_framework import routers
 
 from app import views
 

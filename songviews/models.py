@@ -1,4 +1,5 @@
 from django.db import models
+
 from app.models import Song
 from authentication.models import User
 

@@ -1,8 +1,8 @@
-from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import BaseBackend
 
 class CustomBackend(BaseBackend):
-	def authenticate(self, request, username, password):
+	def authenticate(self, _, username, password):
 		if '@' in username:
 			kwargs = { 'email': username }
 		else:

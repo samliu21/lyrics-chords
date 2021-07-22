@@ -1,15 +1,14 @@
-from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.core.mail import send_mail
 from django.http import HttpResponse
-import json
-
-from emailauth.tokens import ConfirmEmailTokenGenerator
+from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode 
-from django.core.mail import send_mail
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_POST
+from emailauth.tokens import ConfirmEmailTokenGenerator
+
+import json
 from backend.settings import EMAIL_HOST_USER, BACKEND
 
 account_activation_token = ConfirmEmailTokenGenerator()

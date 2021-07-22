@@ -1,20 +1,18 @@
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 from django.http.response import HttpResponseBadRequest
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from django.http import HttpResponse
-from django.views.decorators.http import require_GET
-from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
-from django.utils.decorators import method_decorator
-from django.contrib.auth import get_user_model
 
-from .serializers import SongSerializer
 from .models import Song 
+from .serializers import SongSerializer
 from backend.settings import API_KEY
 
 import lyricsgenius as lg
-
-CACHE_TIME = 10
 
 # ViewSet for Song model
 class SongViewSet(viewsets.ModelViewSet):
@@ -32,7 +30,7 @@ class SongViewSet(viewsets.ModelViewSet):
 			return None
 
 	@action(detail=False)
-	@method_decorator(cache_page(CACHE_TIME))
+	@method_decorator(cache_page(10))
 	def public(self, _):
 		try:
 			qs = Song.objects.all()

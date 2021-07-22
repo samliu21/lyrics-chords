@@ -1,5 +1,4 @@
 from django.db import models
-from authentication.models import User
 
 class Song(models.Model):
 	name = models.CharField(max_length=100, blank=True)
