@@ -16,7 +16,7 @@ export default function PublicList() {
 		(state) => state.songs.filteredPublicSongs
 	);
 	const username = useSelector((state) => state.auth.username);
-	const [viewsDict, setViewsDict] = useState();
+	const views = useSelector((state) => state.songs.views);
 
 	const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ export default function PublicList() {
 				}
 			);
 
-			setViewsDict(response.data);
+			dispatch(songsActions.setViews(response.data));
 		};
 
 		if (filteredPublicSongs) {
@@ -74,7 +74,7 @@ export default function PublicList() {
 							key={song.id}
 							id={song.id}
 							item={song}
-							views={viewsDict ? viewsDict[song.id] : null}
+							views={views ? views[song.id] : null}
 							public
 						/>
 					);
@@ -83,7 +83,7 @@ export default function PublicList() {
 						<UneditableSongBlock
 							key={song.id}
 							id={song.id}
-							views={viewsDict ? viewsDict[song.id] : null}
+							views={views ? views[song.id] : null}
 							item={song}
 						/>
 					);

@@ -8,6 +8,7 @@ import {
 	REPLACE_SONG,
 	GET_USER_SONGS,
 	GET_PUBLIC_SONGS,
+	SET_VIEWS,
 } from "../actions/songsActions";
 import { sortSongsById } from "../../util";
 
@@ -192,6 +193,11 @@ function store(store = initialStore, action) {
 		return {
 			...store,
 			filteredUserSongs: action.songs,
+		};
+	} else if (action.type === SET_VIEWS) {
+		return {
+			...store,
+			views: action.views,
 		};
 	} else {
 		return store;

@@ -10,6 +10,7 @@ export const UPDATE_PUBLIC_SONG = "UPDATE_PUBLIC_SONG";
 export const REPLACE_SONG = "REPLACE_SONG";
 export const SET_FILTERED_PUBLIC_SONGS = "SET_FILTERED_PUBLIC_SONGS";
 export const SET_FILTERED_USER_SONGS = "SET_FILTERED_USER_SONGS";
+export const SET_VIEWS = "SET_VIEWS";
 
 export function getUserSongs() {
 	return async (dispatch) => {
@@ -151,5 +152,12 @@ export function setFilteredUserSongs(songs) {
 	return {
 		type: SET_FILTERED_USER_SONGS,
 		songs: songs,
+	};
+}
+
+export function setViews(views) {
+	return {
+		type: SET_VIEWS,
+		views: views,
 	};
 }
