@@ -1,15 +1,11 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { styles } from "./PulledLyricsBlockStyles";
 import * as songsActions from "../../store/actions/songsActions";
 
 export default function PulledLyricsBlock(props) {
-	const selectedSong = useSelector((state) =>
-		state.songs.userSongs.find((song) => {
-			return song.id === props.songId;
-		})
-	);
+	const selectedSong = props.selectedSong;
 
 	const dispatch = useDispatch();
 

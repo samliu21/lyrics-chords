@@ -265,19 +265,19 @@ export default function Song(props) {
 			/>
 
 			<StrummingPatternBlock
-				songId={selectedSong.id}
+				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
 				editable
 			/>
 
 			<LyricsBlock
-				songId={selectedSong.id}
+				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
 				editable
 			/>
 
 			<PulledLyricsBlock
-				songId={selectedSong.id}
+				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
 			/>
 		</div>

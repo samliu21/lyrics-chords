@@ -8,18 +8,8 @@ import { styles } from "./LyricsBlockStyles";
 export default function LyricsBlock(props) {
 	const splitChords = useSelector((store) => store.selectedSong.splitChords);
 
-	const selectedSong = useSelector((state) => {
-		if (props.editable) {
-			return state.songs.userSongs.find((song) => {
-				return song.id === props.songId;
-			});
-		} else {
-			return state.songs.publicSongs.find((song) => {
-				return song.id === props.songId;
-			});
-		}
-	});
-
+	const selectedSong = props.selectedSong;
+	
 	const dispatch = useDispatch();
 
 	// On chords blur, set chords

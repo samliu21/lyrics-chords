@@ -5,17 +5,7 @@ import * as songsActions from "../../store/actions/songsActions";
 import { styles } from "./StrummingPatternBlockStyles";
 
 export default function StrummingPatternBlock(props) {
-	const selectedSong = useSelector((state) => {
-		if (props.editable) {
-			return state.songs.userSongs.find((song) => {
-				return song.id === props.songId;
-			});
-		} else {
-			return state.songs.publicSongs.find((song) => {
-				return song.id === props.songId;
-			});
-		}
-	});
+	const selectedSong = props.selectedSong;
 
 	const dispatch = useDispatch();
 
