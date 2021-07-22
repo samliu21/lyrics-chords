@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as selectedSongActions from "../../store/actions/selectedSongActions";
-import * as songsActions from "../../store/actions/songsActions";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import { styles } from "./LyricsBlockStyles";
 
@@ -10,15 +8,10 @@ export default function LyricsBlock(props) {
 
 	const selectedSong = props.selectedSong;
 
-	const dispatch = useDispatch();
-
-	// On chords blur, set unsaved changes in Song to true
-	const chordsBlurHandler = () => {
-		props.setUnsavedChanges(true);
-	};
-
 	// Enter causes blur for both chords and lyrics
 	const preventEnterHandler = (event) => {
+		props.setUnsavedChanges(true);
+
 		if (event.key === "Enter") {
 			event.preventDefault();
 			event.target.blur();
@@ -31,22 +24,6 @@ export default function LyricsBlock(props) {
 			event.target.value =
 				val.length <= 4 ? "" : val.substr(0, val.length - 4);
 		}
-	};
-
-	// On lyrics blur, set lyrics
-	const lyricsBlurHandler = (idx, event) => {
-		const lyricsCopy = selectedSong.lyrics.split("\n").slice();
-		lyricsCopy[idx] = event.target.innerText;
-
-		props.setUnsavedChanges(true);
-
-		dispatch(
-			songsActions.updateSong(
-				selectedSong.id,
-				"lyrics",
-				lyricsCopy.join("\n")
-			)
-		);
 	};
 
 	// Takes in string lyrics and turns each into a string and input div
@@ -65,22 +42,19 @@ export default function LyricsBlock(props) {
 			let content = (
 				<div key={idx}>
 					<input
+						id={`c${idx}`}
 						style={styles.input}
-						onBlur={chordsBlurHandler}
-						// onChange={(e) => chordsChangeHandler(idx, e)}
 						defaultValue={
 							selectedSong.chords.split("\n")[idx] ?? ""
 						}
-						id={idx}
 						onKeyDown={preventEnterHandler}
 						autoCorrect="off"
 					/>
 					<p
-						className="preventEnter"
+						id={`l${idx}`}
 						style={styles.lyricLine}
 						contentEditable={true}
 						suppressContentEditableWarning={true}
-						onBlur={(e) => lyricsBlurHandler(idx, e)}
 						onKeyDown={preventEnterHandler}
 						spellCheck={false}
 					>

@@ -207,33 +207,44 @@ export default function Song(props) {
 
 	// Update original song to be the most recently saved version
 	const updateOriginalSong = () => {
-		// Get chords
+		// Get lyrics and chords
+		let newLyrics = "";
 		let newChords = "";
 		for (let i = 0; i < selectedSong.lyrics.split("\n").length; ++i) {
-			const input = document.getElementById(i);
-			newChords += `${input.value}\n`;
+			const lyricsInput = document.getElementById(`l${i}`);
+			if (!lyricsInput) {
+				break;
+			}
+
+			newLyrics += `${lyricsInput.innerText}\n`;
+			const chordsInput = document.getElementById(`c${i}`);
+			newChords += `${chordsInput.value}\n`;
 		}
 
 		// Get title and artist
 		const newName = nameRef.current.value;
 		const newArtist = artistRef.current.value;
 
+		// Get strumming pattern
 		const newStrummingPattern =
 			document.getElementById("strumming_pattern").value;
+		// Get pulled lyrics
 		const newPulledLyrics =
 			document.getElementById("pulled_lyrics").innerText;
 
 		originalSong.current = {
 			...selectedSong,
+			lyrics: newLyrics,
 			chords: newChords,
 			name: newName,
 			artist: newArtist,
 			strumming_pattern: newStrummingPattern,
 			pulled_lyrics: newPulledLyrics,
 		};
-		console.log(originalSong.current);
 
+		// Update to database and update redux state
 		updateSongToDatabase(originalSong.current);
+		dispatch(songsActions.updateSong(selectedSong.id, "lyrics", newLyrics));
 		dispatch(songsActions.updateSong(selectedSong.id, "chords", newChords));
 		dispatch(songsActions.updateSong(selectedSong.id, "name", newName));
 		dispatch(songsActions.updateSong(selectedSong.id, "artist", newArtist));

@@ -1,16 +1,7 @@
-export const SET_SELECTED_SONG = "SET_SELECTED_SONG";
 export const SET_FETCHING = "SET_FETCHING";
 export const SET_IS_SONG_PAGE = "SET_IS_SONG_PAGE";
 export const SET_IS_SONG_PAGE_VIEW = "SET_IS_SONG_PAGE_VIEW";
 export const SET_SONG_LINK = "SET_SONG_LINK";
-
-// The split chords of the currently selected song
-export function setSelectedSong(splitChords) {
-	return {
-		type: SET_SELECTED_SONG,
-		splitChords: splitChords,
-	}
-}
 
 // Whether lyrics are being API queried
 export function setFetching(value) {

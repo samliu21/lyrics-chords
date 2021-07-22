@@ -2,25 +2,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 import { styles } from "./PulledLyricsBlockStyles";
-import * as songsActions from "../../store/actions/songsActions";
 
 export default function PulledLyricsBlock(props) {
 	const selectedSong = props.selectedSong;
 
-	const dispatch = useDispatch();
-
-	// On pulled lyrics blur, push pulled lyrics to backend
-	const pulledLyricsBlurHandler = (e) => {
+	const keyDownHandler = () => {
 		props.setUnsavedChanges(true);
-
-		dispatch(
-			songsActions.updateSong(
-				selectedSong.id,
-				"pulled_lyrics",
-				e.target.innerText
-			)
-		);
-	};
+	}
 
 	return (
 		<div>
@@ -30,7 +18,7 @@ export default function PulledLyricsBlock(props) {
 				style={styles.input}
 				contentEditable={true}
 				suppressContentEditableWarning={true}
-				onBlur={pulledLyricsBlurHandler}
+				onKeyDown={keyDownHandler}
 				spellCheck={false}
 			>
 				{selectedSong.pulled_lyrics

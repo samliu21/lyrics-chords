@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { styles } from "./SaveBarStyles";
 import { AiOutlineSave } from "react-icons/ai";
-import { updateSongAttributeToDatabase, updateSongToDatabase } from "../../util";
 
 export default function SaveBar(props) {
 	const [open, setOpen] = useState(false);
@@ -23,10 +22,6 @@ export default function SaveBar(props) {
 			setOpen(false);
 			clearInterval(closeSidebarTimer.current); 
 		}, 2000);
-
-		// Save to database through util function
-		console.log(props.chords);
-		// updateSongToDatabase(props.item);
 
 		props.onSave();
 	};
