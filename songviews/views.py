@@ -24,7 +24,7 @@ def increment_view(request):
 			v = View(user=request.user, song=song)
 			v.save()
 			return HttpResponse('View has been recorded.')
-		return HttpResponse('Already in the database.')
+		return HttpResponseBadRequest('Already in the database.')
 	except Exception as e:
 		print(e)
 		return HttpResponseBadRequest('An error occurred')

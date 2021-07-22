@@ -9,6 +9,7 @@ import {
 	GET_USER_SONGS,
 	GET_PUBLIC_SONGS,
 	SET_VIEWS,
+	INCREMENT_VIEW,
 } from "../actions/songsActions";
 import { sortSongsById } from "../../util";
 
@@ -199,6 +200,14 @@ function store(store = initialStore, action) {
 			...store,
 			views: action.views,
 		};
+	} else if (action.type === INCREMENT_VIEW) {
+		return {
+			...store,
+			views: {
+				...store.views,
+				[action.id]: store.views[action.id] + 1,
+			}
+		}
 	} else {
 		return store;
 	}
@@ -212,6 +221,7 @@ const persistConfig = {
 		"filteredPublicSongs",
 		"userSongs",
 		"filteredUserSongs",
+		"views",
 	],
 };
 

@@ -66,7 +66,7 @@ export default function Song(props) {
 		const databaseCall = async () => {
 			viewAdded.current = true;
 			try {
-				const response = await axios.post(
+				await axios.post(
 					"/api/views/increment",
 					{
 						songId: selectedSong.id,
@@ -79,7 +79,8 @@ export default function Song(props) {
 						},
 					}
 				);
-				console.log(response.data);
+
+				dispatch(songsActions.incrementView(selectedSong.id));
 			} catch (err) {
 				console.log(err.response.data);
 			}

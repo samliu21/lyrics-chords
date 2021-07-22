@@ -11,6 +11,7 @@ export const REPLACE_SONG = "REPLACE_SONG";
 export const SET_FILTERED_PUBLIC_SONGS = "SET_FILTERED_PUBLIC_SONGS";
 export const SET_FILTERED_USER_SONGS = "SET_FILTERED_USER_SONGS";
 export const SET_VIEWS = "SET_VIEWS";
+export const INCREMENT_VIEW = "INCREMENT_VIEW";
 
 export function getUserSongs() {
 	return async (dispatch) => {
@@ -160,4 +161,11 @@ export function setViews(views) {
 		type: SET_VIEWS,
 		views: views,
 	};
+}
+
+export function incrementView(id) {
+	return {
+		type: INCREMENT_VIEW,
+		id: id,
+	}
 }

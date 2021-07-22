@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import SongBlock from "../../components/SongBlock/SongBlock";
@@ -40,10 +40,10 @@ export default function PublicList() {
 			dispatch(songsActions.setViews(response.data));
 		};
 
-		if (filteredPublicSongs) {
+		if (filteredPublicSongs && !views) {
 			database();
 		}
-	}, [filteredPublicSongs]);
+	}, [filteredPublicSongs, dispatch]);
 
 	useEffect(() => {
 		if (!filteredPublicSongs) {
