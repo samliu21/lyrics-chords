@@ -22,7 +22,6 @@ import { styles } from "./SongStyles";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
-	const switchedName = useRef(false);
 	const hasUnsavedChanges = useRef(false);
 	const viewAdded = useRef(false);
 
@@ -63,11 +62,6 @@ export default function Song(props) {
 	});
 
 	const originalSong = useRef(selectedSong);
-
-	// If name was switched, then the song must exist
-	if (switchedName.current && selectedSong) {
-		switchedName.current = false;
-	}
 
 	// Increment views
 	useEffect(() => {
@@ -190,9 +184,7 @@ export default function Song(props) {
 		};
 
 		// If name was switched, the info must be validated
-		if (!switchedName.current) {
-			songExists();
-		}
+		songExists();
 	}, [
 		selectedSong,
 		dispatch,
@@ -237,14 +229,6 @@ export default function Song(props) {
 
 		dispatch(songsActions.updateSong(id, choice, val));
 		updateSongAttributeToDatabase(id, choice, val);
-
-		const newLink = `/songs/${selectedSong.creator}/${turnIntoLink(
-			artist,
-			name
-		)}`;
-
-		switchedName.current = true;
-		history.replace(newLink);
 	};
 
 	if (!selectedSong) {
