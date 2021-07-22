@@ -16,6 +16,7 @@ import UneditableSong from "../../screens/UneditableSong/UnedtiableSong";
 import ConfirmEmail from "../../screens/ConfirmEmail/ConfirmEmail";
 import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import * as authActions from "../../store/actions/authActions";
+import * as songsActions from "../../store/actions/songsActions";
 import { getUsername } from "../../util";
 import PasswordReset from "../../screens/PasswordReset/PasswordReset";
 import PasswordChange from "../../screens/PasswordChange/PasswordChange";
@@ -24,6 +25,12 @@ import Profile from "../../screens/Profile/Profile";
 export default function LongRouter() {
 	const history = useHistory();
 	const dispatch = useDispatch();
+
+	// Every time the page is refreshed, reclaim redux state
+	useEffect(() => {
+		dispatch(songsActions.getPublicSongs());
+		dispatch(songsActions.getUserSongs());
+	}, []);
 
 	useEffect(() => {
 		const updateRedux = () => {

@@ -17,6 +17,7 @@ import UneditableSong from "../../screens/UneditableSong/UnedtiableSong";
 import { getUsername } from "../../util";
 import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import * as authActions from "../../store/actions/authActions";
+import * as songsActions from "../../store/actions/songsActions";
 import PublicList from "../../screens/PublicList/PublicList";
 import PasswordReset from "../../screens/PasswordReset/PasswordReset";
 import PasswordChange from "../../screens/PasswordChange/PasswordChange";
@@ -31,6 +32,12 @@ export default function ThinRouter() {
 
 	const history = useHistory();
 	const dispatch = useDispatch();
+
+	// Every time the page is refreshed, reclaim redux state
+	useEffect(() => {
+		dispatch(songsActions.getPublicSongs());
+		dispatch(songsActions.getUserSongs());
+	}, []);
 
 	useEffect(() => {
 		const updateRedux = () => {
