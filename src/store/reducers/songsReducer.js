@@ -156,6 +156,10 @@ function store(store = initialStore, action) {
 			filteredPublicSongs: updatedFilteredPublicSongs,
 		};
 	} else if (action.type === SET_FILTERED_PUBLIC_SONGS) {
+		const sortedSongs = [...action.songs];
+		if (store.views) {
+			sortedSongs.sort((a, b) => store.views[a.id] < store.views[b.id]);
+		}
 		if (action.songs === "reset") {
 			return {
 				...store,
@@ -164,7 +168,7 @@ function store(store = initialStore, action) {
 		}
 		return {
 			...store,
-			filteredPublicSongs: action.songs,
+			filteredPublicSongs: sortedSongs,
 		};
 	} else if (action.type === SET_FILTERED_USER_SONGS) {
 		if (action.songs === "reset") {
@@ -178,6 +182,11 @@ function store(store = initialStore, action) {
 			filteredUserSongs: action.songs,
 		};
 	} else if (action.type === SET_VIEWS) {
+		if (action.views) {
+			store.publicSongs.sort(
+				(a, b) => action.views[a.id] < action.views[b.id]
+			);
+		}
 		return {
 			...store,
 			views: action.views,
@@ -187,9 +196,10 @@ function store(store = initialStore, action) {
 			...store,
 			views: {
 				...store.views,
-				[action.id]: store.views[action.id] !== undefined
-					? store.views[action.id] + 1
-					: 0,
+				[action.id]:
+					store.views[action.id] !== undefined
+						? store.views[action.id] + 1
+						: 0,
 			},
 		};
 	} else {
