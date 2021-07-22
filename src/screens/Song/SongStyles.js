@@ -8,6 +8,12 @@ export const styles = {
 		textAlign: "center",
 		fontStyle: "italic",
 		fontSize: "3.5vmin",
+		borderWidth: 0,
+		backgroundColor: "transparent",
+		color: Colors.accent,
+		fontWeight: "bold",
+		width: "100%",
+		marginTop: 10,
 	},
 	container: {
 		padding: "6vmin",
@@ -35,7 +41,12 @@ export const styles = {
 		fontSize: "4vmin",
 	},
 	title: {
-		textAlign: "center",
 		fontSize: "6vmin",
+		borderWidth: 0,
+		backgroundColor: "transparent",
+		textAlign: "center",
+		color: Colors.accent,
+		fontWeight: "bold",
+		width: "100%",
 	},
 };

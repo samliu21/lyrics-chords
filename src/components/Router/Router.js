@@ -22,7 +22,7 @@ import Profile from "../../screens/Profile/Profile";
 import RedirectScreen from "../RedirectScreen/RedirectScreen";
 import SongList from "../../screens/SongList/SongList";
 import Song from "../../screens/Song/Song";
-import UneditableSong from "../../screens/UneditableSong/UnedtiableSong";
+import UneditableSong from "../../screens/UneditableSong/UneditableSong";
 
 export default function Router(props) {
 	// For side menu bar in portrait mode

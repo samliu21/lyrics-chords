@@ -10,7 +10,6 @@ import {
 	AiFillStar,
 } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
-import EditableComponent from "../EditableComponent/EditableComponent";
 import {
 	getUsername,
 	turnIntoLink,

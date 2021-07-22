@@ -1,24 +1,24 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, createRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import * as selectedSongActions from "../../store/actions/selectedSongActions";
-import * as songsActions from "../../store/actions/songsActions";
 import { useHistory } from "react-router";
 
-import EditableComponent from "../../components/EditableComponent/EditableComponent";
-import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
+import * as selectedSongActions from "../../store/actions/selectedSongActions";
+import * as songsActions from "../../store/actions/songsActions";
+import {
+	compareSongsByValue,
+	getSplitChords,
+	getUsername,
+	incrementViewCount,
+	turnIntoLink,
+	updateSongAttributeToDatabase,
+} from "../../util";
+import InfoBar from "../../components/InfoBar/InfoBar";
+import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import PulledLyricsBlock from "../../components/PulledLyricsBlock/PulledLyricsBlock";
-import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import SaveBar from "../../components/SaveBar/SaveBar";
-import InfoBar from "../../components/InfoBar/InfoBar";
+import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import { styles } from "./SongStyles";
-import {
-	turnIntoLink,
-	getUsername,
-	getSplitChords,
-	compareSongsByValue,
-	incrementViewCount,
-} from "../../util";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -29,9 +29,13 @@ export default function Song(props) {
 	// If pulled lyrics are being fetched, use Fetching... text
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
-	// const songLink = useSelector((state) => state.selectedSong.songLink);
+
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	// References to title and artist inputs
+	const nameRef = createRef();
+	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
 	const songLink = path[path.length - 1];
@@ -66,6 +70,7 @@ export default function Song(props) {
 			try {
 				incrementViewCount(selectedSong.id);
 
+				// If view already exists for this person, error will be thrown so this next line won't be ran
 				dispatch(songsActions.incrementView(selectedSong.id));
 			} catch (err) {
 				console.log(err.response ? err.response.data : err.message);
@@ -81,7 +86,7 @@ export default function Song(props) {
 	useEffect(() => {
 		const unblock = history.block(() => {
 			const ogSong = originalSong.current;
-			// ogSong != selectedSong is for fetch lyrics
+
 			if (
 				hasUnsavedChanges.current ||
 				!compareSongsByValue(ogSong, selectedSong)
@@ -91,7 +96,7 @@ export default function Song(props) {
 					"You have unsaved changes! Are you sure you want to leave?"
 				);
 
-				// Replace redux state with most recent form
+				// Replace redux state with most recently saved form
 				if (response) {
 					dispatch(songsActions.replaceSong(ogSong.id, ogSong));
 				}
@@ -104,7 +109,7 @@ export default function Song(props) {
 		return () => unblock();
 	}, [selectedSong, history, dispatch]);
 
-	// Show are you sure you want to leave upon refresh or closing the page (NOT REACT ROUTING)
+	// Show are you sure you want to leave upon refresh or closing the page (not for react routing)
 	const componentCleanup = useCallback(
 		(event) => {
 			if (
@@ -147,7 +152,7 @@ export default function Song(props) {
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
 		// Validate that one of the user's song matches the songLink
-		const validateUsername = async () => {
+		const authenticated = async () => {
 			// If the songs are still being fetched, an undefined selectedSong should not trigger a redirect
 			// Only if songs have been fetched and there still is no match for the URL parameters, should we redirect
 			if (!selectedSong && stateReceived.current) {
@@ -169,7 +174,7 @@ export default function Song(props) {
 
 		// If name was switched, the info must be validated
 		if (!switchedName.current) {
-			validateUsername();
+			authenticated();
 		}
 	}, [
 		selectedSong,
@@ -191,9 +196,38 @@ export default function Song(props) {
 		originalSong.current = { ...selectedSong };
 	};
 
-	// Upon name or artist change, switchedName.current should be set
-	const switchedNameHandler = () => {
+	// Enter causes blur
+	const preventEnterHandler = (event) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			event.target.blur();
+		}
+	};
+
+	// On title or artist blur
+	const inputBlur = () => {
+		const name = nameRef.current.value;
+		const artist = artistRef.current.value;
+
+		const id = selectedSong.id;
+
+		// If nothing changed, don't make database call
+		if (selectedSong.name === name && selectedSong.artist === artist) {
+			return;
+		}
+		const choice = name !== selectedSong.name ? "name" : "artist";
+		const val = name !== selectedSong.name ? name : artist;
+
+		dispatch(songsActions.updateSong(id, choice, val));
+		updateSongAttributeToDatabase(id, choice, val);
+
+		const newLink = `/songs/${selectedSong.creator}/${turnIntoLink(
+			artist,
+			name
+		)}`;
+
 		switchedName.current = true;
+		history.replace(newLink);
 	};
 
 	if (!selectedSong) {
@@ -212,21 +246,22 @@ export default function Song(props) {
 				onSave={updateOriginalSong}
 			/>
 
-			<EditableComponent
+			<input
 				style={styles.title}
-				title="name"
-				item={selectedSong}
-				content={selectedSong.name}
-				tag="h1"
-				switchedNameHandler={switchedNameHandler}
+				defaultValue={selectedSong.name}
+				placeholder="Title"
+				onKeyDown={preventEnterHandler}
+				onBlur={inputBlur}
+				ref={nameRef}
 			/>
-			<EditableComponent
+
+			<input
 				style={styles.artist}
-				title="artist"
-				item={selectedSong}
-				content={selectedSong.artist}
-				tag="h2"
-				switchedNameHandler={switchedNameHandler}
+				defaultValue={selectedSong.artist}
+				placeholder="Artist"
+				onKeyDown={preventEnterHandler}
+				onBlur={inputBlur}
+				ref={artistRef}
 			/>
 
 			<StrummingPatternBlock
