@@ -12,7 +12,6 @@ import {
 import { BsTrashFill } from "react-icons/bs";
 import {
 	getUsername,
-	turnIntoLink,
 	updateSongAttributeToDatabase,
 } from "../../util";
 import { styles } from "./SongBlockStyles";

@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken, getUsername } from "../../util";
 import { styles } from "./LogoutButtonStyles";
 import * as authActions from "../../store/actions/authActions";
-import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();

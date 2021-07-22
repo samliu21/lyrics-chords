@@ -6,7 +6,6 @@ import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import { useHistory } from "react-router";
 
 import { styles } from "./DropDownStyles";
-import { getSplitChords } from "../../util";
 
 export default function DropDown() {
 	const [menuOpen, setMenuOpen] = useState(false);

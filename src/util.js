@@ -68,13 +68,6 @@ export async function getEmail() {
 	}
 }
 
-// Turn artist and name into link
-export function turnIntoLink(artist, name) {
-	return `${artist.replaceAll(" ", "-").toLowerCase()}-${name
-		.replaceAll(" ", "-")
-		.toLowerCase()}`;
-}
-
 // Sort songs by order of creation (e.g. id)
 export function sortSongsById(list) {
 	list.sort((a, b) => a.id < b.id);

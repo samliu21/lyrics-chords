@@ -1,20 +1,12 @@
-import React, {
-	useState,
-	useRef,
-	useEffect,
-	useCallback,
-	createRef,
-} from "react";
+import React, { useRef, useEffect, useCallback, createRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import * as songsActions from "../../store/actions/songsActions";
 import {
 	compareSongsByValue,
 	getUsername,
 	incrementViewCount,
-	updateSongAttributeToDatabase,
 	updateSongToDatabase,
 } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
@@ -130,13 +122,13 @@ export default function Song(props) {
 
 	// On page refresh or x, confirm that the user wants to leave with unsaved changes
 	useEffect(() => {
-		if (isViewOnly) {
+		if (!isViewOnly) {
 			window.addEventListener("beforeunload", componentCleanup);
 
 			return () =>
 				window.removeEventListener("beforeunload", componentCleanup);
 		}
-	}, [componentCleanup]);
+	}, [componentCleanup, isViewOnly]);
 
 	// Check that the user is authenticated
 	useEffect(() => {
@@ -160,7 +152,15 @@ export default function Song(props) {
 		if (!isAdmin && !isViewOnly) {
 			validateUsername();
 		}
-	}, [props.match.params.username, history, songLink, isAdmin]);
+	}, [
+		props.match.params.username,
+		history,
+		songLink,
+		isAdmin,
+		isViewOnly,
+		path,
+		props.match.params.id,
+	]);
 
 	// When the page is reloaded (e.g. a new URL is entered), validate URL
 	useEffect(() => {
@@ -196,6 +196,8 @@ export default function Song(props) {
 		history,
 		songLink,
 		props.match.params.username,
+		props.match.params.id,
+		path,
 	]);
 
 	// Allows components to change hasUnsavedChanges

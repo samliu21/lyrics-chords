@@ -6,7 +6,6 @@ import {
 } from "../actions/selectedSongActions";
 
 const initialStore = {
-	splitChords: "",
 	isFetching: false,
 	isSongPage: false,
 	isSongPageView: false,
