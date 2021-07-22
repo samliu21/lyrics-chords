@@ -42,9 +42,7 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-	// const songLink = isViewOnly ? path[path.length - 2] : path[path.length - 1];
 	const creator = isViewOnly ? path[path.length - 3] : path[path.length - 2];
-	// console.log(creator);
 
 	const selectedSong = useSelector((state) => {
 		const list = isViewOnly
@@ -77,7 +75,7 @@ export default function Song(props) {
 		const databaseCall = async () => {
 			viewAdded.current = true;
 			try {
-				incrementViewCount(selectedSong.id);
+				await incrementViewCount(selectedSong.id);
 
 				// If view already exists for this person, error will be thrown so this next line won't be ran
 				dispatch(songsActions.incrementView(selectedSong.id));

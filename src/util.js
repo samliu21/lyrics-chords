@@ -185,7 +185,6 @@ export async function incrementViewCount(id) {
 			}
 		);
 	} catch (err) {
-		console.log(err.response.data);
 		throw err;
 	}
 }
