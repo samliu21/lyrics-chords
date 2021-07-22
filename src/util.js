@@ -80,13 +80,6 @@ export function sortSongsById(list) {
 	list.sort((a, b) => a.id < b.id);
 }
 
-// Sort songs by number of views
-export function sortSongsByViews(list) {
-	list.sort(
-		(a, b) => a.views.split("**").length < b.views.split("**").length
-	);
-}
-
 // Get split chords from chords, or set default if null
 export function getSplitChords(unsplitChords, lyrics) {
 	let chords = unsplitChords.split("~");

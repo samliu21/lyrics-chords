@@ -9,7 +9,7 @@ import {
 	GET_USER_SONGS,
 	GET_PUBLIC_SONGS,
 } from "../actions/songsActions";
-import { sortSongsById, sortSongsByViews } from "../../util";
+import { sortSongsById } from "../../util";
 
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
@@ -93,8 +93,8 @@ function store(store = initialStore, action) {
 				updatedPublicSongs.push(updatedSong);
 				updatedFilteredPublicSongs.push(updatedSong);
 			}
-			sortSongsByViews(updatedPublicSongs);
-			sortSongsByViews(updatedFilteredPublicSongs);
+			sortSongsById(updatedPublicSongs);
+			sortSongsById(updatedFilteredPublicSongs);
 
 			return {
 				...store,
@@ -123,8 +123,8 @@ function store(store = initialStore, action) {
 			.filter((song) => song.id !== action.id)
 			.concat(updatedPublicSong);
 
-		sortSongsByViews(updatedPublicSongs);
-		sortSongsByViews(updatedFilteredPublicSongs);
+		sortSongsById(updatedPublicSongs);
+		sortSongsById(updatedFilteredPublicSongs);
 
 		return {
 			...store,
@@ -153,8 +153,8 @@ function store(store = initialStore, action) {
 				updatedPublicSongs.push(action.song);
 				updatedFilteredPublicSongs.push(action.song);
 			}
-			sortSongsByViews(updatedPublicSongs);
-			sortSongsByViews(updatedFilteredPublicSongs);
+			sortSongsById(updatedPublicSongs);
+			sortSongsById(updatedFilteredPublicSongs);
 
 			return {
 				...store,

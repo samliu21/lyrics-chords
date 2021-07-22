@@ -37,3 +37,17 @@ def get_views(_, id):
 		return HttpResponse(len(qs))
 	except:
 		return HttpResponseBadRequest('An error occurred.')
+
+@require_POST
+def get_all_views(request):
+	try:
+		body = json.loads(request.body)
+		ids = body.get('ids')
+
+		qs = View.objects.all()
+		views = {}
+		for id in ids:
+			views[id] = len(qs.filter(song=id))
+		return HttpResponse(json.dumps(views))
+	except:
+		return HttpResponseBadRequest('An error occurred.')

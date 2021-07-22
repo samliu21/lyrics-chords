@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/songsActions";
 import { useHistory } from "react-router";
@@ -17,33 +17,13 @@ import {
 	AiFillStar,
 } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
-import axios from "axios";
 
 export default function SongBlock(props) {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const [views, setViews] = useState();
-
 	const path = history.location.pathname.split("/");
 	const location = path[path.length - 1];
-
-	useEffect(() => {
-		const getViews = async () => {
-			try {
-				const response = await axios.get(
-					`/api/views/get_views/${props.item.id}`
-				);
-				setViews(response.data);
-			} catch (err) {
-				console.log(err.message);
-			}
-		};
-
-		if (!views) {
-			getViews();
-		}
-	}, [views, props.item.id]);
 
 	// Delete song request
 	function deleteHandler() {
@@ -157,9 +137,9 @@ export default function SongBlock(props) {
 					style={styles.arrow}
 					alt="Arrow"
 				/>
-				{location === "public" && views !== null && (
+				{location === "public" && props.views !== null && (
 					<p style={styles.views}>
-						{views}
+						{props.views}
 					</p>
 				)}
 			</div>
