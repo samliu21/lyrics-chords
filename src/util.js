@@ -139,7 +139,7 @@ export function compareSongsByValue(song1, song2) {
 	}
 	for (const item in song1) {
 		// These values are automatically updated to the database
-		if (item === "name" || item === "artist" || item === "views") {
+		if (item === "name" || item === "artist" || item === "views" || item === "chords") {
 			continue;
 		}
 		if (song1[item] !== song2[item]) {

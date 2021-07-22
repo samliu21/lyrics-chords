@@ -26,6 +26,7 @@ export default function PulledLyricsBlock(props) {
 		<div>
 			<h2 style={styles.subheading}>Pulled Lyrics</h2>
 			<p
+				id="pulled_lyrics"
 				style={styles.input}
 				contentEditable={true}
 				suppressContentEditableWarning={true}

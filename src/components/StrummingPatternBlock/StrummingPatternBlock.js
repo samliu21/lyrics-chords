@@ -35,6 +35,7 @@ export default function StrummingPatternBlock(props) {
 			<h2 style={styles.subheading}>Strumming Pattern</h2>
 			{props.editable ? (
 				<input
+					id="strumming_pattern"
 					style={styles.input}
 					className="preventEnter"
 					defaultValue={selectedSong.strumming_pattern}

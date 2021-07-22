@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { styles } from "./SaveBarStyles";
 import { AiOutlineSave } from "react-icons/ai";
-import { updateSongToDatabase } from "../../util";
+import { updateSongAttributeToDatabase, updateSongToDatabase } from "../../util";
 
 export default function SaveBar(props) {
 	const [open, setOpen] = useState(false);
@@ -25,9 +25,8 @@ export default function SaveBar(props) {
 		}, 2000);
 
 		// Save to database through util function
-		updateSongToDatabase(props.item);
-
-		props.setUnsavedChanges(false);
+		console.log(props.chords);
+		// updateSongToDatabase(props.item);
 
 		props.onSave();
 	};

@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useCallback, createRef } from "react";
+import React, {
+	useState,
+	useRef,
+	useEffect,
+	useCallback,
+	createRef,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -6,9 +12,10 @@ import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import * as songsActions from "../../store/actions/songsActions";
 import {
 	compareSongsByValue,
-	getSplitChords,
 	getUsername,
 	incrementViewCount,
+	updateSongAttributeToDatabase,
+	updateSongToDatabase,
 } from "../../util";
 import InfoBar from "../../components/InfoBar/InfoBar";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
@@ -178,12 +185,6 @@ export default function Song(props) {
 				if (!originalSong.current) {
 					originalSong.current = selectedSong;
 				}
-
-				const splitChords = getSplitChords(
-					selectedSong.chords,
-					selectedSong.lyrics
-				);
-				dispatch(selectedSongActions.setSelectedSong(splitChords));
 			}
 		};
 
@@ -206,7 +207,51 @@ export default function Song(props) {
 
 	// Update original song to be the most recently saved version
 	const updateOriginalSong = () => {
-		originalSong.current = { ...selectedSong };
+		// Get chords
+		let newChords = "";
+		for (let i = 0; i < selectedSong.lyrics.split("\n").length; ++i) {
+			const input = document.getElementById(i);
+			newChords += `${input.value}\n`;
+		}
+
+		// Get title and artist
+		const newName = nameRef.current.value;
+		const newArtist = artistRef.current.value;
+
+		const newStrummingPattern =
+			document.getElementById("strumming_pattern").value;
+		const newPulledLyrics =
+			document.getElementById("pulled_lyrics").innerText;
+
+		originalSong.current = {
+			...selectedSong,
+			chords: newChords,
+			name: newName,
+			artist: newArtist,
+			strumming_pattern: newStrummingPattern,
+			pulled_lyrics: newPulledLyrics,
+		};
+		console.log(originalSong.current);
+
+		updateSongToDatabase(originalSong.current);
+		dispatch(songsActions.updateSong(selectedSong.id, "chords", newChords));
+		dispatch(songsActions.updateSong(selectedSong.id, "name", newName));
+		dispatch(songsActions.updateSong(selectedSong.id, "artist", newArtist));
+		dispatch(
+			songsActions.updateSong(
+				selectedSong.id,
+				"strumming_pattern",
+				newStrummingPattern
+			)
+		);
+		dispatch(
+			songsActions.updateSong(
+				selectedSong.id,
+				"pulled_lyrics",
+				newPulledLyrics
+			)
+		);
+		setUnsavedChanges(false);
 	};
 
 	// Enter causes blur
@@ -252,11 +297,7 @@ export default function Song(props) {
 
 			{/* Save bar  */}
 			{!isViewOnly && (
-				<SaveBar
-					item={selectedSong}
-					setUnsavedChanges={setUnsavedChanges}
-					onSave={updateOriginalSong}
-				/>
+				<SaveBar item={selectedSong} onSave={updateOriginalSong} />
 			)}
 
 			{/* Title  */}

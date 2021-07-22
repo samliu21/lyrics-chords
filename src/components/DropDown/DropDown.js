@@ -6,7 +6,7 @@ import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import { useHistory } from "react-router";
 
 import { styles } from "./DropDownStyles";
-import { getSplitChords, turnIntoLink } from "../../util";
+import { getSplitChords } from "../../util";
 
 export default function DropDown() {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -61,11 +61,6 @@ export default function DropDown() {
 		// const lyrics = selectedSong.pulled_lyrics.replaceAll("\n", "~");
 		const lyrics = selectedSong.pulled_lyrics;
 		dispatch(songsActions.updateSong(selectedSong.id, "lyrics", lyrics));
-
-		if (!selectedSong.splitChords) {
-			const splitChords = getSplitChords(selectedSong.chords, lyrics);
-			dispatch(selectedSongActions.setSelectedSong(splitChords));
-		}
 	};
 
 	// On help, redirect to help page

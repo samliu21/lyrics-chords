@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import * as songsActions from "../../store/actions/songsActions";
@@ -12,43 +12,9 @@ export default function LyricsBlock(props) {
 
 	const dispatch = useDispatch();
 
-	// On chords blur, set chords
+	// On chords blur, set unsaved changes in Song to true
 	const chordsBlurHandler = () => {
 		props.setUnsavedChanges(true);
-
-		dispatch(
-			songsActions.updateSong(
-				selectedSong.id,
-				"chords",
-				splitChords.join("~")
-			)
-		);
-	};
-
-	// On chords change, update split chords with dispatch
-	const chordsChangeHandler = (idx, e) => {
-		const key = e.nativeEvent.data;
-
-		// Solve for the new value
-		let resultingValue;
-		const initialValue = e.target.value.split(".")[0];
-		if (key === ".") {
-			e.preventDefault();
-			resultingValue = initialValue + "    ";
-		} else if (key === ",") {
-			e.preventDefault();
-			resultingValue =
-				initialValue.length <= 4
-					? ""
-					: initialValue.substr(0, initialValue.length - 4);
-		} else {
-			resultingValue = e.target.value;
-		}
-
-		// Insert new value into chordsCopy
-		let chordsCopy = splitChords.slice();
-		chordsCopy[idx] = resultingValue;
-		dispatch(selectedSongActions.setSelectedSong(chordsCopy));
 	};
 
 	// Enter causes blur for both chords and lyrics
@@ -56,6 +22,14 @@ export default function LyricsBlock(props) {
 		if (event.key === "Enter") {
 			event.preventDefault();
 			event.target.blur();
+		} else if (event.key === ".") {
+			event.preventDefault();
+			event.target.value += "    ";
+		} else if (event.key === ",") {
+			event.preventDefault();
+			const val = event.target.value;
+			event.target.value =
+				val.length <= 4 ? "" : val.substr(0, val.length - 4);
 		}
 	};
 
@@ -92,9 +66,12 @@ export default function LyricsBlock(props) {
 				<div key={idx}>
 					<input
 						style={styles.input}
-						onBlur={() => chordsBlurHandler(idx)}
-						value={splitChords[idx]}
-						onChange={(e) => chordsChangeHandler(idx, e)}
+						onBlur={chordsBlurHandler}
+						// onChange={(e) => chordsChangeHandler(idx, e)}
+						defaultValue={
+							selectedSong.chords.split("\n")[idx] ?? ""
+						}
+						id={idx}
 						onKeyDown={preventEnterHandler}
 						autoCorrect="off"
 					/>
