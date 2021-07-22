@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import SongBlock from "../../components/SongBlock/SongBlock";
-import UneditableSongBlock from "../../components/UneditableSongBlock/UneditableSongBlock";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { styles } from "./PublicListStyles";
 import * as songsActions from "../../store/actions/songsActions";
@@ -13,7 +12,7 @@ import { getToken } from "../../util";
 export default function PublicList() {
 	const isAdmin = useSelector((state) => state.auth.admin);
 	const views = useSelector((state) => state.songs.views);
-	// const condition = views ? 
+	// const condition = views ?
 	const filteredPublicSongs = useSelector(
 		(state) => state.songs.filteredPublicSongs
 	);
@@ -61,26 +60,20 @@ export default function PublicList() {
 			<h1 style={styles.title}>Public Songs</h1>
 
 			{filteredPublicSongs.map((song) => {
-				if (username === song.creator || isAdmin) {
-					return (
-						<SongBlock
-							key={song.id}
-							id={song.id}
-							item={song}
-							views={views ? views[song.id] : null}
-							public
-						/>
-					);
-				} else {
-					return (
-						<UneditableSongBlock
-							key={song.id}
-							id={song.id}
-							views={views ? views[song.id] : null}
-							item={song}
-						/>
-					);
-				}
+				const kwargs =
+					username === song.creator || isAdmin
+						? { editable: true }
+						: {};
+				return (
+					<SongBlock
+						key={song.id}
+						id={song.id}
+						views={views ? views[song.id] : null}
+						item={song}
+						public
+						{...kwargs}
+					/>
+				);
 			})}
 		</div>
 	);

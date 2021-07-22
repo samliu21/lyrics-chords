@@ -124,7 +124,7 @@ export default function SongList(props) {
 			</h1>
 
 			{songList.map((item) => (
-				<SongBlock key={item.id} item={item} />
+				<SongBlock key={item.id} item={item} editable />
 			))}
 		</div>
 	);

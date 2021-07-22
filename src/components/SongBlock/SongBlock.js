@@ -1,8 +1,8 @@
-import React from "react";
+import React, { createRef } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import * as actions from "../../store/actions/songsActions";
+import * as songsActions from "../../store/actions/songsActions";
 import {
 	AiOutlineEye,
 	AiOutlineEyeInvisible,
@@ -25,10 +25,13 @@ export default function SongBlock(props) {
 	const path = history.location.pathname.split("/");
 	const location = path[path.length - 1];
 
+	const nameRef = createRef();
+	const artistRef = createRef();
+
 	// Delete song
 	function deleteHandler() {
 		try {
-			dispatch(actions.deleteSong(props.item.id));
+			dispatch(songsActions.deleteSong(props.item.id));
 
 			// Reset localStorage element containing the number of songsheets to display in the profile page
 			getUsername().then((username) => {
@@ -54,11 +57,11 @@ export default function SongBlock(props) {
 		);
 
 		dispatch(
-			actions.updateSong(props.item.id, "public", !props.item.public)
+			songsActions.updateSong(props.item.id, "public", !props.item.public)
 		);
 
 		// Default the value to 0
-		dispatch(actions.incrementView(props.item.id));
+		dispatch(songsActions.incrementView(props.item.id));
 	};
 
 	// Favourite handler
@@ -70,12 +73,38 @@ export default function SongBlock(props) {
 		);
 
 		dispatch(
-			actions.updateSong(
+			songsActions.updateSong(
 				props.item.id,
 				"is_favourite",
 				!props.item.is_favourite
 			)
 		);
+	};
+
+	// On title or artist blur
+	const inputBlur = () => {
+		const name = nameRef.current.value;
+		const artist = artistRef.current.value;
+
+		const id = props.item.id;
+
+		// If nothing changed, don't make database call
+		if (props.item.name === name && props.item.artist === artist) {
+			return;
+		}
+		const choice = name !== props.item.name ? "name" : "artist";
+		const val = name !== props.item.name ? name : artist;
+
+		dispatch(songsActions.updateSong(id, choice, val));
+		updateSongAttributeToDatabase(id, choice, val);
+	};
+
+	// Enter causes blur
+	const preventEnterHandler = (event) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			event.target.blur();
+		}
 	};
 
 	// Star (favourite)
@@ -94,38 +123,46 @@ export default function SongBlock(props) {
 			<AiOutlineEyeInvisible {...eyeProps} />
 		);
 
+	const inputKwargs = props.editable ? {} : { readOnly: true };
+
 	return (
 		<div style={styles.songContainer}>
 			{/* Left part of container  */}
 			<div style={styles.horizontal}>
 				{/* Control bar  */}
-				<div className="vertical" style={styles.buttonContainer}>
-					<Star onClick={favouriteHandler} style={styles.star} />
-					<Eye onClick={publicHandler} style={styles.eye} />
-					<BsTrashFill
-						onClick={deleteHandler}
-						style={styles.trashCan}
-					/>
-				</div>
+				{props.editable && (
+					<div className="vertical" style={styles.buttonContainer}>
+						<Star onClick={favouriteHandler} style={styles.star} />
+						<Eye onClick={publicHandler} style={styles.eye} />
+						<BsTrashFill
+							onClick={deleteHandler}
+							style={styles.trashCan}
+						/>
+					</div>
+				)}
 
 				<div>
 					{/* Title and artist  */}
-					<EditableComponent
-						title="name"
+					<input
 						style={styles.name}
-						item={props.item}
-						content={props.item.name}
-						tag="h2"
+						defaultValue={props.item.name}
+						placeholder="Enter an artist"
+						onBlur={inputBlur}
+						onKeyDown={preventEnterHandler}
+						ref={nameRef}
+						{...inputKwargs}
 					/>
-					<EditableComponent
-						title="artist"
+					<input
 						style={styles.artist}
-						item={props.item}
-						content={props.item.artist}
-						tag="p"
+						defaultValue={props.item.artist}
+						placeholder="Enter an artist"
+						onBlur={inputBlur}
+						onKeyDown={preventEnterHandler}
+						ref={artistRef}
+						{...inputKwargs}
 					/>
 
-					{/* Created by  */}
+					{/* Created by */}
 					{props.public && (
 						<div className="italic" style={styles.creator}>
 							Created by&nbsp;

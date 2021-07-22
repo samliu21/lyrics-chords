@@ -12,7 +12,7 @@ export default function EditableComponent(props) {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	// Enter causes blur for both chords and lyrics
+	// Enter causes blur
 	const preventEnterHandler = (event) => {
 		if (event.key === "Enter") {
 			event.preventDefault();
