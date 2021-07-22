@@ -34,6 +34,8 @@ export default function Auth() {
 		if (login && username.indexOf("@") > -1) {
 			setEmail(username);
 			setUsername("");
+		} else if (!login && !username && email) {
+			setUsername(email);
 		}
 
 		history.replace(login ? "/accounts/signup" : "/accounts/login");

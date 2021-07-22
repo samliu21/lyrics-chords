@@ -61,8 +61,6 @@ export function addSong(username) {
 			const response = await axios.post(
 				"/api/songs/",
 				{
-					name: "Click on me to turn me into a song name",
-					artist: "Turn me into an artist",
 					creator: username,
 				},
 				{
@@ -74,8 +72,8 @@ export function addSong(username) {
 			);
 			const song = {
 				id: response.data.id,
-				name: "Click on me to turn me into a song name",
-				artist: "Turn me into an artist",
+				name: "",
+				artist: "",
 				creator: username,
 				lyrics: "",
 				pulled_lyrics: "",

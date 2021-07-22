@@ -54,7 +54,6 @@ export default function LogoutButton(props) {
 			history.push("/accounts/login");
 		} catch (err) {
 			alert("There was an error logging out.");
-		} finally {
 			setIsLoggingOut(false);
 		}
 	};

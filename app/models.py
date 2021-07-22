@@ -1,8 +1,8 @@
 from django.db import models
 
 class Song(models.Model):
-	name = models.CharField(max_length=100, blank=True)
-	artist = models.CharField(max_length=100, blank=True)
+	name = models.CharField(max_length=100, blank=True, default="")
+	artist = models.CharField(max_length=100, blank=True, default="")
 	creator = models.CharField(max_length=100, default="samliu12")
 	lyrics = models.TextField(default="", blank=True)
 	pulled_lyrics = models.TextField(default="", blank=True)

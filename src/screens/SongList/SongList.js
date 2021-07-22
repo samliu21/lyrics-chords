@@ -105,15 +105,13 @@ export default function SongList(props) {
 
 	return (
 		<div style={styles.container}>
-			<div
-				style={styles.buttonContainer}
-			>
+			<div style={styles.buttonContainer}>
 				{!all && (
 					<p className="important" onClick={favouritesHandler}>
 						{isFavourites ? "ALL" : "FAVOURITES"}
 					</p>
 				)}
-				<AddSongButton />
+				{!all && <AddSongButton />}
 			</div>
 			<SearchBar />
 

@@ -33,7 +33,7 @@ export default function SongBlock(props) {
 			dispatch(songsActions.deleteSong(props.item.id));
 
 			// Reset localStorage element containing the number of songsheets to display in the profile page
-			const username = await getUsername()
+			const username = await getUsername();
 			localStorage.removeItem(username);
 		} catch (err) {
 			alert("There was an error deleting the song");
@@ -42,6 +42,10 @@ export default function SongBlock(props) {
 
 	// Go to song page handler
 	const redirectHandler = async () => {
+		if (props.item.artist === "" || props.item.name === "") {
+			alert("Please enter a song name and artist before proceeding!");
+			return;
+		}
 		const link = turnIntoLink(props.item.artist, props.item.name);
 		history.push(
 			props.editable
@@ -52,6 +56,11 @@ export default function SongBlock(props) {
 
 	// Public handler
 	const publicHandler = () => {
+		if (props.item.artist === "" || props.item.name === "") {
+			alert("Please enter a song name and artist before publicizing!");
+			return;
+		}
+
 		updateSongAttributeToDatabase(
 			props.item.id,
 			"public",
