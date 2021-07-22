@@ -45,15 +45,16 @@ export default function Song(props) {
 	const creator = isViewOnly ? path[path.length - 3] : path[path.length - 2];
 
 	const selectedSong = useSelector((state) => {
+		const list = isViewOnly ? state.songs.publicSongs : state.songs.userSongs;
 		// On app refresh, redux state is reset, and state reverts to its initial store
 		// If state is empty, we wait for request to be issued
-		if (!state.songs.userSongs) {
+		if (!list) {
 			return null;
 		} else {
 			stateReceived.current = true;
 		}
 
-		return state.songs.userSongs.find((song) => {
+		return list.find((song) => {
 			const link = turnIntoLink(song.artist, song.name);
 			return link === songLink && song.creator === creator;
 		});

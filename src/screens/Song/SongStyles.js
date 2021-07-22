@@ -14,6 +14,7 @@ export const styles = {
 		fontWeight: "bold",
 		width: "100%",
 		marginTop: 10,
+		textOverflow: "ellipsis",
 	},
 	container: {
 		padding: "6vmin",
@@ -48,5 +49,6 @@ export const styles = {
 		color: Colors.accent,
 		fontWeight: "bold",
 		width: "100%",
+		textOverflow: "ellipsis",
 	},
 };

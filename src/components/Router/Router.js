@@ -22,7 +22,6 @@ import Profile from "../../screens/Profile/Profile";
 import RedirectScreen from "../RedirectScreen/RedirectScreen";
 import SongList from "../../screens/SongList/SongList";
 import Song from "../../screens/Song/Song";
-import UneditableSong from "../../screens/UneditableSong/UneditableSong";
 
 export default function Router(props) {
 	// For side menu bar in portrait mode
@@ -121,12 +120,16 @@ export default function Router(props) {
 			<Route exact path="/songs/public" component={PublicList} />
 			<Route exact path="/songs/all" component={SongList} />
 			<Route exact path="/songs/:username" component={SongList} />
-			<Route exact path="/songs/:username/:song" component={Song} />
 			<Route
+				exact
+				path={["/songs/:username/:song", "/songs/:username/:song/view"]}
+				component={Song}
+			/>
+			{/* <Route
 				exact
 				path="/songs/:username/:song/view"
 				component={UneditableSong}
-			/>
+			/> */}
 			<Route component={ErrorScreen} />
 		</Switch>
 	);
