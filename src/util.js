@@ -85,7 +85,7 @@ export function getSplitChords(unsplitChords, lyrics) {
 	let chords = unsplitChords.split("~");
 	// Default value will produce [""]
 	if (chords.length === 1) {
-		const splitLyrics = lyrics.split("~");
+		const splitLyrics = lyrics.split("\n");
 		let count =
 			splitLyrics.length -
 			splitLyrics.filter((item) => item === "").length;

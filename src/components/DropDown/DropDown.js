@@ -58,7 +58,8 @@ export default function DropDown() {
 
 	// On lyric transfer, push new lyrics to redux state
 	const transferLyricsHandler = () => {
-		const lyrics = selectedSong.pulled_lyrics.replaceAll("\n", "~");
+		// const lyrics = selectedSong.pulled_lyrics.replaceAll("\n", "~");
+		const lyrics = selectedSong.pulled_lyrics;
 		dispatch(songsActions.updateSong(selectedSong.id, "lyrics", lyrics));
 
 		if (!selectedSong.splitChords) {

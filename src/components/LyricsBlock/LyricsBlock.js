@@ -9,7 +9,7 @@ export default function LyricsBlock(props) {
 	const splitChords = useSelector((store) => store.selectedSong.splitChords);
 
 	const selectedSong = props.selectedSong;
-	
+
 	const dispatch = useDispatch();
 
 	// On chords blur, set chords
@@ -61,7 +61,7 @@ export default function LyricsBlock(props) {
 
 	// On lyrics blur, set lyrics
 	const lyricsBlurHandler = (idx, event) => {
-		const lyricsCopy = selectedSong.lyrics.split("~").slice();
+		const lyricsCopy = selectedSong.lyrics.split("\n").slice();
 		lyricsCopy[idx] = event.target.innerText;
 
 		props.setUnsavedChanges(true);
@@ -70,14 +70,14 @@ export default function LyricsBlock(props) {
 			songsActions.updateSong(
 				selectedSong.id,
 				"lyrics",
-				lyricsCopy.join("~")
+				lyricsCopy.join("\n")
 			)
 		);
 	};
 
 	// Takes in string lyrics and turns each into a string and input div
 	const renderItems = () => {
-		return selectedSong.lyrics.split("~").map((item, idx) => {
+		return selectedSong.lyrics.split("\n").map((item, idx) => {
 			// At the end of each section, add an extra space
 			if (item === "") {
 				return (
