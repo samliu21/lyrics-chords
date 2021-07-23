@@ -16,7 +16,7 @@ export const styles = {
 		marginBottom: 2,
 	},
 	lyricLine: {
-		marginBottom: 0,
+		marginBottom: 10,
 		marginTop: 0,
 		fontSize: "2.3vmin",
 	},

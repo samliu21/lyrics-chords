@@ -4,9 +4,9 @@ import Cookie from "universal-cookie";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
+import * as authActions from "../../store/actions/authActions";
 import { getToken, getUsername } from "../../util";
 import { styles } from "./LogoutButtonStyles";
-import * as authActions from "../../store/actions/authActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();
@@ -48,7 +48,6 @@ export default function LogoutButton(props) {
 			);
 			dispatch(authActions.setAdmin(null));
 			dispatch(authActions.setUsername(null));
-			// dispatch(songsActions.setFilteredPublicSongs(null));
 
 			history.push("/accounts/login");
 		} catch (err) {

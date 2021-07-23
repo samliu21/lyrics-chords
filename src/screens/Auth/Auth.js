@@ -4,9 +4,10 @@ import Cookie from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
+import * as authActions from "../../store/actions/authActions";
+import * as songsActions from "../../store/actions/songsActions";
 import { styles } from "./AuthStyles";
 import { getToken, getActivationStatus } from "../../util";
-import * as authActions from "../../store/actions/authActions";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();
@@ -117,6 +118,9 @@ export default function Auth() {
 
 			dispatch(authActions.setUsername(queriedUsername));
 			dispatch(authActions.setAdmin(queriedAdmin));
+
+			// Get the new user's songs
+			dispatch(songsActions.getUserSongs());
 			setIsLoading(false);
 
 			if (login) {

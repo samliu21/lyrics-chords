@@ -39,7 +39,8 @@ export default function Song(props) {
 	const path = history.location.pathname.split("/");
 
 	const selectedSong = useSelector((state) => {
-		const list = isViewOnly
+		const isView = path[path.length - 1];
+		const list = isView
 			? state.songs.publicSongs
 			: state.songs.userSongs;
 		// On app refresh, redux state is reset, and state reverts to its initial store
@@ -213,13 +214,20 @@ export default function Song(props) {
 		// Get lyrics and chords
 		let newLyrics = "";
 		let newChords = "";
-		console.log(selectedSong.lyrics.split("\n").length);
-		for (let i = 0; i < selectedSong.lyrics.split("\n").length; ++i) {
-			const lyricsInput = document.getElementById(`l${i}`);
-			// lyricsInput and chordsInpu can be null if lyric is empty, and converted to <br /><br />
-			newLyrics += `${lyricsInput ? lyricsInput.innerText : ""}\n`;
-			const chordsInput = document.getElementById(`c${i}`);
-			newChords += `${chordsInput ? chordsInput.value : ""}\n`;
+		if (selectedSong.lyrics === "") {
+			newLyrics = "";
+			newChords = "";
+		} else {
+			const len = selectedSong.lyrics.split("\n").length;
+			for (let i = 0; i < len; ++i) {
+				const lyricsInput = document.getElementById(`l${i}`);
+				newLyrics += lyricsInput.innerText;
+				newLyrics += i === len - 1 ? "" : "\n";
+
+				const chordsInput = document.getElementById(`c${i}`);
+				newChords += chordsInput.value;
+				newChords += i === len - 1 ? "" : "\n";
+			}
 		}
 
 		// Get title and artist

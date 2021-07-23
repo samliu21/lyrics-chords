@@ -37,6 +37,19 @@ function store(store = initialStore, action) {
 			filteredUserSongs: action.userSongs,
 		};
 	} else if (action.type === GET_PUBLIC_SONGS) {
+		if (store.views) {
+			const sortedSongs = [...store.publicSongs];
+			const sortedFilteredSongs = [...store.filteredPublicSongs];
+			sortByViews(store.views, sortedSongs);
+			sortByViews(store.views, sortedFilteredSongs);
+
+			return {
+				...store,
+				publicSongs: sortedSongs,
+				filteredPublicSongs: sortedFilteredSongs,
+			};
+		}
+
 		return {
 			...store,
 			publicSongs: action.publicSongs,

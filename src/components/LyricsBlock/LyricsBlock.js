@@ -26,19 +26,18 @@ export default function LyricsBlock(props) {
 		}
 	};
 
+	// If lyric line is turned to "", it will be rendered as two blank lines
+	// Change to " "
+	const lyricsBlurHandler = (e) => {
+		if (e.target.innerText === "") {
+			e.target.innerText = " ";
+		}
+		console.log(e.target.innerText === " ");
+	};
+
 	// Takes in string lyrics and turns each into a string and input div
 	const renderItems = () => {
 		return selectedSong.lyrics.split("\n").map((item, idx) => {
-			// At the end of each section, add an extra space
-			if (item === "") {
-				return (
-					<div key={idx}>
-						<br />
-						<br />
-					</div>
-				);
-			}
-
 			let content = (
 				<div key={idx}>
 					<input
@@ -56,6 +55,7 @@ export default function LyricsBlock(props) {
 						contentEditable={true}
 						suppressContentEditableWarning={true}
 						onKeyDown={preventEnterHandler}
+						onBlur={lyricsBlurHandler}
 						spellCheck={false}
 					>
 						{item}

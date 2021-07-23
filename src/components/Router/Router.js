@@ -108,7 +108,7 @@ export default function Router(props) {
 			/>
 			<Route
 				exact
-				path="/accounts/password-change"
+				path="/accounts/password-change/:uid/:token"
 				component={PasswordChange}
 			/>
 			<Route exact path="/songs/public" component={PublicList} />

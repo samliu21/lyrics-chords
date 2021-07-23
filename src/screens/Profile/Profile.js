@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { styles } from "./ProfileStyles";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
-import { getUsername } from "../../util";
 
 export default function Profile(props) {
 	const username = props.match.params.username;
+	const realUsername = useSelector((state) => state.auth.username);
 	const [songCount, setSongCount] = useState();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -23,15 +24,11 @@ export default function Profile(props) {
 
 	useEffect(() => {
 		const getCount = async () => {
-			const userUsername = await getUsername();
+			const existingValue = localStorage.getItem(username);
 
-			if (username === userUsername) {
-				const existingValue = localStorage.getItem(username);
-
-				if (existingValue) {
-					setSongCount(existingValue);
-					return;
-				}
+			if (existingValue) {
+				setSongCount(existingValue);
+				return;
 			}
 
 			try {
@@ -47,18 +44,19 @@ export default function Profile(props) {
 
 				localStorage.setItem(username, cnt);
 			} catch (err) {
+				// User enters a username that doesn't exist
 				if (err.response && err.response.data) {
 					alert(err.response.data);
 				} else {
 					alert("There was an error loading the page.");
 				}
 
-				history.push(`/user/${userUsername}`);
+				history.push(`/user/${realUsername}`);
 			}
 		};
 
 		getCount();
-	}, [username, history]);
+	}, [username, history, realUsername]);
 
 	const changePasswordHandler = async () => {
 		setIsLoading(true);
@@ -96,9 +94,11 @@ export default function Profile(props) {
 					</p>
 				</div>
 			</div>
-			<p className="important" onClick={changePasswordHandler}>
-				CHANGE PASSWORD
-			</p>
+			{username === realUsername && (
+				<p className="important" onClick={changePasswordHandler}>
+					CHANGE PASSWORD
+				</p>
+			)}
 		</div>
 	);
 }
