@@ -70,7 +70,7 @@ def fetch_lyrics(request, info):
 		artist_name, name = info.split('**')
 		artist = genius.search_artist(artist_name, max_songs=0)
 		lyrics = artist.song(name).lyrics
-		end_str = "EmbedShare Url:CopyEmbed:Copy"
+		end_str = "EmbedShare UrlCopyEmbedCopy"
 		if end_str in lyrics:
 			lyrics = lyrics[:lyrics.index(end_str)]
 		return HttpResponse(lyrics)

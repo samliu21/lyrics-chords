@@ -168,7 +168,7 @@ export default function Song(props) {
 		const songExists = async () => {
 			// If song doesn't exist in view only page as well
 			if (path[path.length - 1] === "view") {
-				if (!selectedSong && stateReceived) {
+				if (!selectedSong && stateReceived.current) {
 					history.push("/songs/public");
 				}
 				return;
@@ -213,15 +213,13 @@ export default function Song(props) {
 		// Get lyrics and chords
 		let newLyrics = "";
 		let newChords = "";
+		console.log(selectedSong.lyrics.split("\n").length);
 		for (let i = 0; i < selectedSong.lyrics.split("\n").length; ++i) {
 			const lyricsInput = document.getElementById(`l${i}`);
-			if (!lyricsInput) {
-				break;
-			}
-
-			newLyrics += `${lyricsInput.innerText}\n`;
+			// lyricsInput and chordsInpu can be null if lyric is empty, and converted to <br /><br />
+			newLyrics += `${lyricsInput ? lyricsInput.innerText : ""}\n`;
 			const chordsInput = document.getElementById(`c${i}`);
-			newChords += `${chordsInput.value}\n`;
+			newChords += `${chordsInput ? chordsInput.value : ""}\n`;
 		}
 
 		// Get title and artist
