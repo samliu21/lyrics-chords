@@ -10,13 +10,13 @@ You can also look at public songsheets that other guitarists have publicized!
 
 The website was created using React and Django. A sample session can be found here:
 
-<img src="https://github.com/samliu21/lyrics-chords-heroku/blob/master/sample-screen.png" alt="Sample Screen" />
+<img src="https://github.com/samliu21/lyrics-chords/blob/master/sample-screen.png" alt="Sample Screen" />
 
 ## Installation
 
 ### General
-1. Run `git clone https://github.com/samliu21/lyrics-chords-heroku` in bash. 
-2. Navigate to `lyrics-chords-heroku/`
+1. Run `git clone https://github.com/samliu21/lyrics-chords` in bash. 
+2. Navigate to `lyrics-chords/`
 
 ### Backend Installation
 1. Install `pipenv` with `pip install pipenv`.

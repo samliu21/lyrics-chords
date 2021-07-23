@@ -12,6 +12,9 @@ import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 export default function Auth() {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
@@ -44,15 +47,9 @@ export default function Auth() {
 
 	// Submit handler (login or sign up)
 	async function submitHandler(event) {
-		axios
-			.get("/api/auth/csrf", {
-				withCredentials: true,
-			})
-			.catch(() =>
-				alert(
-					"There was an error getting your CSRF token. Please report this to me at sam4button@gmail.com."
-				)
-			);
+		await axios.get("/api/auth/csrf", {
+			withCredentials: true,
+		});
 
 		event.preventDefault();
 		const state = login ? "login" : "signup";
@@ -108,7 +105,8 @@ export default function Auth() {
 							}
 					  );
 			// Login successful or signup successful respectively; set username
-			const [queriedUsername, queriedEmail, queriedAdmin] = response.data.split("**");
+			const [queriedUsername, queriedEmail, queriedAdmin] =
+				response.data.split("**");
 
 			const queriedActivated = await getActivationStatus(true);
 
