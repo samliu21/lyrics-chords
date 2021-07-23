@@ -92,7 +92,7 @@ export default function Song(props) {
 						"You have unsaved changes! Are you sure you want to leave?"
 					);
 
-					// Replace redux state with most recently saved form
+					// Replace redux state with most recent form
 					if (response) {
 						dispatch(songsActions.replaceSong(ogSong.id, ogSong));
 					}
@@ -107,6 +107,7 @@ export default function Song(props) {
 	}, [selectedSong, history, dispatch, isViewOnly]);
 
 	// Show are you sure you want to leave upon refresh or closing the page (not for react routing)
+	// We don't need to dispatch originalSong.current to the redux state because the redux state is being reset anyways after refresh
 	const componentCleanup = useCallback(
 		(event) => {
 			if (
@@ -208,7 +209,7 @@ export default function Song(props) {
 	};
 
 	// Update original song to be the most recently saved version
-	const updateOriginalSong = () => {
+	const dispatchSong = () => {
 		// Get lyrics and chords
 		let newLyrics = "";
 		let newChords = "";
@@ -310,7 +311,7 @@ export default function Song(props) {
 
 			{/* Save bar  */}
 			{!isViewOnly && (
-				<SaveBar item={selectedSong} onSave={updateOriginalSong} />
+				<SaveBar item={selectedSong} onSave={dispatchSong} />
 			)}
 
 			{/* Title  */}

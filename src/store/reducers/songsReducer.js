@@ -4,7 +4,6 @@ import {
 	SET_FILTERED_PUBLIC_SONGS,
 	SET_FILTERED_USER_SONGS,
 	UPDATE_SONG,
-	UPDATE_PUBLIC_SONG,
 	REPLACE_SONG,
 	GET_USER_SONGS,
 	GET_PUBLIC_SONGS,
@@ -25,6 +24,12 @@ const initialStore = {
 };
 
 function store(store = initialStore, action) {
+	const sortByViews = (views, list) => {
+		if (views) {
+			list.sort((a, b) => views[a.id] < views[b.id]);
+		}
+	};
+
 	if (action.type === GET_USER_SONGS) {
 		return {
 			...store,
@@ -92,36 +97,16 @@ function store(store = initialStore, action) {
 		if (updatedSong.public) {
 			updatedPublicSongs.push(updatedSong);
 			updatedFilteredPublicSongs.push(updatedSong);
+
+			sortByViews(store.views, updatedPublicSongs);
+			sortByViews(store.views, updatedFilteredPublicSongs);
 		}
-		sortSongsById(updatedPublicSongs);
-		sortSongsById(updatedFilteredPublicSongs);
 
 		return {
 			...store,
 			userSongs: updatedUserSongs,
 			publicSongs: updatedPublicSongs,
 			filteredUserSongs: updatedFilteredUserSongs,
-			filteredPublicSongs: updatedFilteredPublicSongs,
-		};
-	} else if (action.type === UPDATE_PUBLIC_SONG) {
-		const updatedPublicSong = {
-			...store.publicSongs.find((song) => song.id === action.id),
-			[action.updateType]: action.value,
-		};
-
-		const updatedPublicSongs = store.publicSongs
-			.filter((song) => song.id !== action.id)
-			.concat(updatedPublicSong);
-		const updatedFilteredPublicSongs = store.filteredPublicSongs
-			.filter((song) => song.id !== action.id)
-			.concat(updatedPublicSong);
-
-		sortSongsById(updatedPublicSongs);
-		sortSongsById(updatedFilteredPublicSongs);
-
-		return {
-			...store,
-			publicSongs: updatedPublicSongs,
 			filteredPublicSongs: updatedFilteredPublicSongs,
 		};
 	} else if (action.type === REPLACE_SONG) {
@@ -144,9 +129,10 @@ function store(store = initialStore, action) {
 		if (action.song.public) {
 			updatedPublicSongs.push(action.song);
 			updatedFilteredPublicSongs.push(action.song);
+
+			sortByViews(store.views, updatedPublicSongs);
+			sortByViews(store.views, updatedFilteredPublicSongs);
 		}
-		sortSongsById(updatedPublicSongs);
-		sortSongsById(updatedFilteredPublicSongs);
 
 		return {
 			...store,
@@ -156,16 +142,14 @@ function store(store = initialStore, action) {
 			filteredPublicSongs: updatedFilteredPublicSongs,
 		};
 	} else if (action.type === SET_FILTERED_PUBLIC_SONGS) {
-		const sortedSongs = [...action.songs];
-		if (store.views) {
-			sortedSongs.sort((a, b) => store.views[a.id] < store.views[b.id]);
-		}
 		if (action.songs === "reset") {
 			return {
 				...store,
 				filteredPublicSongs: store.publicSongs,
 			};
 		}
+		const sortedSongs = [...action.songs];
+		sortByViews(store.views, sortedSongs);
 		return {
 			...store,
 			filteredPublicSongs: sortedSongs,
@@ -182,26 +166,38 @@ function store(store = initialStore, action) {
 			filteredUserSongs: action.songs,
 		};
 	} else if (action.type === SET_VIEWS) {
-		if (action.views) {
-			store.publicSongs.sort(
-				(a, b) => action.views[a.id] < action.views[b.id]
-			);
-		}
+		const sortedSongs = [...store.publicSongs];
+		const sortedFilteredSongs = [...store.filteredPublicSongs];
+		sortByViews(action.views, sortedSongs);
+		sortByViews(action.views, sortedFilteredSongs);
+
 		return {
 			...store,
 			views: action.views,
+			publicSongs: sortedSongs,
+			filteredPublicSongs: sortedFilteredSongs,
 		};
 	} else if (action.type === INCREMENT_VIEW) {
-		return {
-			...store,
-			views: {
+		if (store.views) {
+			const newViews = {
 				...store.views,
 				[action.id]:
 					store.views[action.id] !== undefined
 						? store.views[action.id] + 1
 						: 0,
-			},
-		};
+			};
+			const newPublicSongs = [...store.publicSongs];
+			const newFilteredPublicSongs = [...store.filteredPublicSongs];
+			sortByViews(newViews, newPublicSongs);
+			sortByViews(newViews, newFilteredPublicSongs);
+
+			return {
+				...store,
+				views: newViews,
+				publicSongs: newPublicSongs,
+				filteredPublicSongs: newFilteredPublicSongs,
+			};
+		}
 	} else {
 		return store;
 	}

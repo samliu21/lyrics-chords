@@ -6,7 +6,6 @@ export const GET_USER_SONGS = "GET_USER_SONGS";
 export const GET_PUBLIC_SONGS = "GET_PUBLIC_SONGS";
 export const DELETE_SONG = "DELETE_SONG";
 export const UPDATE_SONG = "UPDATE_SONG";
-export const UPDATE_PUBLIC_SONG = "UPDATE_PUBLIC_SONG";
 export const REPLACE_SONG = "REPLACE_SONG";
 export const SET_FILTERED_PUBLIC_SONGS = "SET_FILTERED_PUBLIC_SONGS";
 export const SET_FILTERED_USER_SONGS = "SET_FILTERED_USER_SONGS";
@@ -42,8 +41,6 @@ export function getPublicSongs() {
 			});
 
 			const publicSongs = response.data;
-			sortSongsById(publicSongs);
-
 			dispatch({
 				type: GET_PUBLIC_SONGS,
 				publicSongs: publicSongs,
@@ -118,15 +115,6 @@ export function deleteSong(id) {
 export function updateSong(id, type, value) {
 	return {
 		type: UPDATE_SONG,
-		id: id,
-		updateType: type,
-		value: value,
-	};
-}
-
-export function updatePublicSong(id, type, value) {
-	return {
-		type: UPDATE_PUBLIC_SONG,
 		id: id,
 		updateType: type,
 		value: value,
