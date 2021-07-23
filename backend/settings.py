@@ -154,7 +154,7 @@ CORS_ORIGIN_WHITELIST = (
 	'https://lyrics-chords.herokuapp.com',
 )
 
-# CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 AUTH_USER_MODEL = 'authentication.User'
 
