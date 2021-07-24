@@ -68,7 +68,9 @@ export default function LyricsBlock(props) {
 					<div key={idx}>
 						{/* If value is "", the div will collapse to nothing */}
 						<div style={styles.input}>
-							{!splitChords[idx] ? " " : splitChords[idx]}
+							{!selectedSong.chords.split("\n")[idx]
+								? " "
+								: selectedSong.chords.split("\n")[idx]}
 						</div>
 						<p style={styles.lyricLine}>{item}</p>
 					</div>
@@ -78,14 +80,6 @@ export default function LyricsBlock(props) {
 			return content;
 		});
 	};
-
-	if (!splitChords) {
-		return (
-			<div className="horizontal-default">
-				<p>Retrieving data...</p>
-			</div>
-		);
-	}
 
 	return (
 		<div>
