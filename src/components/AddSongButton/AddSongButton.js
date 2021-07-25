@@ -16,7 +16,6 @@ export default function AddSongButton() {
 		setIsAdding(true);
 
 		const username = await getUsername();
-		localStorage.removeItem(username);
 
 		dispatch(actions.addSong(username));
 		setTimeout(() => setIsAdding(false), 500);

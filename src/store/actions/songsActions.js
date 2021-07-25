@@ -12,6 +12,37 @@ export const SET_FILTERED_USER_SONGS = "SET_FILTERED_USER_SONGS";
 export const SET_VIEWS = "SET_VIEWS";
 export const INCREMENT_VIEW = "INCREMENT_VIEW";
 
+export function copySong(song, username) {
+	return async (dispatch) => {
+		try {
+			const newSong = {};
+			for (const key in song) {
+				if (key !== "id") {
+					newSong[key] = song[key];
+				}
+			}
+			newSong["public"] = false;
+			newSong["is_favourite"] = false;
+			newSong["creator"] = username;
+
+			const response = await axios.post("/api/songs/", newSong, {
+				withCredentials: true,
+				headers: {
+					"X-CSRFToken": getToken(),
+				},
+			});
+			newSong["id"] = response.data.id;
+
+			dispatch({
+				type: ADD_SONG,
+				song: newSong,
+			});
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
+}
+
 export function getUserSongs() {
 	return async (dispatch) => {
 		try {
@@ -84,6 +115,8 @@ export function addSong(username) {
 				type: ADD_SONG,
 				song: song,
 			});
+
+			localStorage.removeItem(username);
 		} catch (err) {
 			console.log(err.message);
 			throw err;

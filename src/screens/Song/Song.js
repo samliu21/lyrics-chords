@@ -39,10 +39,8 @@ export default function Song(props) {
 	const path = history.location.pathname.split("/");
 
 	const selectedSong = useSelector((state) => {
-		const isView = path[path.length - 1];
-		const list = isView
-			? state.songs.publicSongs
-			: state.songs.userSongs;
+		const isView = path[path.length - 1] === "view";
+		const list = isView ? state.songs.publicSongs : state.songs.userSongs;
 		// On app refresh, redux state is reset, and state reverts to its initial store
 		// If state is empty, we wait for request to be issued
 		if (!list) {
@@ -184,9 +182,7 @@ export default function Song(props) {
 				// Attempt to redirect to view page (if the user wants to share and displays a public link), but if song truly doesn't exist, will be handled there
 				history.push(`/songs/${linkUsername}/${id}/view`);
 			} else if (selectedSong) {
-				if (!originalSong.current) {
-					originalSong.current = selectedSong;
-				}
+				originalSong.current = selectedSong;
 			}
 		};
 
