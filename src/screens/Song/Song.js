@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useCallback, createRef } from "react";
+import React, {
+	useState,
+	useRef,
+	useEffect,
+	useCallback,
+	createRef,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -16,10 +22,12 @@ import PulledLyricsBlock from "../../components/PulledLyricsBlock/PulledLyricsBl
 import SaveBar from "../../components/SaveBar/SaveBar";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import { styles } from "./SongStyles";
+import { Colors } from "../../constants/Colors";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
 	const hasUnsavedChanges = useRef(false);
+	const [isCopyMode, setIsCopyMode] = useState(false);
 
 	// If pulled lyrics are being fetched, use Fetching... text
 	const isViewOnly = useSelector(
@@ -82,6 +90,7 @@ export default function Song(props) {
 			const unblock = history.block(() => {
 				const ogSong = originalSong.current;
 
+				setIsCopyMode(false);
 				if (
 					hasUnsavedChanges.current ||
 					!compareSongsByValue(ogSong, selectedSong)
@@ -301,12 +310,18 @@ export default function Song(props) {
 		return <LoadingCircle />;
 	}
 
-	const editableKwargs = isViewOnly ? {} : { editable: true };
+	const editableKwargs = isViewOnly || isCopyMode ? {} : { editable: true };
 	const inputKwargs = isViewOnly ? { readOnly: true } : {};
 
+	const containerStyles = {
+		...styles.container,
+		backgroundColor: isCopyMode ? Colors.emphasis : "",
+	};
+
 	return (
-		<div id="songRoot" style={styles.container}>
+		<div style={containerStyles}>
 			{isFetching && <LoadingCircle />}
+			<button onClick={() => setIsCopyMode((state) => !state)}>Copy mode</button>
 
 			{/* Information about creator  */}
 			<InfoBar selectedSong={selectedSong} />

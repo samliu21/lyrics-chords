@@ -4,4 +4,5 @@ export const Colors = {
 	dark: "#932432", // Blood red
 	accent: "#3C1874", // Purple
 	light: "#F3F3F3", // Cloud
+	emphasis: "#D3D3D3",
 }
