@@ -362,6 +362,7 @@ export default function Song(props) {
 			<LyricsBlock
 				selectedSong={selectedSong}
 				setUnsavedChanges={setUnsavedChanges}
+				isCopyMode={isCopyMode}
 				{...editableKwargs}
 			/>
 

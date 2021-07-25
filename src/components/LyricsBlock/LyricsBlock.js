@@ -1,12 +1,23 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { max } from "lodash";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
+import { Colors } from "../../constants/Colors";
 
 import { styles } from "./LyricsBlockStyles";
 
 export default function LyricsBlock(props) {
-	const splitChords = useSelector((store) => store.selectedSong.splitChords);
-
 	const selectedSong = props.selectedSong;
+	const [lastClicked, setLastClicked] = useState();
+	const [clickedChords, setClickedChords] = useState([]);
+
+	const history = useHistory();
+
+	useEffect(() => {
+		const unlisten = history.listen(() => setClickedChords([]));
+		// const keyUnlisten =
+
+		return () => unlisten();
+	}, [history]);
 
 	// Enter causes blur for both chords and lyrics
 	const preventEnterHandler = (event) => {
@@ -33,6 +44,43 @@ export default function LyricsBlock(props) {
 			e.target.innerText = " ";
 		}
 		console.log(e.target.innerText === " ");
+	};
+
+	const addToList = (id) => {
+		setClickedChords((state) =>
+			state.indexOf(id) === -1
+				? [...state, id]
+				: state.filter((value) => value !== id)
+		);
+	};
+
+	const selectHandler = (e) => {
+		const id = +e.target.id[1];
+		if (e.altKey) {
+			selectMultipleHandler(id);
+		} else {
+			addToList(id);
+		}
+
+		setLastClicked(id);
+	};
+
+	const selectMultipleHandler = (id) => {
+		if (lastClicked !== null) {
+			if (id > lastClicked) {
+				for (let i = lastClicked + 1; i <= id; ++i) {
+					addToList(i);
+				}
+			} else if (lastClicked > id) {
+				for (let i = lastClicked - 1; i >= id; --i) {
+					addToList(i);
+				}
+			} else if (lastClicked === id) {
+				addToList(id);
+			}
+		} else {
+			addToList(id);
+		}
 	};
 
 	// Takes in string lyrics and turns each into a string and input div
@@ -64,10 +112,27 @@ export default function LyricsBlock(props) {
 			);
 
 			if (!props.editable) {
+				let chordStyles = styles.input;
+				if (idx === lastClicked) {
+					chordStyles = {
+						...chordStyles,
+						backgroundColor: Colors.primary,
+					};
+				} else if (clickedChords.indexOf(idx) === -1) {
+					chordStyles = {
+						...chordStyles,
+						backgroundColor: Colors.primaryLight,
+					};
+				}
+
 				content = (
 					<div key={idx}>
 						{/* If value is "", the div will collapse to nothing */}
-						<div style={styles.input}>
+						<div
+							id={`c${idx}`}
+							style={chordStyles}
+							onClick={selectHandler}
+						>
 							{!selectedSong.chords.split("\n")[idx]
 								? " "
 								: selectedSong.chords.split("\n")[idx]}
@@ -84,6 +149,7 @@ export default function LyricsBlock(props) {
 	return (
 		<div>
 			<h2 style={styles.lyricsTitle}>Lyrics</h2>
+			<button>Copy</button>
 			{selectedSong.lyrics === "" ? (
 				<p style={styles.lyricLine}>No lyrics found.</p>
 			) : (
