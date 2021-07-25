@@ -18,21 +18,14 @@ export default function StrummingPatternBlock(props) {
 	return (
 		<div>
 			<h2 style={styles.subheading}>Strumming Pattern</h2>
-			{props.editable ? (
-				<input
-					id="strumming_pattern"
-					style={styles.input}
-					defaultValue={selectedSong.strumming_pattern}
-					onKeyDown={keyDownHandler}
-					autoCorrect="off"
-				/>
-			) : (
-				<p style={styles.input}>
-					{!selectedSong.strumming_pattern
-						? " "
-						: selectedSong.strumming_pattern}
-				</p>
-			)}
+			<input
+				id="strumming_pattern"
+				style={styles.input}
+				defaultValue={selectedSong.strumming_pattern}
+				onKeyDown={keyDownHandler}
+				autoCorrect="off"
+				readOnly={!props.editable}
+			/>
 		</div>
 	);
 }

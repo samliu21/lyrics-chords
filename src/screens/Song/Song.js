@@ -310,7 +310,13 @@ export default function Song(props) {
 		return <LoadingCircle />;
 	}
 
-	const editableKwargs = isViewOnly || isCopyMode ? {} : { editable: true };
+	let editableKwargs = { editable: false, isCopyMode: false };
+	if (!isViewOnly) {
+		editableKwargs["editable"] = true;
+	}
+	if (isCopyMode) {
+		editableKwargs = { isCopyMode: true };
+	}
 	const inputKwargs = isViewOnly ? { readOnly: true } : {};
 
 	const containerStyles = {
@@ -321,7 +327,9 @@ export default function Song(props) {
 	return (
 		<div style={containerStyles}>
 			{isFetching && <LoadingCircle />}
-			<button onClick={() => setIsCopyMode((state) => !state)}>Copy mode</button>
+			<button onClick={() => setIsCopyMode((state) => !state)}>
+				Copy mode
+			</button>
 
 			{/* Information about creator  */}
 			<InfoBar selectedSong={selectedSong} />
