@@ -1,19 +1,19 @@
 import React from "react";
 
-import { AiOutlineSave } from "react-icons/ai";
+import { IoIosCopy } from "react-icons/io";
 import { Colors } from "../../constants/Colors";
 import SideBarWrapper from "../SideBarWrapper/SideBarWrapper";
 
-export default function SaveBar(props) {
+export default function CopyButton(props) {
 	return (
 		<SideBarWrapper
-			WrappedComponent={AiOutlineSave}
-			text="Saved!"
-			top={150}
+			WrappedComponent={IoIosCopy}
+			text="Copy mode!"
+			top={200}
 			onClick={props.onClick}
-			backgroundColor={Colors.accent}
+			backgroundColor={Colors.primary}
 			color="white"
-			time={2000}
+			time={750}
 		/>
 	);
 }

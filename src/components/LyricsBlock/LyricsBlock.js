@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { Colors } from "../../constants/Colors";
+import CopyButton from "../CopyButton/CopyButton";
 
 import { styles } from "./LyricsBlockStyles";
 
@@ -68,11 +69,7 @@ export default function LyricsBlock(props) {
 				addToList(id);
 			}
 
-			// if (clickedChords.length > 0) {
 			setLastClicked(id);
-			// } else {
-			// 	setLastClicked(null);
-			// }
 			return;
 		}
 
@@ -135,7 +132,7 @@ export default function LyricsBlock(props) {
 				}
 			}
 
-			let content = (
+			return (
 				<div key={idx}>
 					<input
 						id={`c${idx}`}
@@ -163,41 +160,6 @@ export default function LyricsBlock(props) {
 					</p>
 				</div>
 			);
-
-			// if (!props.editable) {
-			// 	let chordStyles = styles.input;
-			// 	if (idx === lastClicked) {
-			// 		chordStyles = {
-			// 			...chordStyles,
-			// 			backgroundColor: Colors.primary,
-			// 		};
-			// 	} else if (clickedChords.indexOf(idx) > -1) {
-			// 		chordStyles = {
-			// 			...chordStyles,
-			// 			backgroundColor: Colors.primaryLight,
-			// 		};
-			// 	}
-
-			// 	content = (
-			// 		<div key={idx}>
-			// 			{/* If value is "", the div will collapse to nothing */}
-			// 			<div
-			// 				id={`c${idx}`}
-			// 				style={chordStyles}
-			// 				onClick={selectHandler}
-			// 			>
-			// 				{!selectedSong.chords.split("\n")[idx]
-			// 					? " "
-			// 					: selectedSong.chords.split("\n")[idx]}
-			// 			</div>
-			// 			<p id={`l${idx}`} style={styles.lyricLine}>
-			// 				{item}
-			// 			</p>
-			// 		</div>
-			// 	);
-			// }
-
-			return content;
 		});
 	};
 

@@ -8,12 +8,13 @@ export const styles = {
 		backgroundColor: Colors.accent,
 		position: "fixed",
 		left: -17,
+		top: 150,
 		borderRadius: 17,
 		padding: 5,
 		paddingLeft: 27,
 		paddingRight: 8,
 	},
-	save: {
+	icon: {
 		color: "white",
 		cursor: "pointer",
 	},

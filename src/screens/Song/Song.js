@@ -23,6 +23,7 @@ import SaveBar from "../../components/SaveBar/SaveBar";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import { styles } from "./SongStyles";
 import { Colors } from "../../constants/Colors";
+import CopyButton from "../../components/CopyButton/CopyButton";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -306,6 +307,10 @@ export default function Song(props) {
 		dispatch(songsActions.updateSong(id, choice, val));
 	};
 
+	const copyHandler = () => {
+		setIsCopyMode((state) => !state);
+	};
+
 	if (!selectedSong) {
 		return <LoadingCircle />;
 	}
@@ -327,17 +332,13 @@ export default function Song(props) {
 	return (
 		<div style={containerStyles}>
 			{isFetching && <LoadingCircle />}
-			<button onClick={() => setIsCopyMode((state) => !state)}>
-				Copy mode
-			</button>
 
 			{/* Information about creator  */}
 			<InfoBar selectedSong={selectedSong} />
 
 			{/* Save bar  */}
-			{!isViewOnly && (
-				<SaveBar item={selectedSong} onSave={dispatchSong} />
-			)}
+			{!isViewOnly && <SaveBar onClick={dispatchSong} />}
+			<CopyButton onClick={copyHandler} />
 
 			{/* Title  */}
 			<input
