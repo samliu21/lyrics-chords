@@ -30,7 +30,8 @@ export const styles = {
 		left: 0,
 		textAlign: "center",
 		padding: 8,
-		backgroundColor: Colors.light,
+		backgroundColor: Colors.primary,
+		color: "white",
 		width: "100%",
 	},
 };

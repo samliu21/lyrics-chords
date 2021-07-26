@@ -109,11 +109,19 @@ export default function LyricsBlock(props) {
 		setClickedChords([]);
 		setLastClicked(null);
 		setPaste(false);
-	}
+	};
 
 	const copyHandler = () => {
 		setPaste(true);
 		setLastClicked(null);
+	};
+
+	const emptyHandler = () => {
+		for (const i of clickedChords) {
+			const input = document.getElementById(`c${i}`);
+			input.value = "";
+		}
+		resetHandler();
 	}
 
 	// Takes in string lyrics and turns each into a string and input div
@@ -165,12 +173,21 @@ export default function LyricsBlock(props) {
 		});
 	};
 
+	const bottomOption = (label, onClick) => {
+		return (
+			<span className="pointer" onClick={onClick}>
+				&nbsp;&nbsp;&nbsp;{label}&nbsp;&nbsp;&nbsp;
+			</span>
+		);
+	};
+
 	return (
 		<div>
 			{props.isCopyMode && (
 				<div style={styles.toolbar}>
-					<span className="pointer" onClick={resetHandler}>Clear&nbsp;&nbsp;&nbsp;</span>|
-					<span className="pointer" onClick={copyHandler}>&nbsp;&nbsp;&nbsp;Copy</span>
+					{bottomOption("Clear", resetHandler)}|
+					{bottomOption("Copy", copyHandler)}|
+					{bottomOption("Empty", emptyHandler)}
 				</div>
 			)}
 			<h2 style={styles.lyricsTitle}>Lyrics</h2>
