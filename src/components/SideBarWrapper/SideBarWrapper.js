@@ -22,7 +22,7 @@ export default function SideBarWrapper(props) {
 			clearInterval(closeSidebarTimer.current);
 		}, props.time);
 
-		props.onClick(setOpen);
+		props.onClick();
 	};
 
 	const Component = props.WrappedComponent;
