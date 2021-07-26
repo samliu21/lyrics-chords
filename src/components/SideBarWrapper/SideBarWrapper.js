@@ -14,12 +14,16 @@ export default function SideBarWrapper(props) {
 
 	// Click handler
 	const clickHandler = () => {
+		if (closeSidebarTimer.current) {
+			return;
+		}
 		setOpen(true);
 
 		clearInterval(closeSidebarTimer.current);
 		closeSidebarTimer.current = setInterval(() => {
 			setOpen(false);
 			clearInterval(closeSidebarTimer.current);
+			closeSidebarTimer.current = null;
 		}, props.time);
 
 		props.onClick();
