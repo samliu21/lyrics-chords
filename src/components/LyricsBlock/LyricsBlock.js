@@ -8,7 +8,7 @@ export default function LyricsBlock(props) {
 	const selectedSong = props.selectedSong;
 	const [lastClicked, setLastClicked] = useState();
 	const [clickedChords, setClickedChords] = useState([]);
-	const [paste, setPaste] = useState(false);
+	const [pasteMode, setPasteMode] = useState("none");
 
 	const history = useHistory();
 
@@ -60,7 +60,7 @@ export default function LyricsBlock(props) {
 		const id = +e.target.id.substr(1);
 
 		// While selecting
-		if (!paste) {
+		if (pasteMode === "none") {
 			if (e.altKey) {
 				selectMultipleHandler(id);
 			} else {
@@ -79,10 +79,35 @@ export default function LyricsBlock(props) {
 		// While pasting
 		const sortedChords = [...clickedChords].sort((a, b) => a.id - b.id);
 		const start = sortedChords[0];
-		for (const i of sortedChords) {
-			const newId = id + i - start;
-			const copyFrom = document.getElementById(`c${i}`).value;
-			document.getElementById(`c${newId}`).value = copyFrom;
+		const range = sortedChords[sortedChords.length - 1] - start + 1;
+
+		if (pasteMode === "paste") {
+			for (const i of sortedChords) {
+				const newId = id + i - start;
+				const copyFrom = document.getElementById(`c${i}`).value;
+				document.getElementById(`c${newId}`).value = copyFrom;
+			}
+		} else {
+			let multiple = 0;
+			let shouldBreak = false;
+			while (true) { // Same as above, except we use multiple + range to offset the new sequence
+				for (const i of sortedChords) { 
+					const newId = id + i - start + multiple * range;
+					const copyFrom = document.getElementById(`c${i}`).value;
+
+					const copyTo = document.getElementById(`c${newId}`);
+					if (!copyTo) {
+						shouldBreak = true;
+						break;
+					}
+
+					copyTo.value = copyFrom;
+				}
+				if (shouldBreak) {
+					break;
+				}
+				++multiple;
+			}
 		}
 		resetHandler();
 	};
@@ -108,11 +133,16 @@ export default function LyricsBlock(props) {
 	const resetHandler = () => {
 		setClickedChords([]);
 		setLastClicked(null);
-		setPaste(false);
+		setPasteMode("none");
 	};
 
 	const copyHandler = () => {
-		setPaste(true);
+		setPasteMode("paste");
+		setLastClicked(null);
+	};
+
+	const copyUntilEndHandler = () => {
+		setPasteMode("pasteUntilEnd");
 		setLastClicked(null);
 	};
 
@@ -122,7 +152,7 @@ export default function LyricsBlock(props) {
 			input.value = "";
 		}
 		resetHandler();
-	}
+	};
 
 	// Takes in string lyrics and turns each into a string and input div
 	const renderItems = () => {
@@ -176,7 +206,7 @@ export default function LyricsBlock(props) {
 	const bottomOption = (label, onClick) => {
 		return (
 			<span className="pointer" onClick={onClick}>
-				&nbsp;&nbsp;&nbsp;{label}&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;{label}&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 		);
 	};
@@ -187,6 +217,7 @@ export default function LyricsBlock(props) {
 				<div style={styles.toolbar}>
 					{bottomOption("Clear", resetHandler)}|
 					{bottomOption("Copy", copyHandler)}|
+					{bottomOption("Copy until end", copyUntilEndHandler)}|
 					{bottomOption("Empty", emptyHandler)}
 				</div>
 			)}

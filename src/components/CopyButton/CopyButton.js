@@ -15,7 +15,7 @@ export default function CopyButton(props) {
 	return (
 		<SideBarWrapper
 			WrappedComponent={IoIosCopy}
-			text={isCopyMode ? "Copy mode!" : "Regular mode!"}
+			text={isCopyMode ? "Edit mode!" : "Regular mode!"}
 			top={200}
 			onClick={onClick}
 			backgroundColor={Colors.primary}
