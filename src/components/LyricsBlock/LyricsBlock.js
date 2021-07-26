@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { Colors } from "../../constants/Colors";
-import CopyButton from "../CopyButton/CopyButton";
 
 import { styles } from "./LyricsBlockStyles";
 
@@ -15,7 +14,6 @@ export default function LyricsBlock(props) {
 
 	useEffect(() => {
 		const unlisten = history.listen(() => setClickedChords([]));
-		// const keyUnlisten =
 
 		return () => unlisten();
 	}, [history]);
@@ -73,14 +71,8 @@ export default function LyricsBlock(props) {
 			return;
 		}
 
-		const reset = () => {
-			setLastClicked(null);
-			setClickedChords([]);
-			setPaste(false);
-		};
-
 		if (clickedChords.length === 0) {
-			reset();
+			resetHandler();
 			return;
 		}
 
@@ -92,11 +84,10 @@ export default function LyricsBlock(props) {
 			const copyFrom = document.getElementById(`c${i}`).value;
 			document.getElementById(`c${newId}`).value = copyFrom;
 		}
-		reset();
+		resetHandler();
 	};
 
 	const selectMultipleHandler = (id) => {
-		console.log(id, lastClicked);
 		if (lastClicked !== null) {
 			if (id > lastClicked) {
 				for (let i = lastClicked + 1; i <= id; ++i) {
@@ -113,6 +104,17 @@ export default function LyricsBlock(props) {
 			addToList(id);
 		}
 	};
+
+	const resetHandler = () => {
+		setClickedChords([]);
+		setLastClicked(null);
+		setPaste(false);
+	}
+
+	const copyHandler = () => {
+		setPaste(true);
+		setLastClicked(null);
+	}
 
 	// Takes in string lyrics and turns each into a string and input div
 	const renderItems = () => {
@@ -165,8 +167,13 @@ export default function LyricsBlock(props) {
 
 	return (
 		<div>
+			{props.isCopyMode && (
+				<div style={styles.toolbar}>
+					<span className="pointer" onClick={resetHandler}>Clear&nbsp;&nbsp;&nbsp;</span>|
+					<span className="pointer" onClick={copyHandler}>&nbsp;&nbsp;&nbsp;Copy</span>
+				</div>
+			)}
 			<h2 style={styles.lyricsTitle}>Lyrics</h2>
-			<button onClick={() => setPaste(true)}>Copy</button>
 			{selectedSong.lyrics === "" ? (
 				<p style={styles.lyricLine}>No lyrics found.</p>
 			) : (

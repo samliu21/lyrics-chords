@@ -330,57 +330,59 @@ export default function Song(props) {
 	};
 
 	return (
-		<div style={containerStyles}>
-			{isFetching && <LoadingCircle />}
+		<div>
+			<div style={containerStyles}>
+				{isFetching && <LoadingCircle />}
 
-			{/* Information about creator  */}
-			<InfoBar selectedSong={selectedSong} />
+				{/* Information about creator  */}
+				<InfoBar selectedSong={selectedSong} />
 
-			{/* Save bar  */}
-			{!isViewOnly && <SaveBar onClick={dispatchSong} />}
-			<CopyButton onClick={copyHandler} />
+				{/* Save bar  */}
+				{!isViewOnly && <SaveBar onClick={dispatchSong} />}
+				<CopyButton onClick={copyHandler} />
 
-			{/* Title  */}
-			<input
-				style={styles.title}
-				defaultValue={selectedSong.name}
-				placeholder="Title"
-				onKeyDown={preventEnterHandler}
-				onBlur={inputBlur}
-				ref={nameRef}
-				{...inputKwargs}
-			/>
+				{/* Title  */}
+				<input
+					style={styles.title}
+					defaultValue={selectedSong.name}
+					placeholder="Title"
+					onKeyDown={preventEnterHandler}
+					onBlur={inputBlur}
+					ref={nameRef}
+					{...inputKwargs}
+				/>
 
-			{/* Artist  */}
-			<input
-				style={styles.artist}
-				defaultValue={selectedSong.artist}
-				placeholder="Artist"
-				onKeyDown={preventEnterHandler}
-				onBlur={inputBlur}
-				ref={artistRef}
-				{...inputKwargs}
-			/>
+				{/* Artist  */}
+				<input
+					style={styles.artist}
+					defaultValue={selectedSong.artist}
+					placeholder="Artist"
+					onKeyDown={preventEnterHandler}
+					onBlur={inputBlur}
+					ref={artistRef}
+					{...inputKwargs}
+				/>
 
-			<StrummingPatternBlock
-				selectedSong={selectedSong}
-				setUnsavedChanges={setUnsavedChanges}
-				{...editableKwargs}
-			/>
-
-			<LyricsBlock
-				selectedSong={selectedSong}
-				setUnsavedChanges={setUnsavedChanges}
-				isCopyMode={isCopyMode}
-				{...editableKwargs}
-			/>
-
-			{!isViewOnly && (
-				<PulledLyricsBlock
+				<StrummingPatternBlock
 					selectedSong={selectedSong}
 					setUnsavedChanges={setUnsavedChanges}
+					{...editableKwargs}
 				/>
-			)}
+
+				<LyricsBlock
+					selectedSong={selectedSong}
+					setUnsavedChanges={setUnsavedChanges}
+					isCopyMode={isCopyMode}
+					{...editableKwargs}
+				/>
+
+				{!isViewOnly && (
+					<PulledLyricsBlock
+						selectedSong={selectedSong}
+						setUnsavedChanges={setUnsavedChanges}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }

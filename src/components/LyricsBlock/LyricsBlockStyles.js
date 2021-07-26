@@ -24,4 +24,13 @@ export const styles = {
 		color: Colors.primary,
 		fontSize: "4vmin",
 	},
+	toolbar: {
+		position: "fixed",
+		bottom: 0,
+		left: 0,
+		textAlign: "center",
+		padding: 8,
+		backgroundColor: Colors.light,
+		width: "100%",
+	},
 };
