@@ -16,6 +16,9 @@ export default function PulledLyricsBlock(props) {
 	// If the user manually types in the lyrics, the transfer will occur on the redux state, and the typed in lyrics haven't been updated to redux yet
 	// We need to dispatch on blur
 	const blurHandler = (e) => {
+		if (e.target.innerText === selectedSong.pulled_lyrics) {
+			return;
+		}
 		dispatch(
 			songsActions.updateSong(
 				selectedSong.id,
