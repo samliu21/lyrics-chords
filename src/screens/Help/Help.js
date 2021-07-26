@@ -49,6 +49,24 @@ export default function Help() {
 				</div>
 				<br />
 				<div>
+					By default, you will be in regular mode. To switch, press
+					the copy button on the left—the second icon down. Here, you
+					can quickly manipulate chords by copying or deleting. To
+					select a chord to manipulate, simply click on its box. To
+					select a sequence of inputs, click on an input to denote the
+					starting point (highlighted in dark red), then press on the
+					end input box while holding the ALT (on Windows) or OPTION
+					key (on Mac). The toolbar can be found at the bottom of the
+					page. To delete, simply choose the EMPTY option. To copy,
+					choose the COPY or COPY UNTIL END option. Then, select the
+					first of the destination inputs that will receive the copied
+					chords. For example, if you select inputs 1 to 3, select
+					COPY, then click the fourth input, the contents of inputs 1
+					to 3 will be copied to inpus 4 to 6. Lastly, the CLEAR
+					option will deselect all chord boxes.
+				</div>
+				<br />
+				<div>
 					The chord inputs have been configured so that a period will
 					move your cursor forward four spaces, a comma will move your
 					cursor back four spaces, and enter will save the changes
