@@ -81,6 +81,8 @@ export default function LyricsBlock(props) {
 		const start = sortedChords[0];
 		const range = sortedChords[sortedChords.length - 1] - start + 1;
 
+		props.setUnsavedChanges(true);
+
 		if (pasteMode === "paste") {
 			for (const i of sortedChords) {
 				const newId = id + i - start;

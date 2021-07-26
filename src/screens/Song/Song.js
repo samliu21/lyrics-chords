@@ -15,6 +15,7 @@ import {
 	incrementViewCount,
 	updateSongToDatabase,
 } from "../../util";
+import HelpButton from "../../components/HelpButton/HelpButton";
 import InfoBar from "../../components/InfoBar/InfoBar";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
@@ -340,6 +341,8 @@ export default function Song(props) {
 				{/* Save bar  */}
 				{!isViewOnly && <SaveBar onClick={dispatchSong} />}
 				<CopyButton onClick={copyHandler} />
+
+				<HelpButton />
 
 				{/* Title  */}
 				<input
