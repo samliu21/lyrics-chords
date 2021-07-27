@@ -68,13 +68,17 @@ class CommentViewSet(viewsets.ModelViewSet):
 		try:
 			username = request.data.get('user')
 			contents = request.data.get('contents')
+			song_id = request.data.get('songId')
 
 			user = get_user_model().objects.get(username=username)
-			comment = Comment(user=user, contents=contents)
+			song = Song.objects.get(pk=song_id)
+			print(song)
+			comment = Comment(song=song, user=user, contents=contents)
 			comment.save()
+			return HttpResponse('Worked!')
 		except Exception as e:
 			print(e)
-		return HttpResponse('Hello!')
+			return HttpResponseBadRequest('An error occurred.')
 
 	@action(detail=True, methods=['GET'])
 	def get_song_comments(self, request, pk=None):

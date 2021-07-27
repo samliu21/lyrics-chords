@@ -397,7 +397,7 @@ export default function Song(props) {
 					/>
 				)}
 
-				<Comments />
+				<Comments id={selectedSong.id} />
 			</div>
 		</div>
 	);

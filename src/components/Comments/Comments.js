@@ -5,7 +5,7 @@ import { getToken } from "../../util";
 
 import { styles } from "./CommentStyles";
 
-export default function Comments() {
+export default function Comments(props) {
 	const username = useSelector((state) => state.auth.username);
 	const newCommentRef = createRef();
 
@@ -13,6 +13,7 @@ export default function Comments() {
 		const response = await axios.post(
 			"/api/comments/",
 			{
+				songId: props.id,
 				user: username,
 				contents: newCommentRef.current.value,
 			},

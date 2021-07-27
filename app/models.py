@@ -16,7 +16,7 @@ class Song(models.Model):
 		return self.name 
 
 class Comment(models.Model):
-	song = models.ForeignKey(Song, on_delete=models.DO_NOTHING)
-	user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING)
-	contents = models.CharField(max_length=500, blank=False, null=False)
-	date_of_creation = models.DateTimeField(auto_now=True, null=False)
+	song = models.ForeignKey(Song, on_delete=models.CASCADE)
+	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+	contents = models.CharField(max_length=500)
+	date_of_creation = models.DateTimeField(auto_now=True)
