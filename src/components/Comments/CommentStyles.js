@@ -1,4 +1,4 @@
-import { Colors } from "../../constants/Colors"
+import { Colors } from "../../constants/Colors";
 
 export const styles = {
 	input: {
@@ -15,4 +15,4 @@ export const styles = {
 		color: Colors.primary,
 		fontSize: "4vmin",
 	},
-}
+};

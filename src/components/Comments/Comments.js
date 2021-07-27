@@ -53,16 +53,12 @@ export default function Comments(props) {
 				<h2 style={styles.title}>Comments</h2>
 				{comments.map((comment) => (
 					<CommentsBlock
+						key={comment.id}
 						username={comment.username}
 						contents={comment.contents}
 						date={comment.date_of_creation}
 					/>
 				))}
-				{/* <div style={styles.newComment}>
-					<h3>New comment</h3>
-					<input style={styles.input} ref={newCommentRef} />
-					<button onClick={newCommentHandler}>Post</button>
-				</div> */}
 			</div>
 		)
 	);
