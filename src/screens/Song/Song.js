@@ -325,7 +325,7 @@ export default function Song(props) {
 		editableKwargs["editable"] = true;
 	}
 	if (isCopyMode) {
-		editableKwargs[isCopyMode] = true;
+		editableKwargs["isCopyMode"] = true;
 	}
 	const inputKwargs = isViewOnly ? { readOnly: true } : {};
 

@@ -8,8 +8,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Song 
-from .serializers import SongSerializer
+from .models import Song, Comment
+from .serializers import SongSerializer, CommentSerializer
 from backend.settings import API_KEY
 
 import lyricsgenius as lg
@@ -55,6 +55,11 @@ class SongViewSet(viewsets.ModelViewSet):
 			return HttpResponseBadRequest('The given user does not exist.')
 		except:
 			return HttpResponseBadRequest('Could not determine the number of songs.')
+
+# ViewSet for comments
+class CommentViewSet(viewsets.ModelViewSet):
+	serializer_class = CommentSerializer
+	queryset = Comment.objects.all()
 
 # Fetch lyrics using lyricsgenius API
 # Only accessible by authenticated users 

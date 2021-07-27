@@ -8,6 +8,7 @@ from app import views
 
 router = routers.DefaultRouter()
 router.register(r'songs', views.SongViewSet, basename="songs")
+router.register(r'comments', views.CommentViewSet, basename="comments")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
