@@ -39,6 +39,9 @@ export default function Song(props) {
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
+	// References to chord inputs
+	const [chordRefs, setChordRefs] = useState();
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -47,7 +50,7 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-
+	
 	const selectedSong = useSelector((state) => {
 		const isView = path[path.length - 1] === "view";
 		const list = isView ? state.songs.publicSongs : state.songs.userSongs;
@@ -231,7 +234,7 @@ export default function Song(props) {
 				newLyrics += lyricsInput.innerText;
 				newLyrics += i === len - 1 ? "" : "\n";
 
-				const chordsInput = document.getElementById(`c${i}`);
+				const chordsInput = chordRefs[i].current;
 				newChords += chordsInput.value;
 				newChords += i === len - 1 ? "" : "\n";
 			}
@@ -376,6 +379,8 @@ export default function Song(props) {
 					selectedSong={selectedSong}
 					setUnsavedChanges={setUnsavedChanges}
 					isCopyMode={isCopyMode}
+					chordRefs={chordRefs}
+					setChordRefs={setChordRefs}
 					{...editableKwargs}
 				/>
 

@@ -11,7 +11,7 @@ export default function LyricsBlock(props) {
 	const [clickedChords, setClickedChords] = useState([]);
 	const [pasteMode, setPasteMode] = useState("none");
 
-	const [chordRefs, setChordRefs] = useState();
+	const { chordRefs, setChordRefs } = props;
 
 	useEffect(() => {
 		if (!chordRefs) {
@@ -19,7 +19,7 @@ export default function LyricsBlock(props) {
 			const newRefs = new Array(arrLength).fill().map(() => createRef());
 			setChordRefs(newRefs);
 		}
-	}, [selectedSong, chordRefs]);
+	}, [selectedSong, chordRefs, setChordRefs]);
 
 	const history = useHistory();
 
