@@ -39,8 +39,9 @@ export default function Song(props) {
 	const isFetching = useSelector((state) => state.selectedSong.isFetching);
 	const isAdmin = useSelector((state) => state.auth.admin);
 
-	// References to chord inputs
+	// References to chord, lyrics, strumming pattern, and pulled lyrics inputs
 	const [chordRefs, setChordRefs] = useState();
+	const [lyricRefs, setLyricRefs] = useState();
 
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -230,7 +231,7 @@ export default function Song(props) {
 		} else {
 			const len = selectedSong.lyrics.split("\n").length;
 			for (let i = 0; i < len; ++i) {
-				const lyricsInput = document.getElementById(`l${i}`);
+				const lyricsInput = lyricRefs[i].current;
 				newLyrics += lyricsInput.innerText;
 				newLyrics += i === len - 1 ? "" : "\n";
 
@@ -381,6 +382,8 @@ export default function Song(props) {
 					isCopyMode={isCopyMode}
 					chordRefs={chordRefs}
 					setChordRefs={setChordRefs}
+					lyricRefs={lyricRefs}
+					setLyricRefs={setLyricRefs}
 					{...editableKwargs}
 				/>
 

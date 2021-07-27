@@ -11,7 +11,7 @@ export default function LyricsBlock(props) {
 	const [clickedChords, setClickedChords] = useState([]);
 	const [pasteMode, setPasteMode] = useState("none");
 
-	const { chordRefs, setChordRefs } = props;
+	const { chordRefs, setChordRefs, lyricRefs, setLyricRefs } = props;
 
 	useEffect(() => {
 		if (!chordRefs) {
@@ -20,6 +20,14 @@ export default function LyricsBlock(props) {
 			setChordRefs(newRefs);
 		}
 	}, [selectedSong, chordRefs, setChordRefs]);
+
+	useEffect(() => {
+		if (!lyricRefs) {
+			const arrLength = selectedSong.lyrics.split("\n").length;
+			const newRefs = new Array(arrLength).fill().map(() => createRef());
+			setLyricRefs(newRefs);
+		}
+	}, [selectedSong, lyricRefs, setLyricRefs]);
 
 	const history = useHistory();
 
@@ -97,8 +105,13 @@ export default function LyricsBlock(props) {
 		if (pasteMode === "paste") {
 			for (const i of sortedChords) {
 				const newId = id + i - start;
-				const copyFrom = document.getElementById(`c${i}`).value;
-				document.getElementById(`c${newId}`).value = copyFrom;
+				const copyFrom = chordRefs[i].current.value;
+
+				const copyTo = chordRefs[newId];
+				if (!copyTo || !copyTo.current) {
+					break;
+				}
+				copyTo.current.value = copyFrom;
 			}
 		} else {
 			let multiple = 0;
@@ -107,15 +120,15 @@ export default function LyricsBlock(props) {
 				// Same as above, except we use multiple + range to offset the new sequence
 				for (const i of sortedChords) {
 					const newId = id + i - start + multiple * range;
-					const copyFrom = document.getElementById(`c${i}`).value;
+					const copyFrom = chordRefs[i].current.value;
 
-					const copyTo = document.getElementById(`c${newId}`);
-					if (!copyTo) {
+					const copyTo = chordRefs[newId];
+					if (!copyTo || !copyTo.current) {
 						shouldBreak = true;
 						break;
 					}
 
-					copyTo.value = copyFrom;
+					copyTo.current.value = copyFrom;
 				}
 				if (shouldBreak) {
 					break;
@@ -188,7 +201,6 @@ export default function LyricsBlock(props) {
 			return (
 				<div key={idx}>
 					<input
-						id={`c${idx}`}
 						ref={chordRefs[idx]}
 						style={chordStyles}
 						defaultValue={
@@ -200,7 +212,7 @@ export default function LyricsBlock(props) {
 						readOnly={!props.editable || props.isCopyMode}
 					/>
 					<p
-						id={`l${idx}`}
+						ref={lyricRefs[idx]}
 						style={styles.lyricLine}
 						contentEditable={props.editable || props.isCopyMode}
 						suppressContentEditableWarning={
@@ -225,7 +237,7 @@ export default function LyricsBlock(props) {
 		);
 	};
 
-	if (!chordRefs) {
+	if (!chordRefs || !lyricRefs) {
 		return <LoadingCircle />;
 	}
 
