@@ -18,4 +18,4 @@ class Song(models.Model):
 class Comment(models.Model):
 	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 	contents = models.CharField(max_length=500, blank=False, null=False)
-	date_of_creation = models.DateField(auto_now=True, null=False)
+	date_of_creation = models.DateTimeField(auto_now=True, null=False)

@@ -12,6 +12,7 @@ from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
 from backend.settings import API_KEY
 
+import json
 import lyricsgenius as lg
 
 # ViewSet for Song model
@@ -60,6 +61,20 @@ class SongViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
 	queryset = Comment.objects.all()
+
+	def create(self, request):
+		if not request.user.is_authenticated:
+			return HttpResponseBadRequest('You are not authenticated.')
+		try:
+			username = request.data.get('user')
+			contents = request.data.get('contents')
+
+			user = get_user_model().objects.get(username=username)
+			comment = Comment(user=user, contents=contents)
+			comment.save()
+		except Exception as e:
+			print(e)
+		return HttpResponse('Hello!')
 
 # Fetch lyrics using lyricsgenius API
 # Only accessible by authenticated users 

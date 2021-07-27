@@ -11,10 +11,10 @@ export default function Comments() {
 
 	const newCommentHandler = async () => {
 		const response = await axios.post(
-			"/api/comments",
+			"/api/comments/",
 			{
 				user: username,
-				contents: newCommentHandler.value,
+				contents: newCommentRef.current.value,
 			},
 			{
 				withCredentials: true,
