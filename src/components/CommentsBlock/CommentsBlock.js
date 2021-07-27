@@ -16,25 +16,32 @@ export default function CommentsBlock(props) {
 			if (hourDif < 1) {
 				// Show minutes ago
 				const minuteDif = Math.round(hourDif * 60);
-				return `${minuteDif} minutes ago`;
+				if (minuteDif === 0) {
+					return "now";
+				}
+				return minuteDif === 1
+					? "1 minute ago"
+					: `${minuteDif} minutes ago`;
 			} else {
 				// Show hours ago
-				return `${Math.round(hourDif)} hours ago`;
+				return Math.round(hourDif) === 1
+					? "1 minute ago"
+					: `${Math.round(hourDif)} hours ago`;
 			}
 		}
 
 		const dayDif = Math.round(msDif / 3600000 / 24);
 		if (dayDif <= 30) {
-			return `${dayDif} days ago`;
+			return dayDif === 1 ? "1 day ago" : `${dayDif} days ago`;
 		}
 
 		const monthDif = Math.round(dayDif / 30);
 		if (monthDif <= 12) {
-			return `${monthDif} months ago`;
-		}
-
-		else {
-			return `on ${dateOfCreation.getFullYear()}/${dateOfCreation.getMonth()}/${dateOfCreation.getDate}`
+			return monthDif === 1 ? "1 month ago" : `${monthDif} months ago`;
+		} else {
+			return `on ${dateOfCreation.getFullYear()}/${dateOfCreation.getMonth()}/${
+				dateOfCreation.getDate
+			}`;
 		}
 	};
 

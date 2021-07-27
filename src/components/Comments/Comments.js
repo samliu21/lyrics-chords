@@ -42,19 +42,33 @@ export default function Comments(props) {
 			}
 		);
 	};
-	
+
 	return (
 		username && (
 			<div>
 				<h2 style={styles.title}>Comments</h2>
-				{comments && comments.map((comment) => (
-					<CommentsBlock
-						key={comment.id}
-						username={comment.username}
-						contents={comment.contents}
-						date={comment.date_of_creation}
+				{comments &&
+					comments.map((comment) => (
+						<CommentsBlock
+							key={comment.id}
+							username={comment.username}
+							contents={comment.contents}
+							date={comment.date_of_creation}
+						/>
+					))}
+				<div style={styles.newComment}>
+					<h3 style={styles.heading}>New comment</h3>
+					<hr />
+					<textarea
+						rows={4}
+						style={styles.input}
+						ref={newCommentRef}
 					/>
-				))}
+					<hr />
+					<button onClick={newCommentHandler} style={styles.button}>
+						Submit
+					</button>
+				</div>
 			</div>
 		)
 	);
