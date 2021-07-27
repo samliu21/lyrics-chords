@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../../util";
 
 import * as commentActions from "../../store/actions/commentActions";
+import CommentsBlock from "../CommentsBlock/CommentsBlock";
 import { styles } from "./CommentStyles";
 
 export default function Comments(props) {
@@ -40,8 +41,6 @@ export default function Comments(props) {
 				},
 			}
 		);
-
-		console.log(response.data);
 	};
 
 	if (!comments) {
@@ -52,12 +51,18 @@ export default function Comments(props) {
 		username && (
 			<div>
 				<h2 style={styles.title}>Comments</h2>
-				{comments.map(item => <p>{item.contents}</p>)}
-				<div style={styles.newComment}>
+				{comments.map((comment) => (
+					<CommentsBlock
+						username={comment.username}
+						contents={comment.contents}
+						date={comment.date_of_creation}
+					/>
+				))}
+				{/* <div style={styles.newComment}>
 					<h3>New comment</h3>
 					<input style={styles.input} ref={newCommentRef} />
 					<button onClick={newCommentHandler}>Post</button>
-				</div>
+				</div> */}
 			</div>
 		)
 	);
