@@ -8,6 +8,8 @@ class SongSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
+	username = serializers.CharField(source='user.username')
+
 	class Meta:
 		model = Comment
-		fields = '__all__'
+		fields = ['id', 'song', 'username', 'contents', 'date_of_creation']

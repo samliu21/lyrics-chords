@@ -7,18 +7,20 @@ import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 import songsReducer from "./reducers/songsReducer";
 import selectedSongReducer from "./reducers/selectedSongReducer";
 import authReducer from "./reducers/authReducer";
+import commentReducers from "./reducers/commentReducers";
 
 const rootReducer = combineReducers({
 	songs: songsReducer,
 	selectedSong: selectedSongReducer,
 	auth: authReducer,
+	comments: commentReducers
 });
 
 const persistConfig = {
 	key: "root",
 	storage: storage,
 	stateReconciler: autoMergeLevel1,
-	blacklist: ["songs"],
+	blacklist: ["songs, comments"],
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);

@@ -12,7 +12,6 @@ from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
 from backend.settings import API_KEY
 
-import json
 import lyricsgenius as lg
 
 # ViewSet for Song model
@@ -72,7 +71,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 			user = get_user_model().objects.get(username=username)
 			song = Song.objects.get(pk=song_id)
-			print(song)
 			comment = Comment(song=song, user=user, contents=contents)
 			comment.save()
 			return HttpResponse('Worked!')
@@ -81,8 +79,15 @@ class CommentViewSet(viewsets.ModelViewSet):
 			return HttpResponseBadRequest('An error occurred.')
 
 	@action(detail=True, methods=['GET'])
-	def get_song_comments(self, request, pk=None):
-		pass
+	def get_song_comments(self, _, pk=None):
+		try:
+			song = Song.objects.get(pk=pk)
+			qs = Comment.objects.filter(song=song)
+			serializer = CommentSerializer(qs, many=True)
+			return Response(serializer.data)
+		except Exception as e:
+			print(e)
+			return HttpResponseBadRequest('An error occurred.')
 
 # Fetch lyrics using lyricsgenius API
 # Only accessible by authenticated users 
