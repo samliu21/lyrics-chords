@@ -9,12 +9,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 import * as songsActions from "../../store/actions/songsActions";
+import { Colors } from "../../constants/Colors";
+import Comments from "../../components/Comments/Comments";
 import {
 	compareSongsByValue,
 	getUsername,
 	incrementViewCount,
 	updateSongToDatabase,
 } from "../../util";
+import CopyButton from "../../components/CopyButton/CopyButton";
 import HelpButton from "../../components/HelpButton/HelpButton";
 import InfoBar from "../../components/InfoBar/InfoBar";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
@@ -23,8 +26,6 @@ import PulledLyricsBlock from "../../components/PulledLyricsBlock/PulledLyricsBl
 import SaveBar from "../../components/SaveBar/SaveBar";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
 import { styles } from "./SongStyles";
-import { Colors } from "../../constants/Colors";
-import CopyButton from "../../components/CopyButton/CopyButton";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -395,6 +396,8 @@ export default function Song(props) {
 						pulledLyricsRef={pulledLyricsRef}
 					/>
 				)}
+
+				<Comments />
 			</div>
 		</div>
 	);
