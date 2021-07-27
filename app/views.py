@@ -76,6 +76,10 @@ class CommentViewSet(viewsets.ModelViewSet):
 			print(e)
 		return HttpResponse('Hello!')
 
+	@action(detail=True, methods=['GET'])
+	def get_song_comments(self, request, pk=None):
+		pass
+
 # Fetch lyrics using lyricsgenius API
 # Only accessible by authenticated users 
 @require_GET
