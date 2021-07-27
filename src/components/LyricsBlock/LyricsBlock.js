@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { useHistory } from "react-router";
 import { Colors } from "../../constants/Colors";
+import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 import { styles } from "./LyricsBlockStyles";
 
@@ -9,6 +10,16 @@ export default function LyricsBlock(props) {
 	const [lastClicked, setLastClicked] = useState();
 	const [clickedChords, setClickedChords] = useState([]);
 	const [pasteMode, setPasteMode] = useState("none");
+
+	const [chordRefs, setChordRefs] = useState();
+
+	useEffect(() => {
+		if (!chordRefs) {
+			const arrLength = selectedSong.lyrics.split("\n").length;
+			const newRefs = new Array(arrLength).fill().map(() => createRef());
+			setChordRefs(newRefs);
+		}
+	}, [selectedSong, chordRefs]);
 
 	const history = useHistory();
 
@@ -92,8 +103,9 @@ export default function LyricsBlock(props) {
 		} else {
 			let multiple = 0;
 			let shouldBreak = false;
-			while (true) { // Same as above, except we use multiple + range to offset the new sequence
-				for (const i of sortedChords) { 
+			while (true) {
+				// Same as above, except we use multiple + range to offset the new sequence
+				for (const i of sortedChords) {
 					const newId = id + i - start + multiple * range;
 					const copyFrom = document.getElementById(`c${i}`).value;
 
@@ -150,8 +162,7 @@ export default function LyricsBlock(props) {
 
 	const emptyHandler = () => {
 		for (const i of clickedChords) {
-			const input = document.getElementById(`c${i}`);
-			input.value = "";
+			chordRefs[i].current.value = "";
 		}
 		resetHandler();
 	};
@@ -178,6 +189,7 @@ export default function LyricsBlock(props) {
 				<div key={idx}>
 					<input
 						id={`c${idx}`}
+						ref={chordRefs[idx]}
 						style={chordStyles}
 						defaultValue={
 							selectedSong.chords.split("\n")[idx] ?? ""
@@ -212,6 +224,10 @@ export default function LyricsBlock(props) {
 			</span>
 		);
 	};
+
+	if (!chordRefs) {
+		return <LoadingCircle />;
+	}
 
 	return (
 		<div>
