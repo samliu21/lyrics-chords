@@ -10,11 +10,9 @@ export const getComments = (id) => {
 			);
 
 			const comments = response.data;
-			if (comments && comments.length === 0) {
-				return;
-			}
 			dispatch({
 				type: GET_COMMENTS,
+				songId: comments[0].song,
 				comments: comments,
 			});
 		} catch (err) {

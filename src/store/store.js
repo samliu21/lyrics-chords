@@ -13,14 +13,14 @@ const rootReducer = combineReducers({
 	songs: songsReducer,
 	selectedSong: selectedSongReducer,
 	auth: authReducer,
-	comments: commentReducers
+	comments: commentReducers,
 });
 
 const persistConfig = {
 	key: "root",
 	storage: storage,
 	stateReconciler: autoMergeLevel1,
-	blacklist: ["songs, comments"],
+	blacklist: ["songs", "comments"],
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);

@@ -8,7 +8,6 @@ import React, {
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import * as commentActions from "../../store/actions/commentActions";
 import * as songsActions from "../../store/actions/songsActions";
 import { Colors } from "../../constants/Colors";
 import Comments from "../../components/Comments/Comments";
@@ -75,12 +74,6 @@ export default function Song(props) {
 	});
 
 	const originalSong = useRef(selectedSong);
-
-	useEffect(() => {
-		if (selectedSong) {
-			dispatch(commentActions.getComments(selectedSong.id));
-		}
-	}, [dispatch, selectedSong]);
 
 	// Increment views
 	useEffect(() => {
