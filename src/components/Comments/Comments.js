@@ -42,16 +42,12 @@ export default function Comments(props) {
 			}
 		);
 	};
-
-	if (!comments) {
-		return <br />;
-	}
-
+	
 	return (
 		username && (
 			<div>
 				<h2 style={styles.title}>Comments</h2>
-				{comments.map((comment) => (
+				{comments && comments.map((comment) => (
 					<CommentsBlock
 						key={comment.id}
 						username={comment.username}

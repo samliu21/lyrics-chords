@@ -34,7 +34,7 @@ export default function CommentsBlock(props) {
 		}
 
 		else {
-			return `on ${dateOfCreation.getFullYear()}/${dateOfCreation.getMonth()}/${dateOfCreation.getDate()}`
+			return `on ${dateOfCreation.getFullYear()}/${dateOfCreation.getMonth()}/${dateOfCreation.getDate}`
 		}
 	};
 
@@ -43,10 +43,11 @@ export default function CommentsBlock(props) {
 	return (
 		<div style={styles.container}>
 			<div style={styles.horizontalContainer}>
-				<p style={styles.username}>{username}</p>
-				<p>&nbsp; commented {dateConverter()}</p>
+				<div style={styles.username}>{username}</div>
+				<div>&nbsp; commented {dateConverter()}</div>
 			</div>
-			<p>{contents}</p>
+			<hr />
+			<div style={styles.contents}>{contents}</div>
 		</div>
 	);
 }
