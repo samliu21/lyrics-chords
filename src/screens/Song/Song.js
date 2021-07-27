@@ -42,6 +42,8 @@ export default function Song(props) {
 	// References to chord, lyrics, strumming pattern, and pulled lyrics inputs
 	const [chordRefs, setChordRefs] = useState();
 	const [lyricRefs, setLyricRefs] = useState();
+	const strummingPatternRef = createRef();
+	const pulledLyricsRef = createRef();
 
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -51,7 +53,7 @@ export default function Song(props) {
 	const artistRef = createRef();
 
 	const path = history.location.pathname.split("/");
-	
+
 	const selectedSong = useSelector((state) => {
 		const isView = path[path.length - 1] === "view";
 		const list = isView ? state.songs.publicSongs : state.songs.userSongs;
@@ -246,11 +248,9 @@ export default function Song(props) {
 		const newArtist = artistRef.current.value;
 
 		// Get strumming pattern
-		const newStrummingPattern =
-			document.getElementById("strumming_pattern").value;
+		const newStrummingPattern = strummingPatternRef.current.value;
 		// Get pulled lyrics
-		const newPulledLyrics =
-			document.getElementById("pulled_lyrics").innerText;
+		const newPulledLyrics = pulledLyricsRef.current.innerText;
 
 		originalSong.current = {
 			...selectedSong,
@@ -373,6 +373,7 @@ export default function Song(props) {
 				<StrummingPatternBlock
 					selectedSong={selectedSong}
 					setUnsavedChanges={setUnsavedChanges}
+					strummingPatternRef={strummingPatternRef}
 					{...editableKwargs}
 				/>
 
@@ -391,6 +392,7 @@ export default function Song(props) {
 					<PulledLyricsBlock
 						selectedSong={selectedSong}
 						setUnsavedChanges={setUnsavedChanges}
+						pulledLyricsRef={pulledLyricsRef}
 					/>
 				)}
 			</div>

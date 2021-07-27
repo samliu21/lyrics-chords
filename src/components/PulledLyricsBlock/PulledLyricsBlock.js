@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import * as songsActions from "../../store/actions/songsActions";
+import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 import { styles } from "./PulledLyricsBlockStyles";
 
@@ -28,11 +29,15 @@ export default function PulledLyricsBlock(props) {
 		);
 	};
 
+	if (!props.pulledLyricsRef) {
+		return <LoadingCircle />;
+	}
+
 	return (
 		<div>
 			<h2 style={styles.subheading}>Pulled Lyrics</h2>
 			<p
-				id="pulled_lyrics"
+				ref={props.pulledLyricsRef}
 				style={styles.input}
 				contentEditable={true}
 				suppressContentEditableWarning={true}
