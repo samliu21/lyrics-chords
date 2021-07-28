@@ -6,7 +6,6 @@ import { BiTrash, BiPencil } from "react-icons/bi";
 import { BsArrow90DegLeft } from "react-icons/bs";
 import NewComment from "../NewComment/NewComment";
 import { styles } from "./CommentsBlockStyles";
-import TextArea from "../TextArea/TextArea";
 
 export default function CommentsBlock(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -92,8 +91,10 @@ export default function CommentsBlock(props) {
 	};
 
 	const replySubmitHandler = () => {
-		
-	}
+		dispatch(
+			commentActions.addComment(songId, username, replyRef.current.value, id)
+		);
+	};
 
 	return (
 		<div style={styles.outerContainer}>

@@ -68,10 +68,17 @@ class CommentViewSet(viewsets.ModelViewSet):
 			username = request.data.get('user')
 			contents = request.data.get('contents')
 			song_id = request.data.get('songId')
+			reply_to = request.data.get('reply_to')
+			print(reply_to, song_id)
+			if reply_to:
+				reply_comment = Comment.objects.get(pk=reply_to)
 
 			user = get_user_model().objects.get(username=username)
 			song = Song.objects.get(pk=song_id)
-			comment = Comment(song=song, user=user, contents=contents)
+			if reply_to:
+				comment = Comment(song=song, user=user, contents=contents, reply_to=reply_comment)
+			else:
+				comment = Comment(song=song, user=user, contents=contents)
 			comment.save()
 			serializer = CommentSerializer(comment)
 			return Response(serializer.data)

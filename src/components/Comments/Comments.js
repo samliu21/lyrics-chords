@@ -30,7 +30,7 @@ export default function Comments(props) {
 	const newCommentHandler = async () => {
 		setIsLoading(true);
 		dispatch(
-			commentActions.addComment(id, username, newCommentRef.current.value)
+			commentActions.addComment(id, username, newCommentRef.current.value, null)
 		);
 		newCommentRef.current.value = "";
 		setTimeout(() => setIsLoading(false), 500);
