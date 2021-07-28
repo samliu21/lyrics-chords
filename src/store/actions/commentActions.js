@@ -25,7 +25,7 @@ export const getComments = (id) => {
 	};
 };
 
-export const addComment = (songId, username, contents, reply_to) => {
+export const addComment = (songId, username, contents, parent) => {
 	return async (dispatch) => {
 		try {
 			const response = await axios.post(
@@ -34,7 +34,7 @@ export const addComment = (songId, username, contents, reply_to) => {
 					songId: songId,
 					user: username,
 					contents: contents,
-					reply_to: reply_to,
+					parent: parent,
 				},
 				{
 					withCredentials: true,

@@ -21,4 +21,4 @@ class Comment(models.Model):
 	contents = models.CharField(max_length=500)
 	date_of_creation = models.DateTimeField(auto_now=True)
 	edited = models.BooleanField(default=False)
-	reply_to = models.ForeignKey('self', null=True, default=None, on_delete=models.CASCADE)
+	parent = models.ForeignKey('self', null=True, default=None, on_delete=models.CASCADE)
