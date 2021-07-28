@@ -1,15 +1,15 @@
-import axios from "axios";
-import React, { createRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getToken } from "../../util";
 
 import * as commentActions from "../../store/actions/commentActions";
 import CommentsBlock from "../CommentsBlock/CommentsBlock";
+import LoadingCircle from "../LoadingCircle/LoadingCircle";
 import { styles } from "./CommentStyles";
 
 export default function Comments(props) {
 	const username = useSelector((state) => state.auth.username);
-	const newCommentRef = createRef();
+	const newCommentRef = useRef();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -26,21 +26,12 @@ export default function Comments(props) {
 	}, [dispatch, comments, id]);
 
 	const newCommentHandler = async () => {
-		const response = await axios.post(
-			"/api/comments/",
-			{
-				songId: props.id,
-				user: username,
-				contents: newCommentRef.current.value,
-			},
-			{
-				withCredentials: true,
-				headers: {
-					"X-CSRFToken": getToken(),
-					"Content-Type": "application/json",
-				},
-			}
+		setIsLoading(true);
+		dispatch(
+			commentActions.addComment(id, username, newCommentRef.current.value)
 		);
+		newCommentRef.current.value = "";
+		setTimeout(() => setIsLoading(false), 500);
 	};
 
 	return (
@@ -51,6 +42,8 @@ export default function Comments(props) {
 					comments.map((comment) => (
 						<CommentsBlock
 							key={comment.id}
+							songId={id}
+							id={comment.id}
 							username={comment.username}
 							contents={comment.contents}
 							date={comment.date_of_creation}
@@ -62,6 +55,7 @@ export default function Comments(props) {
 					<textarea
 						rows={4}
 						style={styles.input}
+						maxLength={500}
 						ref={newCommentRef}
 					/>
 					<hr />
@@ -69,6 +63,7 @@ export default function Comments(props) {
 						Submit
 					</button>
 				</div>
+				{isLoading && <LoadingCircle />}
 			</div>
 		)
 	);

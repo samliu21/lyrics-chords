@@ -1,6 +1,9 @@
 import axios from "axios";
 
-export const GET_COMMENTS = "GET_COMMENTS";
+import { getToken } from "../../util";
+
+export const ADD_COMMENTS = "GET_COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 
 export const getComments = (id) => {
 	return async (dispatch) => {
@@ -11,12 +14,62 @@ export const getComments = (id) => {
 
 			const comments = response.data;
 			dispatch({
-				type: GET_COMMENTS,
+				type: ADD_COMMENTS,
 				songId: comments[0].song,
 				comments: comments,
 			});
 		} catch (err) {
 			console.log(err.message);
 		}
+	};
+};
+
+export const addComment = (songId, username, contents) => {
+	return async (dispatch) => {
+		try {
+			const response = await axios.post(
+				"/api/comments/",
+				{
+					songId: songId,
+					user: username,
+					contents: contents,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						"X-CSRFToken": getToken(),
+						"Content-Type": "application/json",
+					},
+				}
+			);
+
+			const comment = response.data;
+			dispatch({
+				type: ADD_COMMENTS,
+				songId: songId,
+				comments: [comment],
+			});
+		} catch (err) {
+			alert("There was an error submitting your comment.");
+			console.log(err.message);
+		}
+	};
+};
+
+export const deleteComment = (id, songId) => {
+	return async (dispatch) => {
+		axios.delete(`/api/comments/${id}`, {
+			withCredentials: true,
+			headers: {
+				"X-CSRFToken": getToken(),
+				"Content-Type": "application/json",
+			},
+		});
+
+		dispatch({
+			type: DELETE_COMMENT,
+			songId: songId,
+			id: id,
+		});
 	};
 };

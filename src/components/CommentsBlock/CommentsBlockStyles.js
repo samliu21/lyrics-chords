@@ -13,6 +13,7 @@ export const styles = {
 	horizontalContainer: {
 		display: "flex",
 		flexDirection: "row",
+		justifyContent: "space-between",
 		marginBottom: 10,
 	},
 	username: {

@@ -73,7 +73,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 			song = Song.objects.get(pk=song_id)
 			comment = Comment(song=song, user=user, contents=contents)
 			comment.save()
-			return HttpResponse('Worked!')
+			serializer = CommentSerializer(comment)
+			return Response(serializer.data)
 		except Exception as e:
 			print(e)
 			return HttpResponseBadRequest('An error occurred.')

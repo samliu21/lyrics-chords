@@ -1,9 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
+import * as commentActions from "../../store/actions/commentActions";
+import { BiTrash } from "react-icons/bi";
 import { styles } from "./CommentsBlockStyles";
 
 export default function CommentsBlock(props) {
-	const { username, contents, date } = props;
+	const { username, contents, date, id, songId } = props;
+
+	const dispatch = useDispatch();
 
 	const dateConverter = () => {
 		const dateOfCreation = new Date(date);
@@ -45,13 +50,20 @@ export default function CommentsBlock(props) {
 		}
 	};
 
-	dateConverter();
+	const deleteHandler = () => {
+		dispatch(commentActions.deleteComment(id, songId));
+	}
 
 	return (
 		<div style={styles.container}>
 			<div style={styles.horizontalContainer}>
-				<div style={styles.username}>{username}</div>
-				<div>&nbsp; commented {dateConverter()}</div>
+				<div className="horizontal-default">
+					<div style={styles.username}>{username}</div>
+					<div>&nbsp; commented {dateConverter()}</div>
+				</div>
+				<div className="horizontal-default">
+					<BiTrash onClick={deleteHandler} className="pointer" />
+				</div>
 			</div>
 			<hr />
 			<div style={styles.contents}>{contents}</div>
