@@ -14,12 +14,13 @@ export default function CommentsBlock(props) {
 	const editableRef = useRef();
 	const replyRef = useRef();
 
-	const { commentUsername, contents, date, id, songId, edited } = props;
+	const { songId, commentUsername } = props;
+	const { contents, date_of_creation, id, edited, children } = props.comment;
 
 	const dispatch = useDispatch();
 
 	const dateConverter = () => {
-		const dateOfCreation = new Date(date);
+		const dateOfCreation = new Date(date_of_creation);
 		const currentDate = new Date();
 		const msDif = currentDate - dateOfCreation; // Time elapsed in milliseconds
 
@@ -92,9 +93,23 @@ export default function CommentsBlock(props) {
 
 	const replySubmitHandler = () => {
 		dispatch(
-			commentActions.addComment(songId, username, replyRef.current.value, id)
+			commentActions.addComment(
+				songId,
+				username,
+				replyRef.current.value,
+				id
+			)
 		);
 	};
+
+	const nestedComments = (children || []).map((comment) => (
+		<CommentsBlock
+			key={id}
+			songId={songId}
+			commentUsername={comment.username}
+			comment={comment}
+		/>
+	));
 
 	return (
 		<div style={styles.outerContainer}>
@@ -152,6 +167,7 @@ export default function CommentsBlock(props) {
 					/>
 				</div>
 			)}
+			<div style={styles.children}>{nestedComments}</div>
 		</div>
 	);
 }

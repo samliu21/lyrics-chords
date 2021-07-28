@@ -11,19 +11,20 @@ const initialStore = {
 const nestComments = (commentList) => {
 	const commentMap = {};
 
-	commentList.forEach(comment => commentMap[comment.id] = comment);
+	commentList.forEach((comment) => (commentMap[comment.id] = comment));
 
-	commentList.forEach(comment => {
+	commentList.forEach((comment) => {
 		if (comment.parent !== null) {
 			const parent = commentMap[comment.parent];
 			(parent.children = parent.children || []).push(comment);
 		}
 	}); // Each comment will be placed in the children block of its parent
-	const filtered = commentList.filter(comment => { // Only parentless comments are left at top
+	const filtered = commentList.filter((comment) => {
+		// Only parentless comments are left at top
 		return comment.parent === null;
 	});
 	return filtered;
-}
+};
 
 export default function reducer(store = initialStore, action) {
 	switch (action.type) {
@@ -33,7 +34,7 @@ export default function reducer(store = initialStore, action) {
 				return {
 					...store,
 					comments: {
-						[songId]: action.comments,
+						[songId]: nestComments(action.comments),
 					},
 				};
 			} else {

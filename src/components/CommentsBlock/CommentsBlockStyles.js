@@ -12,6 +12,9 @@ export const styles = {
 		cursor: "pointer",
 		textAlign: "right",
 	},
+	children: {
+		marginLeft: 20,
+	},
 	container: {
 		borderWidth: 1,
 		borderColor: "black",

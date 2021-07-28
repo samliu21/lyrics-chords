@@ -30,7 +30,12 @@ export default function Comments(props) {
 	const newCommentHandler = async () => {
 		setIsLoading(true);
 		dispatch(
-			commentActions.addComment(id, username, newCommentRef.current.value, null)
+			commentActions.addComment(
+				id,
+				username,
+				newCommentRef.current.value,
+				null
+			)
 		);
 		newCommentRef.current.value = "";
 		setTimeout(() => setIsLoading(false), 500);
@@ -41,15 +46,14 @@ export default function Comments(props) {
 			<div>
 				<h2 style={styles.title}>Comments</h2>
 				{comments.map((comment) => (
-					<CommentsBlock
-						key={comment.id}
-						songId={id}
-						id={comment.id}
-						commentUsername={comment.username}
-						contents={comment.contents}
-						date={comment.date_of_creation}
-						edited={comment.edited}
-					/>
+					<div>
+						<CommentsBlock
+							key={comment.id}
+							songId={id}
+							commentUsername={comment.username}
+							comment={comment}
+						/>
+					</div>
 				))}
 				{username && (
 					<NewComment
