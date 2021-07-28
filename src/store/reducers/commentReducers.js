@@ -48,7 +48,7 @@ const deleteHelper = (flatList, rootId) => {
 	}
 	console.log(toRemove);
 	return flatList.filter((comment) => toRemove.indexOf(comment.id) === -1);
-}
+};
 
 export default function reducer(store = initialStore, action) {
 	const songId = action.songId;
@@ -117,22 +117,32 @@ export default function reducer(store = initialStore, action) {
 				comments: filteredComments,
 			};
 		case EDIT_COMMENT:
-			const current = store.comments[action.songId].find(
+			const current = store.flatComments[songId].find(
 				(comment) => comment.id === action.id
 			);
-			current.contents = action.contents;
-			current.date_of_creation = action.time;
-			current.edited = true;
-			const list = store.comments[action.songId].filter(
+			const newComment = {
+				...current,
+				contents: action.contents,
+				date_of_creation: action.time,
+				edited: true,
+			};
+			const list = store.flatComments[songId].filter(
 				(comment) => comment.id !== action.id
 			);
-			list.push(current);
+			list.push(newComment);
+			const newFlatComments = {
+				...store.flatComments,
+				[songId]: list,
+			};
+			const newComments = {
+				...store.comments,
+				[songId]: nestComments(list),
+			};
+
 			return {
 				...store,
-				comments: {
-					...store.comments,
-					[action.songId]: list,
-				},
+				flatComments: newFlatComments,
+				comments: newComments,
 			};
 		default:
 			return store;
