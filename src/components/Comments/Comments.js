@@ -5,7 +5,6 @@ import * as commentActions from "../../store/actions/commentActions";
 import CommentsBlock from "../CommentsBlock/CommentsBlock";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 import NewComment from "../NewComment/NewComment";
-import TextArea from "../TextArea/TextArea";
 import { styles } from "./CommentStyles";
 
 export default function Comments(props) {

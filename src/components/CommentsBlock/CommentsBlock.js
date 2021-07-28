@@ -100,6 +100,7 @@ export default function CommentsBlock(props) {
 				id
 			)
 		);
+		setReplying(false);
 	};
 
 	const nestedComments = (children || []).map((comment) => (
@@ -156,6 +157,7 @@ export default function CommentsBlock(props) {
 					</div>
 				)}
 			</div>
+			<div style={styles.children}>{nestedComments}</div>
 			{replying && (
 				<div style={styles.replyContainer}>
 					<NewComment
@@ -167,7 +169,6 @@ export default function CommentsBlock(props) {
 					/>
 				</div>
 			)}
-			<div style={styles.children}>{nestedComments}</div>
 		</div>
 	);
 }

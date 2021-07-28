@@ -14,6 +14,7 @@ export const getComments = (id) => {
 			);
 
 			const comments = response.data;
+
 			dispatch({
 				type: ADD_COMMENTS,
 				songId: id,
@@ -75,7 +76,8 @@ export const deleteComment = (id, songId) => {
 				id: id,
 			});
 		} catch (err) {
-			console.log(err.message);
+			console.log(err);
+			// console.log(err.message);
 		}
 	};
 };
