@@ -1,12 +1,16 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import * as commentActions from "../../store/actions/commentActions";
-import { BiTrash } from "react-icons/bi";
+import { BiTrash, BiPencil } from "react-icons/bi";
 import { styles } from "./CommentsBlockStyles";
 
 export default function CommentsBlock(props) {
-	const { username, contents, date, id, songId } = props;
+	const username = useSelector((state) => state.auth.username);
+	const [editMode, setEditMode] = useState(false);
+	const editableRef = useRef();
+
+	const { commentUsername, contents, date, id, songId } = props;
 
 	const dispatch = useDispatch();
 
@@ -50,23 +54,72 @@ export default function CommentsBlock(props) {
 		}
 	};
 
+	const editHandler = () => {
+		setEditMode(true);
+	};
+
 	const deleteHandler = () => {
 		dispatch(commentActions.deleteComment(id, songId));
-	}
+	};
+
+	const editCancelHandler = () => {
+		setEditMode(false);
+	};
+
+	const editSubmitHandler = () => {
+		const val = editableRef.current.value;
+		if (val === "") {
+			alert("Comment cannot be empty.");
+			return;
+		}
+		if (contents !== val) {
+			dispatch(commentActions.editComment(songId, id, val));
+		}
+		setEditMode(false);
+	};
 
 	return (
 		<div style={styles.container}>
 			<div style={styles.horizontalContainer}>
 				<div className="horizontal-default">
-					<div style={styles.username}>{username}</div>
+					<div style={styles.username}>{commentUsername}</div>
 					<div>&nbsp; commented {dateConverter()}</div>
 				</div>
 				<div className="horizontal-default">
+					{username === commentUsername && (
+						<BiPencil onClick={editHandler} className="pointer" />
+					)}
 					<BiTrash onClick={deleteHandler} className="pointer" />
 				</div>
 			</div>
 			<hr />
-			<div style={styles.contents}>{contents}</div>
+			{editMode ? (
+				<div>
+					<textarea
+						rows={4}
+						defaultValue={contents}
+						ref={editableRef}
+						style={styles.input}
+					/>
+					<hr />
+					<div className="horizontal-between">
+						<button
+							onClick={editCancelHandler}
+							style={styles.button}
+						>
+							Cancel
+						</button>
+						<button
+							onClick={editSubmitHandler}
+							style={styles.button}
+						>
+							Submit
+						</button>
+					</div>
+				</div>
+			) : (
+				<div style={styles.contents}>{contents}</div>
+			)}
 		</div>
 	);
 }

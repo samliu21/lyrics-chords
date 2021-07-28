@@ -49,6 +49,11 @@ h2 {
 	height: 100%;
 	justify-content: center;
 }
+.horizontal-between {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
 .vertical {
 	display: flex;
 	flex-direction: column;

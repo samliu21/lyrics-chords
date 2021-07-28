@@ -35,34 +35,38 @@ export default function Comments(props) {
 	};
 
 	return (
-		username && (
+		comments && (
 			<div>
 				<h2 style={styles.title}>Comments</h2>
-				{comments &&
-					comments.map((comment) => (
-						<CommentsBlock
-							key={comment.id}
-							songId={id}
-							id={comment.id}
-							username={comment.username}
-							contents={comment.contents}
-							date={comment.date_of_creation}
-						/>
-					))}
-				<div style={styles.newComment}>
-					<h3 style={styles.heading}>New comment</h3>
-					<hr />
-					<textarea
-						rows={4}
-						style={styles.input}
-						maxLength={500}
-						ref={newCommentRef}
+				{comments.map((comment) => (
+					<CommentsBlock
+						key={comment.id}
+						songId={id}
+						id={comment.id}
+						commentUsername={comment.username}
+						contents={comment.contents}
+						date={comment.date_of_creation}
 					/>
-					<hr />
-					<button onClick={newCommentHandler} style={styles.button}>
-						Submit
-					</button>
-				</div>
+				))}
+				{username && (
+					<div style={styles.newComment}>
+						<h3 style={styles.heading}>New comment</h3>
+						<hr />
+						<textarea
+							rows={4}
+							style={styles.input}
+							maxLength={500}
+							ref={newCommentRef}
+						/>
+						<hr />
+						<button
+							onClick={newCommentHandler}
+							style={styles.button}
+						>
+							Submit
+						</button>
+					</div>
+				)}
 				{isLoading && <LoadingCircle />}
 			</div>
 		)

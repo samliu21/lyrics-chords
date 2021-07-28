@@ -1,4 +1,8 @@
-import { ADD_COMMENTS, DELETE_COMMENT } from "../actions/commentActions";
+import {
+	ADD_COMMENTS,
+	DELETE_COMMENT,
+	EDIT_COMMENT,
+} from "../actions/commentActions";
 
 const initialStore = {
 	comments: null,
@@ -26,8 +30,6 @@ export default function reducer(store = initialStore, action) {
 						},
 					};
 				} else {
-					// console.log("Hey there!");
-					// console.log(store.comments.songId);
 					return {
 						...store,
 						comments: {
@@ -48,6 +50,23 @@ export default function reducer(store = initialStore, action) {
 					[action.songId]: store.comments[action.songId].filter(
 						(comment) => comment.id !== action.id
 					),
+				},
+			};
+		case EDIT_COMMENT:
+			const current = store.comments[action.songId].find(
+				(comment) => comment.id === action.id
+			);
+			current.contents = action.contents;
+			current.date_of_creation = action.time;
+			const list = store.comments[action.songId].filter(
+				(comment) => comment.id !== action.id
+			);
+			list.push(current);
+			return {
+				...store,
+				comments: {
+					...store.comments,
+					[action.songId]: list,
 				},
 			};
 		default:
