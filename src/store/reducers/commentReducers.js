@@ -46,7 +46,6 @@ const deleteHelper = (flatList, rootId) => {
 			}
 		}
 	}
-	console.log(toRemove);
 	return flatList.filter((comment) => toRemove.indexOf(comment.id) === -1);
 };
 
@@ -120,12 +119,14 @@ export default function reducer(store = initialStore, action) {
 			const current = store.flatComments[songId].find(
 				(comment) => comment.id === action.id
 			);
-			const newComment = {
+			const newComment = { // Get new comment with edited contents
 				...current,
 				contents: action.contents,
 				date_of_creation: action.time,
 				edited: true,
 			};
+
+			// Filter original list and add new comment
 			const list = store.flatComments[songId].filter(
 				(comment) => comment.id !== action.id
 			);

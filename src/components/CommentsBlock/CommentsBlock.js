@@ -130,11 +130,13 @@ export default function CommentsBlock(props) {
 								className="pointer"
 							/>
 						)}
-						<BiTrash
-							onClick={deleteHandler}
-							style={styles.trash}
-							className="pointer"
-						/>
+						{username === commentUsername && (
+							<BiTrash
+								onClick={deleteHandler}
+								style={styles.trash}
+								className="pointer"
+							/>
+						)}
 						{username && (
 							<BsArrow90DegLeft
 								onClick={replyHandler}

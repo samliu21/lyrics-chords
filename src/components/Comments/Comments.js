@@ -17,7 +17,9 @@ export default function Comments(props) {
 	const { id } = props;
 
 	const comments = useSelector((state) =>
-		id && state.comments.comments ? state.comments.comments[id] : null
+		id && state.comments.comments && state.comments.comments[id]
+			? state.comments.comments[id]
+			: null
 	);
 
 	useEffect(() => {
@@ -44,16 +46,20 @@ export default function Comments(props) {
 		comments && (
 			<div>
 				<h2 style={styles.title}>Comments</h2>
-				{comments.map((comment) => (
-					<div>
-						<CommentsBlock
-							key={comment.id}
-							songId={id}
-							commentUsername={comment.username}
-							comment={comment}
-						/>
-					</div>
-				))}
+				{comments.length === 0 ? (
+					<p>No comments.</p>
+				) : (
+					comments.map((comment) => (
+						<div>
+							<CommentsBlock
+								key={comment.id}
+								songId={id}
+								commentUsername={comment.username}
+								comment={comment}
+							/>
+						</div>
+					))
+				)}
 				{username && (
 					<NewComment
 						title="New comment"
