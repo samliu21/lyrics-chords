@@ -18,8 +18,9 @@ export const styles = {
 		borderStyle: "solid",
 		padding: 20,
 		backgroundColor: "white",
+	},
+	contents: {
 		marginTop: 10,
-		marginBottom: 10,
 	},
 	horizontalContainer: {
 		display: "flex",
@@ -33,13 +34,22 @@ export const styles = {
 		fontSize: "2vmin",
 		marginTop: 10,
 	},
+	outerContainer: {
+		marginTop: 10,
+		marginBottom: 10,
+	},
+	replyContainer: {
+		marginTop: 10,
+		marginLeft: 20,
+	},
+	trash: {
+		marginLeft: 5,
+		marginRight: 5,
+	},
 	username: {
 		marginRight: 5,
 		color: Colors.accent,
 		fontWeight: "bold",
 		fontStyle: "italic",
-	},
-	contents: {
-		marginTop: 10,
 	},
 };

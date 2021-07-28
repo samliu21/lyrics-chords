@@ -3,12 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 
 import * as commentActions from "../../store/actions/commentActions";
 import { BiTrash, BiPencil } from "react-icons/bi";
+import { BsArrow90DegLeft } from "react-icons/bs";
+import NewComment from "../NewComment/NewComment";
 import { styles } from "./CommentsBlockStyles";
+import TextArea from "../TextArea/TextArea";
 
 export default function CommentsBlock(props) {
 	const username = useSelector((state) => state.auth.username);
 	const [editMode, setEditMode] = useState(false);
+	const [replying, setReplying] = useState(false);
 	const editableRef = useRef();
+	const replyRef = useRef();
 
 	const { commentUsername, contents, date, id, songId, edited } = props;
 
@@ -78,50 +83,73 @@ export default function CommentsBlock(props) {
 		setEditMode(false);
 	};
 
+	const replyHandler = () => {
+		setReplying(true);
+	};
+
+	const replyCancelHandler = () => {
+		setReplying(false);
+	};
+
+	const replySubmitHandler = () => {
+		
+	}
+
 	return (
-		<div style={styles.container}>
-			<div style={styles.horizontalContainer}>
-				<div className="horizontal-default">
-					<div style={styles.username}>{commentUsername}</div>
-					<div>
-						&nbsp; {edited ? "edited" : "commented"}&nbsp;
-						{dateConverter()}
+		<div style={styles.outerContainer}>
+			<div style={styles.container}>
+				<div style={styles.horizontalContainer}>
+					<div className="horizontal-default">
+						<div style={styles.username}>{commentUsername}</div>
+						<div>
+							&nbsp; {edited ? "edited" : "commented"}&nbsp;
+							{dateConverter()}
+						</div>
+					</div>
+					<div className="horizontal-default">
+						{username === commentUsername && (
+							<BiPencil
+								onClick={editHandler}
+								className="pointer"
+							/>
+						)}
+						<BiTrash
+							onClick={deleteHandler}
+							style={styles.trash}
+							className="pointer"
+						/>
+						{username && (
+							<BsArrow90DegLeft
+								onClick={replyHandler}
+								className="pointer"
+							/>
+						)}
 					</div>
 				</div>
-				<div className="horizontal-default">
-					{username === commentUsername && (
-						<BiPencil onClick={editHandler} className="pointer" />
-					)}
-					<BiTrash onClick={deleteHandler} className="pointer" />
-				</div>
-			</div>
-			<hr />
-			{editMode ? (
-				<div>
-					<textarea
-						rows={4}
+				{editMode ? (
+					<NewComment
+						refName={editableRef}
+						submitHandler={editSubmitHandler}
+						cancelHandler={editCancelHandler}
 						defaultValue={contents}
-						ref={editableRef}
-						style={styles.input}
 					/>
-					<hr />
-					<div className="horizontal-between">
-						<button
-							onClick={editCancelHandler}
-							style={styles.button}
-						>
-							Cancel
-						</button>
-						<button
-							onClick={editSubmitHandler}
-							style={styles.button}
-						>
-							Submit
-						</button>
+				) : (
+					<div style={styles.contents}>
+						<hr />
+						{contents}
 					</div>
+				)}
+			</div>
+			{replying && (
+				<div style={styles.replyContainer}>
+					<NewComment
+						title="Replying"
+						refName={replyRef}
+						cancelHandler={replyCancelHandler}
+						submitHandler={replySubmitHandler}
+						border
+					/>
 				</div>
-			) : (
-				<div style={styles.contents}>{contents}</div>
 			)}
 		</div>
 	);

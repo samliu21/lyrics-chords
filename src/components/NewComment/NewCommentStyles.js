@@ -1,6 +1,10 @@
-import { Colors } from "../../constants/Colors";
+import { Colors } from "../../constants/Colors"
 
 export const styles = {
+	alignRight: {
+		marginLeft: "auto",
+		display: "block",
+	},
 	button: {
 		backgroundColor: Colors.primary,
 		color: "white",
@@ -9,25 +13,19 @@ export const styles = {
 		fontSize: "2vmin",
 		textDecoration: "none",
 		margin: 0,
-		marginLeft: "auto",
-		display: "block",
 		cursor: "pointer",
 		textAlign: "right",
 	},
-	heading: {
-		marginTop: 0,
-		paddingBottom: 0,
-		fontSize: "2.7vmin",
-	},
-	newComment: {
+	container: {
 		borderWidth: 1,
 		borderColor: "black",
 		borderStyle: "solid",
 		padding: 20,
 		backgroundColor: "white",
 	},
-	title: {
-		color: Colors.primary,
-		fontSize: "4vmin",
+	heading: {
+		marginTop: 0,
+		paddingBottom: 0,
+		fontSize: "2.7vmin",
 	},
-};
+}

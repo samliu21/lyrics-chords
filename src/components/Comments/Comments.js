@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import * as commentActions from "../../store/actions/commentActions";
 import CommentsBlock from "../CommentsBlock/CommentsBlock";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
+import NewComment from "../NewComment/NewComment";
+import TextArea from "../TextArea/TextArea";
 import { styles } from "./CommentStyles";
 
 export default function Comments(props) {
@@ -50,23 +52,12 @@ export default function Comments(props) {
 					/>
 				))}
 				{username && (
-					<div style={styles.newComment}>
-						<h3 style={styles.heading}>New comment</h3>
-						<hr />
-						<textarea
-							rows={4}
-							style={styles.input}
-							maxLength={500}
-							ref={newCommentRef}
-						/>
-						<hr />
-						<button
-							onClick={newCommentHandler}
-							style={styles.button}
-						>
-							Submit
-						</button>
-					</div>
+					<NewComment
+						title="New comment"
+						refName={newCommentRef}
+						submitHandler={newCommentHandler}
+						border
+					/>
 				)}
 				{isLoading && <LoadingCircle />}
 			</div>
