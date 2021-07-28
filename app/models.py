@@ -20,3 +20,4 @@ class Comment(models.Model):
 	user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 	contents = models.CharField(max_length=500)
 	date_of_creation = models.DateTimeField(auto_now=True)
+	edited = models.BooleanField(default=False)

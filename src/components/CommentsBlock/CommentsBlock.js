@@ -10,7 +10,7 @@ export default function CommentsBlock(props) {
 	const [editMode, setEditMode] = useState(false);
 	const editableRef = useRef();
 
-	const { commentUsername, contents, date, id, songId } = props;
+	const { commentUsername, contents, date, id, songId, edited } = props;
 
 	const dispatch = useDispatch();
 
@@ -83,7 +83,10 @@ export default function CommentsBlock(props) {
 			<div style={styles.horizontalContainer}>
 				<div className="horizontal-default">
 					<div style={styles.username}>{commentUsername}</div>
-					<div>&nbsp; commented {dateConverter()}</div>
+					<div>
+						&nbsp; {edited ? "edited" : "commented"}&nbsp;
+						{dateConverter()}
+					</div>
 				</div>
 				<div className="horizontal-default">
 					{username === commentUsername && (

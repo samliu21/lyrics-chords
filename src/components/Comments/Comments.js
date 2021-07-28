@@ -46,6 +46,7 @@ export default function Comments(props) {
 						commentUsername={comment.username}
 						contents={comment.contents}
 						date={comment.date_of_creation}
+						edited={comment.edited}
 					/>
 				))}
 				{username && (

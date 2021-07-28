@@ -58,6 +58,7 @@ export default function reducer(store = initialStore, action) {
 			);
 			current.contents = action.contents;
 			current.date_of_creation = action.time;
+			current.edited = true;
 			const list = store.comments[action.songId].filter(
 				(comment) => comment.id !== action.id
 			);
