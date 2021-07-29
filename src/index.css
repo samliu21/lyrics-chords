@@ -4,6 +4,12 @@
 	--primaryLight: #ff7f7f;
 	--light: #f3f3f3;
 	--primary: #de354c;
+
+	--h1: 6vmin;
+	--h2: 3.8vmin;
+	--h3: 2.5vmin;
+	--h4: 2vmin;
+	--p: 1.5vmin;
 }
 
 html {

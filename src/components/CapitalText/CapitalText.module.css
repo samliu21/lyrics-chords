@@ -1,0 +1,6 @@
+.text {
+	color: var(--primary);
+	font-size: var(--h2);
+	font-weight: bold;
+	cursor: pointer;
+}

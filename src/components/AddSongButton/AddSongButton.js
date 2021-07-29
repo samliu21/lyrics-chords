@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/songsActions";
 
-import { styles } from "./AddSongButtonStyles";
 import { getUsername } from "../../util";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
+import CapitalText from "../CapitalText/CapitalText";
 
 export default function AddSongButton() {
 	const [isAdding, setIsAdding] = useState(false);
@@ -24,13 +24,7 @@ export default function AddSongButton() {
 	return (
 		<div>
 			{isAdding && <LoadingCircle />}
-			<span
-				className="important"
-				style={styles.addSong}
-				onClick={addSongHandler}
-			>
-				ADD SONG
-			</span>
+			<CapitalText onClick={addSongHandler}>Add Song</CapitalText>
 		</div>
 	);
 }

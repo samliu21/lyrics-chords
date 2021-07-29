@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./button.module.css";
+import styles from "./Button.module.css";
 
 export default function Button(props) {
 	const { style } = props;
