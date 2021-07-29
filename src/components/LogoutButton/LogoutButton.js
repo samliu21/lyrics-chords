@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as authActions from "../../store/actions/authActions";
+import DropMenu from "../DropMenu/DropMenu";
 import { getToken, getUsername } from "../../util";
 import { styles } from "./LogoutButtonStyles";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";

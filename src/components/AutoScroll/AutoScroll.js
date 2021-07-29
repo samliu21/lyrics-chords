@@ -1,15 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 
 import CustomSlider from "../CustomSlider/CustomSlider";
-import { styles } from "./AutoScrollStyles";
+import DropMenu from "../DropMenu/DropMenu";
 
-export default function AutoScroll(props) {
-	const [menuOpen, setMenuOpen] = useState(false);
-
+export default function AutoScroll() {
 	const scrollTimeout = useRef();
 	const scrollSpeed = useRef(3);
-
-	const { style } = props;
 
 	// On slider release, change the current speed and start scrolling
 	const sliderChangeHandler = (_, val) => {
@@ -33,21 +29,18 @@ export default function AutoScroll(props) {
 		window.removeEventListener("mousemove", clearTimeoutHandler);
 	};
 
-	return (
-		<div
-			onMouseEnter={() => setMenuOpen(true)}
-			onMouseLeave={() => setMenuOpen(false)}
-		>
-			<div className="navBarLink navBarHover" style={style}>
-				Auto-scroll
-			</div>
-			<div style={styles.outerDiv}>
-				{menuOpen && (
-					<div style={styles.slider}>
-						<CustomSlider onChangeCommitted={sliderChangeHandler} existingValue={scrollSpeed.current} />
-					</div>
-				)}
-			</div>
-		</div>
-	);
+	const items = [
+		{
+			text: (
+				<CustomSlider
+					onChangeCommitted={sliderChangeHandler}
+					existingValue={scrollSpeed.current}
+				/>
+			),
+			onClick: () => {},
+			condition: true,
+		},
+	];
+
+	return <DropMenu title="Auto Scroll" items={items} white />;
 }

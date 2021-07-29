@@ -17,7 +17,7 @@ export default function DropMenu(props) {
 	// { text: "Blah", onClick: () => console.log("Clicked"), condition: isAdmin }
 	const menuOption = (item) => {
 		return (
-			<p onClick={item.onClick} className={styles.dropdownOption}>
+			<p onClick={item.onClick} className={props.white ? styles.whiteOption : styles.dropdownOption}>
 				{item.text}
 			</p>
 		);
@@ -32,6 +32,7 @@ export default function DropMenu(props) {
 			<div className={styles.hover}>{props.title}</div>
 			<div className={`${layout.columnDefault} ${styles.option}`}>
 				{menuOpen &&
+					props.items &&
 					props.items.map(
 						(item) => item.condition && menuOption(item)
 					)}
