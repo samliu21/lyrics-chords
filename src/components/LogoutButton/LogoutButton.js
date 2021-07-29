@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 import DropMenu from "../DropMenu/DropMenu";
 import { getToken, getUsername } from "../../util";
-import { styles } from "./LogoutButtonStyles";
+import styles from "./LogoutButton.module.css";
+import design from "../../styles/design.module.css";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();
@@ -15,21 +16,23 @@ const cookie = new Cookie();
 export default function LogoutButton(props) {
 	const username = useSelector((state) => state.auth.username);
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
-	const [menuOpen, setMenuOpen] = useState(false);
 
 	const history = useHistory();
 	const dispatch = useDispatch();
 
+	// Redirect to profile page
 	const profileRedirectHandler = () => {
 		history.push(`/user/${username}`);
 	};
 
+	// Get username
 	useEffect(() => {
 		if (!username) {
 			getUsername();
 		}
 	}, [username]);
 
+	// Remove values from cookies, dispatch to redux, and send to backend
 	const logoutHandler = async () => {
 		cookie.remove("username");
 		cookie.remove("email");
@@ -57,59 +60,45 @@ export default function LogoutButton(props) {
 		}
 	};
 
-	// If horizontal navbar, show full text
-	let content = (
-		<div
-			style={styles.rowContainer}
-			onMouseEnter={() => setMenuOpen(true)}
-			onMouseLeave={() => setMenuOpen(false)}
-		>
-			{isLoggingOut && <LoadingCircle />}
+	const items = [
+		{
+			text: <div>Logout here.</div>,
+			onClick: () => logoutHandler(),
+			condition: true,
+		},
+	];
 
-			<span
-				onClick={profileRedirectHandler}
-				style={styles.link}
-				className="navBarLink navBarHover"
-			>
-				Welcome&nbsp;&nbsp;
-				<span className="emphasis">{username}</span>
-				.&nbsp;
-			</span>
-
-			<div style={styles.outerDiv}>
-				{menuOpen && (
-					<div
-						style={styles.logout}
-						onClick={logoutHandler}
-						className="dropdown-option"
-					>
-						Logout here.
-					</div>
-				)}
-			</div>
+	const welcome = () => (
+		<div onClick={profileRedirectHandler}>
+			Welcome&nbsp;&nbsp;
+			<span className="emphasis">{username}</span>.
 		</div>
 	);
 
-	// If sidebar, don't display full text
+	// If horizontal navbar
+	let content = <DropMenu title={welcome()} items={items} />;
+
+	// If sidebar
 	if (!props.full) {
 		content = (
-			<div className="vertical" style={styles.columnContainer}>
-				{isLoggingOut && <LoadingCircle />}
+			<div className={styles.container}>
 				<span
-					className="emphasis pointer"
-					style={styles.name}
+					className={`${design.emphasis} ${design.pointer} ${styles.name}`}
 					onClick={profileRedirectHandler}
 				>
 					{username}
 				</span>
-				<div>
-					<span onClick={logoutHandler} className="navBarLink">
-						Logout here.
-					</span>
-				</div>
+				<span onClick={logoutHandler} className={design.pointer}>
+					Logout here.
+				</span>
 			</div>
 		);
 	}
 
-	return content;
+	return (
+		<div>
+			{isLoggingOut && <LoadingCircle />}
+			{content}
+		</div>
+	);
 }

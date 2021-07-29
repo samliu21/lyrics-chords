@@ -1,0 +1,9 @@
+.container {
+	padding: 0px 15px 5vh 10px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.name {
+	margin-bottom: 10px;
+}

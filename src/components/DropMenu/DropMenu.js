@@ -17,9 +17,14 @@ export default function DropMenu(props) {
 	// { text: "Blah", onClick: () => console.log("Clicked"), condition: isAdmin }
 	const menuOption = (item) => {
 		return (
-			<p onClick={item.onClick} className={props.white ? styles.whiteOption : styles.dropdownOption}>
+			<div
+				onClick={item.onClick}
+				className={
+					props.white ? styles.whiteOption : styles.dropdownOption
+				}
+			>
 				{item.text}
-			</p>
+			</div>
 		);
 	};
 
