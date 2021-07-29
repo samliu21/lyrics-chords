@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 
 import { styles } from "./NavContentStyles";
 import LogoutButton from "../LogoutButton/LogoutButton";
-import DropDown from "../DropDown/DropDown";
+import Options from "../Options/Options";
 import AutoScroll from "../AutoScroll/AutoScroll";
-import DropMenu from "../DropMenu/DropMenu";
 
 export default function NavContent(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -76,18 +75,7 @@ export default function NavContent(props) {
 					</Link>
 				)}
 
-				{/* Only show dropdown menu if horizontal nav bar */}
-				<DropMenu
-					title="Title"
-					items={[
-						{
-							text: "1",
-							onClick: () => console.log("Hello"),
-							condition: !isAdmin,
-						},
-					]}
-				/>
-				{props.direction === "row" && <DropDown />}
+				{props.direction === "row" && <Options />}
 
 				{/* Only show autoscroll if horizontal nav bar and the user is on a song page */}
 				{(isSongPage || isSongPageView) &&

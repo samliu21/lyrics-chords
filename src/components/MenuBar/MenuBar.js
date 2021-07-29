@@ -1,5 +1,5 @@
 import React from "react";
-import DropDown from "../DropDown/DropDown";
+import Options from "../Options/Options";
 import { useSelector } from "react-redux";
 
 import { styles } from "./MenuBarStyles";
@@ -22,7 +22,7 @@ export default function MenuBar(props) {
 					onClick={props.onMenuClick}
 				/>
 				<div style={styles.rightDiv}>
-					<DropDown />
+					<Options />
 					{(isSongPage || isSongPageView) && (
 						<AutoScroll style={styles.linkStyle} />
 					)}

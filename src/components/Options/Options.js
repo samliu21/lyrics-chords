@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import * as songsActions from "../../store/actions/songsActions";
-import * as selectedSongActions from "../../store/actions/selectedSongActions";
 import { useHistory } from "react-router";
 
-import { styles } from "./DropDownStyles";
+import * as songsActions from "../../store/actions/songsActions";
+import * as selectedSongActions from "../../store/actions/selectedSongActions";
+import DropMenu from "../DropMenu/DropMenu";
 
-export default function DropDown() {
-	const [menuOpen, setMenuOpen] = useState(false);
+export default function Options() {
 	const isSongPage = useSelector((state) => state.selectedSong.isSongPage);
 	const songLink = useSelector((state) => state.selectedSong.songLink);
 
@@ -67,51 +66,23 @@ export default function DropDown() {
 		history.push("/help");
 	};
 
-	return (
-		// To prevent from spanning the entire width
-		<div style={styles.outerContainer}>
-			<div
-				style={styles.container}
-				onMouseEnter={() => setMenuOpen(true)}
-				onMouseLeave={() => setMenuOpen(false)}
-			>
-				<div
-					className="navBarLink navBarHover"
-					style={styles.hoverable}
-				>
-					Options
-				</div>
+	const items = [
+		{
+			text: "Fetch Lyrics",
+			onClick: () => getLyrics(),
+			condition: isSongPage,
+		},
+		{
+			text: "Transfer Lyrics",
+			onClick: () => transferLyricsHandler(),
+			condition: isSongPage,
+		},
+		{
+			text: "Help",
+			onClick: () => helpRedirectHandler(),
+			condition: true,
+		},
+	];
 
-				{/* Necessary so that position absolute starts at the top left corner of this */}
-				<div style={styles.outerDiv}>
-					{menuOpen && (
-						<div style={styles.options}>
-							{isSongPage && (
-								<div>
-									<p
-										className="dropdown-option"
-										onClick={getLyrics}
-									>
-										Fetch Lyrics
-									</p>
-									<p
-										className="dropdown-option"
-										onClick={transferLyricsHandler}
-									>
-										Transfer Lyrics
-									</p>
-								</div>
-							)}
-							<p
-								className="dropdown-option"
-								onClick={helpRedirectHandler}
-							>
-								Help
-							</p>
-						</div>
-					)}
-				</div>
-			</div>
-		</div>
-	);
+	return <DropMenu title="Options" items={items} />;
 }
