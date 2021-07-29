@@ -12,9 +12,6 @@ import {
 } from "../actions/songsActions";
 import { sortSongsById } from "../../util";
 
-import storage from "redux-persist/lib/storage";
-import { persistReducer } from "redux-persist";
-
 const initialStore = {
 	userSongs: null,
 	publicSongs: null,
@@ -216,16 +213,4 @@ function store(store = initialStore, action) {
 	}
 }
 
-const persistConfig = {
-	key: "songs",
-	storage: storage,
-	blacklist: [
-		"publicSongs",
-		"filteredPublicSongs",
-		"userSongs",
-		"filteredUserSongs",
-		"views",
-	],
-};
-
-export default persistReducer(persistConfig, store);
+export default store;

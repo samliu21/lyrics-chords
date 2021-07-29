@@ -9,11 +9,12 @@ import * as songsActions from "../../store/actions/songsActions";
 import { styles } from "./AuthStyles";
 import { getToken, getActivationStatus } from "../../util";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
+import Button from "../../components/Button/Button";
 
 const cookie = new Cookie();
 
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 export default function Auth() {
 	const [username, setUsername] = useState("");
@@ -120,6 +121,7 @@ export default function Auth() {
 			// Get the new user's songs
 			dispatch(songsActions.getUserSongs());
 			setIsLoading(false);
+			console.log(login);
 
 			if (login) {
 				history.push(`/songs/${queriedUsername}`);
@@ -211,12 +213,10 @@ export default function Auth() {
 
 					{/* Buttons */}
 					<div style={styles.buttonContainer}>
-						<button style={styles.button} onClick={submitHandler}>
-							Submit
-						</button>
-						<p onClick={switchModeHandler} style={styles.button}>
+						<Button onClick={submitHandler}>Submit</Button>
+						<Button onClick={switchModeHandler}>
 							Switch to {login ? "Sign up" : "Login"}
-						</p>
+						</Button>
 					</div>
 
 					{login && (

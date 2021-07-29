@@ -1,0 +1,19 @@
+.btn {
+	background-color: var(--primary);
+	color: white;
+	border-width: 0;
+	padding: 1vh 2vw;
+	font-size: 2vmin;
+	text-align: center;
+	margin: 0;
+	cursor: pointer;
+}
+/* backgroundColor: Colors.primary,
+		color: "white",
+		borderWidth: 0,
+		padding: "1.5vh 3vw",
+		fontSize: "2.5vmin",
+		textDecoration: "none",
+		textAlign: "center",
+		margin: 0,
+		cursor: "pointer", */

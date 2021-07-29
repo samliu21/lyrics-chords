@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../Button/Button";
 import TextArea from "../TextArea/TextArea";
 
 import { styles } from "./NewCommentStyles";
@@ -13,20 +14,17 @@ export default function NewComment(props) {
 			/>
 			{props.cancelHandler ? (
 				<div className="horizontal-between">
-					<button onClick={props.cancelHandler} style={styles.button}>
-						Cancel
-					</button>
-					<button onClick={props.submitHandler} style={styles.button}>
-						Submit
-					</button>
+					<Button onClick={props.cancelHandler}>Cancel</Button>
+					<Button onClick={props.submitHandler}>Submit</Button>
 				</div>
 			) : (
-				<button
-					onClick={props.submitHandler}
-					style={{ ...styles.button, ...styles.alignRight }}
-				>
-					Submit
-				</button>
+				<Button onClick={props.submitHandler} style={styles.alignRight}>Submit</Button>
+				// <button
+				// 	onClick={props.submitHandler}
+				// 	style={{ ...styles.button, ...styles.alignRight }}
+				// >
+				// 	Submit
+				// </button>
 			)}
 		</div>
 	);
