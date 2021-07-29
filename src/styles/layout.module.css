@@ -1,0 +1,11 @@
+.columnDefault {
+	display: flex;
+	flex-direction: column;
+}
+
+.inlineBlock {
+	display: inline-block;
+}
+.relative {
+	position: relative;
+}

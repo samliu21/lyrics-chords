@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import * as songsActions from "../../store/actions/songsActions";
 import { useHistory } from "react-router-dom";
 
-import SongBlock from "../../components/SongBlock/SongBlock";
 import AddSongButton from "../../components/AddSongButton/AddSongButton";
+import DropMenu from "../../components/DropMenu/DropMenu";
 import { styles } from "./SongListStyles";
 import { getUsername, getActivationStatus } from "../../util";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import SongBlock from "../../components/SongBlock/SongBlock";
 
 export default function SongList(props) {
 	const { username } = props.match.params;

@@ -6,6 +6,7 @@ import { styles } from "./NavContentStyles";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import DropDown from "../DropDown/DropDown";
 import AutoScroll from "../AutoScroll/AutoScroll";
+import DropMenu from "../DropMenu/DropMenu";
 
 export default function NavContent(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -36,8 +37,7 @@ export default function NavContent(props) {
 	let content = (
 		<div style={outerDivStyle}>
 			<div style={leftDivStyle}>
-				{!username &&
-				(
+				{!username && (
 					<Link
 						to="/"
 						className="navBarLink navBarHover"
@@ -77,6 +77,16 @@ export default function NavContent(props) {
 				)}
 
 				{/* Only show dropdown menu if horizontal nav bar */}
+				<DropMenu
+					title="Title"
+					items={[
+						{
+							text: "1",
+							onClick: () => console.log("Hello"),
+							condition: !isAdmin,
+						},
+					]}
+				/>
 				{props.direction === "row" && <DropDown />}
 
 				{/* Only show autoscroll if horizontal nav bar and the user is on a song page */}
