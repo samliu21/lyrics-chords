@@ -9,19 +9,21 @@ import {
 	AiFillCaretLeft,
 	AiOutlineClose,
 } from "react-icons/ai";
-import { styles } from "./SearchBarStyles";
-import "./searchbar.css";
+import styles from "./SearchBar.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function SearchBar(props) {
 	const [open, setOpen] = useState(false);
 	const [searchText, setSearchText] = useState("");
-	const filterFunction = props.public ? (state) => state.songs.publicSongs : (state) => state.songs.userSongs;
+	const filterFunction = props.public
+		? (state) => state.songs.publicSongs
+		: (state) => state.songs.userSongs;
 	const songList = useSelector(filterFunction);
 
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	// Close 
+	// Close
 	useEffect(() => {
 		const unlisten = history.listen(() => {
 			setOpen(false);
@@ -44,7 +46,7 @@ export default function SearchBar(props) {
 		} else {
 			dispatch(songsActions.setFilteredUserSongs("reset"));
 		}
-	}
+	};
 
 	// Perform filter on publicList using fuzzy-search library
 	const filterList = () => {
@@ -63,7 +65,7 @@ export default function SearchBar(props) {
 		} else {
 			dispatch(songsActions.setFilteredUserSongs(result));
 		}
-	}
+	};
 
 	// Handles search button click
 	const searchButtonHandler = () => {
@@ -94,24 +96,32 @@ export default function SearchBar(props) {
 	};
 
 	return (
-		<div style={styles.container}>
+		<div className={ui["sidebar-container"]}>
 			{open && (
 				<AiFillCaretLeft
-					style={styles.close}
+					className={ui["sidebar-icon"]}
 					onClick={closeSearchHandler}
 				/>
 			)}
 			{open && (
 				<input
-					style={styles.input}
 					value={searchText}
+					className={styles.input}
 					placeholder="Filter here"
 					onChange={inputChangeHandler}
 					onKeyDown={inputKeydownHandler}
 				/>
 			)}
-			{open && <AiOutlineClose style={styles.x} onClick={resetFilter} />}
-			<AiOutlineSearch style={styles.button} onClick={searchButtonHandler}>
+			{open && (
+				<AiOutlineClose
+					className={ui["sidebar-icon"]}
+					onClick={resetFilter}
+				/>
+			)}
+			<AiOutlineSearch
+				className={ui["sidebar-icon"]}
+				onClick={searchButtonHandler}
+			>
 				Search
 			</AiOutlineSearch>
 		</div>

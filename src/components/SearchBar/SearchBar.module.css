@@ -1,0 +1,11 @@
+.input {
+	border-width: 0;
+	font-size: var(--h4);
+	background-color: transparent;
+	color: white;
+	width: 15vw;
+	margin: 0 5px 0 10px;
+}
+.input:focus {
+	outline: none;
+}

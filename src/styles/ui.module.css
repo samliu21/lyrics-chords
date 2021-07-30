@@ -24,3 +24,24 @@
 	color: var(--accent);
 	margin: 2px 0px;
 }
+.sidebar-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-color: var(--accent);
+	position: fixed;
+	left: -17px;
+	border-radius: 17px;
+	background-color: var(--accent); /* Default for song list search bar */
+	padding: 5px 8px 5px 27px;
+}
+.sidebar-icon {
+	color: white !important; /* Override default red colour */
+	cursor: pointer;
+}
+.sidebar-text {
+	color: white;
+	padding-right: 10px;
+	font-size: var(--h4);
+	margin: 0;
+}

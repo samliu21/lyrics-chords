@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import styles from "./SideBarWrapper.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function SideBarWrapper(props) {
 	const [open, setOpen] = useState(false);
@@ -42,12 +42,12 @@ export default function SideBarWrapper(props) {
 
 	return (
 		<div
-			className={styles.container}
+			className={ui["sidebar-container"]}
 			style={containerStyle}
 			onClick={clickHandler}
 		>
-			{open && <p className={styles.text}>{props.text}</p>}
-			<Component className={styles.icon} style={iconStyle} />
+			{open && <p className={ui["sidebar-text"]}>{props.text}</p>}
+			<Component className={ui["sidebar-icon"]} style={iconStyle} />
 		</div>
 	);
 }
