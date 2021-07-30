@@ -1,0 +1,50 @@
+.input {
+	white-space: pre-wrap;
+	font-size: var(--h4);
+	background-color: white;
+	border: 1px var(--primary) dotted;
+	padding: 5px;
+	width: 100%;
+	display: block;
+	color: var(--accent);
+	margin: 2px 0px;
+}
+.lyric-line {
+	margin: 0 0 10px 0px;
+	font-size: var(--h4);
+}
+.toolbar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	padding: 8px;
+	background-color: var(--primary);
+	color: white;
+	width: 100%;
+}
+
+/* import { Colors } from "../../constants/Colors";
+
+export const styles = {
+	
+	lyricLine: {
+		marginBottom: 10,
+		marginTop: 0,
+		fontSize: "2.3vmin",
+	},
+	lyricsTitle: {
+		color: Colors.primary,
+		fontSize: "4vmin",
+	},
+	toolbar: {
+		position: "fixed",
+		bottom: 0,
+		left: 0,
+		textAlign: "center",
+		padding: 8,
+		backgroundColor: Colors.primary,
+		color: "white",
+		width: "100%",
+	},
+}; */

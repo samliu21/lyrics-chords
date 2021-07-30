@@ -1,4 +1,25 @@
-import { Colors } from "../../constants/Colors";
+.container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-color: var(--accent);
+	position: fixed;
+	left: -17px;
+	border-radius: 17px;
+	padding: 5px 8px 5px 27px;
+}
+.icon {
+	color: white;
+	cursor: pointer;
+}
+.text {
+	color: white;
+	padding-right: 10px;
+	font-size: var(--h4);
+	margin: 0;
+}
+
+/* import { Colors } from "../../constants/Colors";
 
 export const styles = {
 	container: {
@@ -24,4 +45,4 @@ export const styles = {
 		fontSize: "2vmin",
 		margin: 0,
 	},
-}
+} */

@@ -5,7 +5,7 @@ import * as commentActions from "../../store/actions/commentActions";
 import CommentsBlock from "../CommentsBlock/CommentsBlock";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 import NewComment from "../NewComment/NewComment";
-import { styles } from "./CommentStyles";
+import ui from "../../styles/ui.module.css";
 
 export default function Comments(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -45,7 +45,7 @@ export default function Comments(props) {
 	return (
 		comments && (
 			<div>
-				<h2 style={styles.title}>Comments</h2>
+				<h2 className={ui["song-subtitle"]}>Comments</h2>
 				{comments.length === 0 ? (
 					<p>No comments.</p>
 				) : (

@@ -1,0 +1,22 @@
+.children {
+	margin-left: 20px;
+}
+.outer-container {
+	margin: 10px 0;
+}
+.container {
+	border: 1px black solid;
+	padding: 20px;
+	background-color: white;
+}
+.horizontal-container {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10;
+}
+.trash {
+	margin: 0 5px;
+}
+.reply-container {
+	margin-left: 20px;
+}

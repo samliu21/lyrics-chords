@@ -9,3 +9,7 @@
 .nav-bar-hover:hover {
 	background-color: var(--dark);
 }
+.song-subtitle {
+	color: var(--primary);
+	font-size: var(--h2);
+}

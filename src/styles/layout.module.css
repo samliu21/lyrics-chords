@@ -3,6 +3,12 @@
 	flex-direction: column;
 	align-items: center;
 }
+.horizontal-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* height: 100%; */
+}
 .inline-block {
 	display: inline-block;
 }

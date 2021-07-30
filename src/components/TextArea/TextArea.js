@@ -1,6 +1,6 @@
 import React from "react";
 
-import { styles } from "./TextAreaStyles";
+import styles from "./TextArea.module.css";
 
 export default function TextArea(props) {
 	return (
@@ -8,7 +8,7 @@ export default function TextArea(props) {
 			<hr />
 			<textarea
 				rows={4}
-				style={styles.input}
+				className={styles.input}
 				maxLength={500}
 				defaultValue={props.defaultValue ?? ""}
 				ref={props.refName}

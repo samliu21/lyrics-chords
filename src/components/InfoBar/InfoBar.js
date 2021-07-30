@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 import * as songsActions from "../../store/actions/songsActions";
-import { styles } from "./InfoBarStyles";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
+import design from "../../styles/design.module.css";
+import styles from "./InfoBar.module.css";
 
 export default function InfoBar(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -33,11 +34,11 @@ export default function InfoBar(props) {
 
 	return (
 		<div>
-			<p style={styles.text}>
+			<p className={styles.text}>
 				{props.selectedSong.creator}
 				&nbsp;&nbsp;&nbsp;|
 				{username && (
-					<span onClick={copyHandler} style={styles.copy}>
+					<span onClick={copyHandler} className={design.pointer}>
 						&nbsp;&nbsp;&nbsp;COPY THIS SONG
 					</span>
 				)}

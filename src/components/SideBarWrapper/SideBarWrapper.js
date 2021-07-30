@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import { styles } from "./SideBarWrapperStyles";
+import styles from "./SideBarWrapper.module.css";
 
 export default function SideBarWrapper(props) {
 	const [open, setOpen] = useState(false);
@@ -32,20 +32,22 @@ export default function SideBarWrapper(props) {
 	const Component = props.WrappedComponent;
 
 	const containerStyle = {
-		...styles.container,
 		top: props.top,
 		backgroundColor: props.backgroundColor,
 	};
 
 	const iconStyle = {
-		...styles.icon,
 		color: props.color,
 	};
 
 	return (
-		<div style={containerStyle} onClick={clickHandler}>
-			{open && <p style={styles.text}>{props.text}</p>}
-			<Component style={iconStyle} />
+		<div
+			className={styles.container}
+			style={containerStyle}
+			onClick={clickHandler}
+		>
+			{open && <p className={styles.text}>{props.text}</p>}
+			<Component className={styles.icon} style={iconStyle} />
 		</div>
 	);
 }

@@ -3,7 +3,8 @@ import { useHistory } from "react-router";
 import { Colors } from "../../constants/Colors";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
-import { styles } from "./LyricsBlockStyles";
+import styles from "./LyricsBlock.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function LyricsBlock(props) {
 	const selectedSong = props.selectedSong;
@@ -183,16 +184,16 @@ export default function LyricsBlock(props) {
 	// Takes in string lyrics and turns each into a string and input div
 	const renderItems = () => {
 		return selectedSong.lyrics.split("\n").map((item, idx) => {
-			let chordStyles = styles.input;
+			let chordStyles = {};
 			if (props.isCopyMode) {
 				if (idx === lastClicked) {
 					chordStyles = {
-						...chordStyles,
+						// ...chordStyles,
 						backgroundColor: Colors.primary,
 					};
 				} else if (clickedChords.indexOf(idx) !== -1) {
 					chordStyles = {
-						...chordStyles,
+						// ...chordStyles,
 						backgroundColor: Colors.primaryLight,
 					};
 				}
@@ -202,6 +203,7 @@ export default function LyricsBlock(props) {
 				<div key={idx}>
 					<input
 						ref={chordRefs[idx]}
+						className={styles.input}
 						style={chordStyles}
 						defaultValue={
 							selectedSong.chords.split("\n")[idx] ?? ""
@@ -213,7 +215,7 @@ export default function LyricsBlock(props) {
 					/>
 					<p
 						ref={lyricRefs[idx]}
-						style={styles.lyricLine}
+						className={styles["lyric-line"]}
 						contentEditable={props.editable || props.isCopyMode}
 						suppressContentEditableWarning={
 							props.editable || props.isCopyMode
@@ -244,16 +246,16 @@ export default function LyricsBlock(props) {
 	return (
 		<div>
 			{props.isCopyMode && (
-				<div style={styles.toolbar}>
+				<div className={styles["toolbar"]}>
 					{bottomOption("Clear", resetHandler)}|
 					{bottomOption("Copy", copyHandler)}|
 					{bottomOption("Copy until end", copyUntilEndHandler)}|
 					{bottomOption("Empty", emptyHandler)}
 				</div>
 			)}
-			<h2 style={styles.lyricsTitle}>Lyrics</h2>
+			<h2 className={ui["song-subtitle"]}>Lyrics</h2>
 			{selectedSong.lyrics === "" ? (
-				<p style={styles.lyricLine}>No lyrics found.</p>
+				<p className={styles["lyric-line"]}>No lyrics found.</p>
 			) : (
 				renderItems()
 			)}

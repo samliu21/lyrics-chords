@@ -5,7 +5,9 @@ import * as commentActions from "../../store/actions/commentActions";
 import { BiTrash, BiPencil } from "react-icons/bi";
 import { BsArrow90DegLeft } from "react-icons/bs";
 import NewComment from "../NewComment/NewComment";
-import { styles } from "./CommentsBlockStyles";
+import styles from "./CommentsBlock.module.css";
+import layout from "../../styles/layout.module.css";
+import design from "../../styles/design.module.css";
 
 export default function CommentsBlock(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -113,34 +115,33 @@ export default function CommentsBlock(props) {
 	));
 
 	return (
-		<div style={styles.outerContainer}>
-			<div style={styles.container}>
-				<div style={styles.horizontalContainer}>
-					<div className="horizontal-default">
-						<div style={styles.username}>{commentUsername}</div>
+		<div className={styles["outer-container"]}>
+			<div className={styles.container}>
+				<div className={styles["horizontal-container"]}>
+					<div className={layout["horizontal-center"]}>
+						<div className={design.emphasis}>{commentUsername}</div>
 						<div>
 							&nbsp; {edited ? "edited" : "commented"}&nbsp;
 							{dateConverter()}
 						</div>
 					</div>
-					<div className="horizontal-default">
+					<div className={layout["horizontal-center"]}>
 						{username === commentUsername && (
 							<BiPencil
 								onClick={editHandler}
-								className="pointer"
+								className={`${design.pointer}`}
 							/>
 						)}
 						{username === commentUsername && (
 							<BiTrash
 								onClick={deleteHandler}
-								style={styles.trash}
-								className="pointer"
+								className={`${design.pointer} ${styles.trash}`}
 							/>
 						)}
 						{username && (
 							<BsArrow90DegLeft
 								onClick={replyHandler}
-								className="pointer"
+								className={`${design.pointer}`}
 							/>
 						)}
 					</div>
@@ -153,15 +154,15 @@ export default function CommentsBlock(props) {
 						defaultValue={contents}
 					/>
 				) : (
-					<div style={styles.contents}>
+					<div>
 						<hr />
 						{contents}
 					</div>
 				)}
 			</div>
-			<div style={styles.children}>{nestedComments}</div>
+			<div className={styles.children}>{nestedComments}</div>
 			{replying && (
-				<div style={styles.replyContainer}>
+				<div className={styles["reply-container"]}>
 					<NewComment
 						title="Replying"
 						refName={replyRef}
