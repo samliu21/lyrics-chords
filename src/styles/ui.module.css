@@ -1,0 +1,11 @@
+.nav-bar-link {
+	padding: 13px 20px;
+	margin: 0;
+	cursor: pointer;
+	font-size: var(--h4);
+	color: white;
+	text-decoration: none;
+}
+.nav-bar-hover:hover {
+	background-color: var(--dark);
+}

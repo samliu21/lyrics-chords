@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { styles } from "./NavContentStyles";
+import ui from "../../styles/ui.module.css";
+import styles from "./NavContent.module.css";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import Options from "../Options/Options";
 import AutoScroll from "../AutoScroll/AutoScroll";
@@ -16,61 +17,58 @@ export default function NavContent(props) {
 	);
 
 	// Prop direction-dependent styles
-	const linkStyle = {
-		...styles.link,
-		width: props.direction === "column" ? "100%" : "auto",
-	};
+	const containerStyle =
+		styles.container +
+		" " +
+		(props.direction === "row"
+			? styles["container-horizontal"]
+			: styles["container-vertical"]);
 
-	const outerDivStyle = {
-		...styles.container,
-		flexDirection: props.direction,
-		paddingBottom: props.direction === "column" ? 20 : 0,
-	};
+	const leftDivStyle =
+		styles["left-div"] +
+		" " +
+		(props.direction === "row"
+			? styles["left-div-horizontal"]
+			: styles["left-div-vertical"]);
 
-	const leftDivStyle = {
-		...styles.leftContainer,
-		flexDirection: props.direction,
-		width: props.direction === "column" ? "100%" : "auto",
-	};
+	const linkStyle =
+		ui["nav-bar-link"] +
+		" " +
+		ui["nav-bar-hover"] +
+		" " +
+		(props.direction === "row"
+			? styles["link-horizontal"]
+			: styles["link-vertical"]);
+
+	const loginStyle =
+		ui["nav-bar-link"] +
+		" " +
+		(props.direction === "row"
+			? styles["login-row"]
+			: styles["login-column"]);
 
 	let content = (
-		<div style={outerDivStyle}>
-			<div style={leftDivStyle}>
+		<div className={containerStyle}>
+			<div className={leftDivStyle}>
 				{!username && (
-					<Link
-						to="/"
-						className="navBarLink navBarHover"
-						style={linkStyle}
-					>
+					<Link to="/" className={linkStyle}>
 						Home
 					</Link>
 				)}
 
 				{/* Only show SongList if user is logged in  */}
 				{username && (
-					<Link
-						to={`/songs/${username}`}
-						className="navBarLink navBarHover"
-						style={linkStyle}
-					>
+					<Link to={`/songs/${username}`} className={linkStyle}>
 						Song List
 					</Link>
 				)}
 
-				<Link
-					to="/songs/public"
-					className="navBarLink navBarHover"
-					style={linkStyle}
-				>
+				<Link to="/songs/public" className={linkStyle}>
 					Public
 				</Link>
 
 				{isAdmin && (
-					<Link
-						to="/songs/all"
-						className="navBarLink navBarHover"
-						style={linkStyle}
-					>
+					<Link to="/songs/all" className={linkStyle}>
 						Admin
 					</Link>
 				)}
@@ -79,24 +77,14 @@ export default function NavContent(props) {
 
 				{/* Only show autoscroll if horizontal nav bar and the user is on a song page */}
 				{(isSongPage || isSongPageView) &&
-					props.direction === "row" && (
-						<AutoScroll style={linkStyle} />
-					)}
+					props.direction === "row" && <AutoScroll />}
 			</div>
 
 			<div>
 				{username ? (
 					<LogoutButton full={props.direction === "row"} />
 				) : (
-					<Link
-						to="/accounts/login"
-						className="navBarLink"
-						style={
-							props.direction === "row"
-								? styles.loginRow
-								: styles.loginColumn
-						}
-					>
+					<Link to="/accounts/login" className={loginStyle}>
 						Login
 					</Link>
 				)}
@@ -107,7 +95,7 @@ export default function NavContent(props) {
 	return isSongPageView && props.direction === "row" ? (
 		<div>
 			{content}
-			<div style={styles.viewOnlyText}>View Only Mode</div>
+			<div className={styles.view}>View Only Mode</div>
 		</div>
 	) : (
 		content

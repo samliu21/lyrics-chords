@@ -1,0 +1,48 @@
+.link-horizontal {
+	width: auto;
+}
+.link-vertical {
+	width: 100%;
+}
+.container {
+	display: flex;
+	justify-content: space-between;
+	background-color: var(--primary);
+	height: 100%;
+	align-items: center;
+	color: white;
+	position: relative;
+}
+.container-horizontal {
+	flex-direction: row;
+	padding-bottom: 0;
+}
+.column-vertical {
+	flex-direction: column;
+}
+.left-div {
+	display: flex;
+	align-items: center;
+}
+.left-div-horizontal {
+	flex-direction: row;
+	width: auto;
+}
+.left-div-vertical {
+	flex-direction: column;
+	width: 100%;
+}
+.login-row {
+	margin-right: 3vw;
+}
+.login-column {
+	margin-bottom: 3vh;
+}
+.view {
+	text-align: center;
+	color: white;
+	background-color: grey;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	font-size: 1.5vmin;
+}
