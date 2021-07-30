@@ -25,7 +25,9 @@ import LyricsBlock from "../../components/LyricsBlock/LyricsBlock";
 import PulledLyricsBlock from "../../components/PulledLyricsBlock/PulledLyricsBlock";
 import SaveBar from "../../components/SaveBar/SaveBar";
 import StrummingPatternBlock from "../../components/StrummingPatternBlock/StrummingPatternBlock";
-import { styles } from "./SongStyles";
+import styles from "./Song.module.css";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function Song(props) {
 	const stateReceived = useRef(false);
@@ -336,69 +338,67 @@ export default function Song(props) {
 	};
 
 	return (
-		<div>
-			<div style={containerStyles}>
-				{isFetching && <LoadingCircle />}
+		<div className={layout.container}>
+			{isFetching && <LoadingCircle />}
 
-				{/* Information about creator  */}
-				<InfoBar selectedSong={selectedSong} />
+			{/* Information about creator  */}
+			<InfoBar selectedSong={selectedSong} />
 
-				{/* Save bar  */}
-				{!isViewOnly && <SaveBar onClick={dispatchSong} />}
-				<CopyButton onClick={copyHandler} />
+			{/* Save bar  */}
+			{!isViewOnly && <SaveBar onClick={dispatchSong} />}
+			<CopyButton onClick={copyHandler} />
 
-				<HelpButton />
+			<HelpButton />
 
-				{/* Title  */}
-				<input
-					style={styles.title}
-					defaultValue={selectedSong.name}
-					placeholder="Title"
-					onKeyDown={preventEnterHandler}
-					onBlur={inputBlur}
-					ref={nameRef}
-					{...inputKwargs}
-				/>
+			{/* Title  */}
+			<input
+				className={ui["title"]}
+				defaultValue={selectedSong.name}
+				placeholder="Title"
+				onKeyDown={preventEnterHandler}
+				onBlur={inputBlur}
+				ref={nameRef}
+				{...inputKwargs}
+			/>
 
-				{/* Artist  */}
-				<input
-					style={styles.artist}
-					defaultValue={selectedSong.artist}
-					placeholder="Artist"
-					onKeyDown={preventEnterHandler}
-					onBlur={inputBlur}
-					ref={artistRef}
-					{...inputKwargs}
-				/>
+			{/* Artist  */}
+			<input
+				className={styles.artist}
+				defaultValue={selectedSong.artist}
+				placeholder="Artist"
+				onKeyDown={preventEnterHandler}
+				onBlur={inputBlur}
+				ref={artistRef}
+				{...inputKwargs}
+			/>
 
-				<StrummingPatternBlock
+			<StrummingPatternBlock
+				selectedSong={selectedSong}
+				setUnsavedChanges={setUnsavedChanges}
+				strummingPatternRef={strummingPatternRef}
+				{...editableKwargs}
+			/>
+
+			<LyricsBlock
+				selectedSong={selectedSong}
+				setUnsavedChanges={setUnsavedChanges}
+				isCopyMode={isCopyMode}
+				chordRefs={chordRefs}
+				setChordRefs={setChordRefs}
+				lyricRefs={lyricRefs}
+				setLyricRefs={setLyricRefs}
+				{...editableKwargs}
+			/>
+
+			{!isViewOnly && (
+				<PulledLyricsBlock
 					selectedSong={selectedSong}
 					setUnsavedChanges={setUnsavedChanges}
-					strummingPatternRef={strummingPatternRef}
-					{...editableKwargs}
+					pulledLyricsRef={pulledLyricsRef}
 				/>
+			)}
 
-				<LyricsBlock
-					selectedSong={selectedSong}
-					setUnsavedChanges={setUnsavedChanges}
-					isCopyMode={isCopyMode}
-					chordRefs={chordRefs}
-					setChordRefs={setChordRefs}
-					lyricRefs={lyricRefs}
-					setLyricRefs={setLyricRefs}
-					{...editableKwargs}
-				/>
-
-				{!isViewOnly && (
-					<PulledLyricsBlock
-						selectedSong={selectedSong}
-						setUnsavedChanges={setUnsavedChanges}
-						pulledLyricsRef={pulledLyricsRef}
-					/>
-				)}
-
-				<Comments id={selectedSong.id} />
-			</div>
+			<Comments id={selectedSong.id} />
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
-import { styles } from "./StrummingPatternBlockStyles";
+import ui from "../../styles/ui.module.css";
 
 export default function StrummingPatternBlock(props) {
 	const selectedSong = props.selectedSong;
@@ -22,10 +22,10 @@ export default function StrummingPatternBlock(props) {
 
 	return (
 		<div>
-			<h2 style={styles.subheading}>Strumming Pattern</h2>
+			<h2 className={ui["song-subtitle"]}>Strumming Pattern</h2>
 			<input
 				ref={props.strummingPatternRef}
-				style={styles.input}
+				className={ui["dashed-input"]}
 				defaultValue={selectedSong.strumming_pattern}
 				onKeyDown={keyDownHandler}
 				autoCorrect="off"

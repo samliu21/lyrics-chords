@@ -37,11 +37,20 @@
 }
 .sidebar-icon {
 	color: white !important; /* Override default red colour */
-	cursor: pointer;
 }
 .sidebar-text {
 	color: white;
 	padding-right: 10px;
 	font-size: var(--h4);
 	margin: 0;
+}
+.title {
+	font-size: var(--h1);
+	border-width: 0;
+	background-color: transparent;
+	text-align: center;
+	color: var(--accent);
+	font-weight: bold;
+	width: 100%;
+	text-overflow: ellipsis;
 }

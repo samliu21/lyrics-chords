@@ -27,6 +27,9 @@ export default function App() {
 	const iconValues = {
 		color: Colors.primary,
 		size: "1.5em",
+		style: {
+			cursor: "pointer",
+		}
 	};
 
 	return (

@@ -10,11 +10,9 @@ import {
 	AiFillStar,
 } from "react-icons/ai";
 import { BsTrashFill } from "react-icons/bs";
-import {
-	getUsername,
-	updateSongAttributeToDatabase,
-} from "../../util";
-import { styles } from "./SongBlockStyles";
+import { getUsername, updateSongAttributeToDatabase } from "../../util";
+import layout from "../../styles/layout.module.css";
+import styles from "./SongBlock.module.css";
 
 export default function SongBlock(props) {
 	const dispatch = useDispatch();
@@ -135,25 +133,25 @@ export default function SongBlock(props) {
 	const inputKwargs = props.editable ? {} : { readOnly: true };
 
 	return (
-		<div style={styles.songContainer}>
+		<div className={styles["song-container"]}>
 			{/* Left part of container  */}
-			<div style={styles.horizontal}>
+			<div className={layout["horizontal-default"]}>
 				{/* Control bar  */}
 				{props.editable && (
-					<div className="vertical" style={styles.buttonContainer}>
-						<Star onClick={favouriteHandler} style={styles.star} />
-						<Eye onClick={publicHandler} style={styles.eye} />
-						<BsTrashFill
-							onClick={deleteHandler}
-							style={styles.trashCan}
-						/>
+					<div
+						className="vertical"
+						className={styles["button-container"]}
+					>
+						<Star onClick={favouriteHandler} />
+						<Eye onClick={publicHandler} className={styles.eye} />
+						<BsTrashFill onClick={deleteHandler} />
 					</div>
 				)}
 
-				<div style={styles.infoContainer}>
+				<div>
 					{/* Title and artist  */}
 					<input
-						style={styles.name}
+						className={styles.name}
 						defaultValue={props.item.name}
 						placeholder="Enter an artist"
 						onBlur={inputBlur}
@@ -162,7 +160,7 @@ export default function SongBlock(props) {
 						{...inputKwargs}
 					/>
 					<input
-						style={styles.artist}
+						className={styles.artist}
 						defaultValue={props.item.artist}
 						placeholder="Enter an artist"
 						onBlur={inputBlur}
@@ -173,9 +171,9 @@ export default function SongBlock(props) {
 
 					{/* Created by */}
 					{props.public && (
-						<div className="italic" style={styles.creator}>
+						<div className={styles.creator}>
 							Created by&nbsp;
-							<span style={styles.creatorName}>
+							<span className={styles["creator-name"]}>
 								{props.item.creator}
 							</span>
 							.
@@ -185,14 +183,14 @@ export default function SongBlock(props) {
 			</div>
 
 			{/* Right side of container  */}
-			<div style={styles.imageContainer} onClick={redirectHandler}>
+			<div className={styles["image-container"]} onClick={redirectHandler}>
 				<img
 					src="https://i.pinimg.com/originals/58/1d/34/581d34b9daddc9f6eec84accc93c7a0c.png"
 					alt="Arrow"
-					style={styles.arrow}
+					className={styles.arrow}
 				/>
 				{location === "public" && props.views !== null && (
-					<p style={styles.views}>{props.views}</p>
+					<p className={styles.views}>{props.views}</p>
 				)}
 			</div>
 		</div>

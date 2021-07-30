@@ -1,0 +1,12 @@
+.artist {
+	text-align: center;
+	font-style: italic;
+	font-size: var(--h2);
+	border-width: 0;
+	background-color: transparent;
+	color: var(--accent);
+	font-weight: bold;
+	width: 100%;
+	margin-top: 10px;
+	text-overflow: ellipsis;
+}
