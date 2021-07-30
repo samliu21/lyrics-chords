@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
-import { styles } from "./PulledLyricsBlockStyles";
+import ui from "../../styles/ui.module.css";
 
 export default function PulledLyricsBlock(props) {
 	const selectedSong = props.selectedSong;
@@ -35,10 +35,10 @@ export default function PulledLyricsBlock(props) {
 
 	return (
 		<div>
-			<h2 style={styles.subheading}>Pulled Lyrics</h2>
+			<h2 className={ui["song-subtitle"]}>Pulled Lyrics</h2>
 			<p
 				ref={props.pulledLyricsRef}
-				style={styles.input}
+				className={ui["dashed-input"]}
 				contentEditable={true}
 				suppressContentEditableWarning={true}
 				onKeyDown={keyDownHandler}

@@ -203,7 +203,7 @@ export default function LyricsBlock(props) {
 				<div key={idx}>
 					<input
 						ref={chordRefs[idx]}
-						className={styles.input}
+						className={ui["dashed-input"]}
 						style={chordStyles}
 						defaultValue={
 							selectedSong.chords.split("\n")[idx] ?? ""

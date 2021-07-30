@@ -13,3 +13,14 @@
 	color: var(--primary);
 	font-size: var(--h2);
 }
+.dashed-input {
+	white-space: pre-wrap;
+	font-size: var(--h4);
+	background-color: white;
+	border: 1px var(--primary) dotted;
+	padding: 5px;
+	width: 100%;
+	display: block;
+	color: var(--accent);
+	margin: 2px 0px;
+}
