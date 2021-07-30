@@ -2,9 +2,9 @@ import React from "react";
 import Options from "../Options/Options";
 import { useSelector } from "react-redux";
 
-import { styles } from "./MenuBarStyles";
 import menu from "../../constants/images/menu.png";
 import AutoScroll from "../AutoScroll/AutoScroll";
+import styles from "./MenuBar.module.css";
 
 export default function MenuBar(props) {
 	const isSongPage = useSelector((state) => state.selectedSong.isSongPage);
@@ -14,17 +14,17 @@ export default function MenuBar(props) {
 
 	return (
 		<div>
-			<div style={styles.container}>
+			<div className={styles.container}>
 				<img
 					src={menu}
 					alt="menu"
-					style={styles.image}
+					className={styles.image}
 					onClick={props.onMenuClick}
 				/>
-				<div style={styles.rightDiv}>
+				<div>
 					<Options />
 					{(isSongPage || isSongPageView) && (
-						<AutoScroll style={styles.linkStyle} />
+						<AutoScroll />
 					)}
 				</div>
 			</div>

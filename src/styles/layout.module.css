@@ -7,11 +7,23 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* height: 100%; */
+}
+.horizontal-default {
+	display: flex;
+	align-items: center;
 }
 .inline-block {
 	display: inline-block;
 }
 .relative {
 	position: relative;
+}
+.fixed-top {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+.align-block-right {
+	margin-left: auto;
+	display: block;
 }

@@ -1,0 +1,13 @@
+.container {
+	background-color: var(--primary);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	top: 0;
+	position: sticky;
+}
+.image {
+	height: 2vh;
+	cursor: pointer;
+	margin: 0 3vw;
+}

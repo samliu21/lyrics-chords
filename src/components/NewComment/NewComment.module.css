@@ -1,0 +1,10 @@
+.container {
+	border: 1px black solid;
+	padding: 20px;
+	background-color: white;
+}
+.heading {
+	margin-top: 0;
+	padding-bottom: 0;
+	font-size: var(--h3);
+}

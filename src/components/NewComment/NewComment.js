@@ -2,12 +2,13 @@ import React from "react";
 import Button from "../Button/Button";
 import TextArea from "../TextArea/TextArea";
 
-import { styles } from "./NewCommentStyles";
+import styles from "./NewComment.module.css";
+import layout from "../../styles/layout.module.css";
 
 export default function NewComment(props) {
 	return (
-		<div style={props.border ? styles.container : {}}>
-			{props.title && <h3 style={styles.heading}>{props.title}</h3>}
+		<div className={props.border ? styles.container : ""}>
+			{props.title && <h3 className={styles.heading}>{props.title}</h3>}
 			<TextArea
 				refName={props.refName}
 				defaultValue={props.defaultValue}
@@ -18,13 +19,12 @@ export default function NewComment(props) {
 					<Button onClick={props.submitHandler}>Submit</Button>
 				</div>
 			) : (
-				<Button onClick={props.submitHandler} style={styles.alignRight}>Submit</Button>
-				// <button
-				// 	onClick={props.submitHandler}
-				// 	style={{ ...styles.button, ...styles.alignRight }}
-				// >
-				// 	Submit
-				// </button>
+				<Button
+					onClick={props.submitHandler}
+					className={layout["align-block-right"]}
+				>
+					Submit
+				</Button>
 			)}
 		</div>
 	);
