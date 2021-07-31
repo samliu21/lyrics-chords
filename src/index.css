@@ -1,3 +1,4 @@
+/* Root variables */
 :root {
 	--accent: #3c1874;
 	--dark: #932432;
@@ -12,79 +13,23 @@
 	--p: 1.7vmin;
 }
 
+/* Set box-sizing */
 html {
 	box-sizing: border-box;
 }
 * {
 	box-sizing: inherit;
 }
+
+/* Set background, font, and margin */
 body {
 	background-color: #f3f3f3;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	margin: 0;
 }
-h1 {
-	text-align: center;
-}
+
+/* Colour is by default accent */
 h1,
 h2 {
 	color: var(--accent);
-}
-
-.important {
-	color: var(--primary);
-	font-size: 3.5vmin;
-	font-weight: bold;
-	cursor: pointer;
-}
-.pointer {
-	cursor: pointer;
-}
-.italic {
-	font-style: italic;
-}
-.emphasis {
-	color: var(--accent);
-	font-style: italic;
-	font-weight: bold;
-}
-.horizontal-default {
-	align-items: center;
-	display: flex;
-	height: 100%;
-	justify-content: center;
-}
-.horizontal-between {
-	align-items: center;
-	display: flex;
-	justify-content: space-between;
-}
-.vertical {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.navBarLink {
-	color: white;
-	cursor: pointer;
-	font-size: 2.3vh;
-	height: 100%;
-	text-decoration: none;
-	text-align: center;
-}
-.navBarHover:hover {
-	background-color: var(--dark);
-}
-.dropdown-option {
-	text-align: center;
-	color: white;
-	background-color: var(--primary);
-	height: 100%;
-	padding: 10px 0;
-	margin: 0;
-	cursor: pointer;
-}
-.dropdown-option:hover {
-	background-color: var(--dark);
-	color: white;
 }

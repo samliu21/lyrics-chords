@@ -12,11 +12,12 @@
 .horizontal-container {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 10;
+	margin-bottom: 10px;
 }
 .trash {
 	margin: 0 5px;
 }
 .reply-container {
 	margin-left: 20px;
+	margin-top: 10px;
 }

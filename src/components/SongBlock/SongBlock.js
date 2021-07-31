@@ -139,7 +139,6 @@ export default function SongBlock(props) {
 				{/* Control bar  */}
 				{props.editable && (
 					<div
-						className="vertical"
 						className={styles["button-container"]}
 					>
 						<Star onClick={favouriteHandler} />

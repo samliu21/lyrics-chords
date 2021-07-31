@@ -14,7 +14,7 @@ export default function NewComment(props) {
 				defaultValue={props.defaultValue}
 			/>
 			{props.cancelHandler ? (
-				<div className="horizontal-between">
+				<div className={layout["horizontal-between"]}>
 					<Button onClick={props.cancelHandler}>Cancel</Button>
 					<Button onClick={props.submitHandler}>Submit</Button>
 				</div>

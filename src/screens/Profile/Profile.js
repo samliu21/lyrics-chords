@@ -7,6 +7,7 @@ import layout from "../../styles/layout.module.css";
 import ui from "../../styles/ui.module.css";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
+import CapitalText from "../../components/CapitalText/CapitalText";
 
 export default function Profile(props) {
 	const username = props.match.params.username;
@@ -90,16 +91,15 @@ export default function Profile(props) {
 						{username}
 					</h2>
 					<p>
-						<span className="italic">Songsheets created:</span>
+						<span className={ui.italic}>Songsheets created:</span>
 						&nbsp;&nbsp;
 						{songCount}
 					</p>
 				</div>
 			</div>
 			{username === realUsername && (
-				<p className="important" onClick={changePasswordHandler}>
-					CHANGE PASSWORD
-				</p>
+				<CapitalText onClick={changePasswordHandler}>Change Password</CapitalText>
+				
 			)}
 		</div>
 	);

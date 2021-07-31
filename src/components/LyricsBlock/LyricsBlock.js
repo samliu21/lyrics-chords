@@ -233,7 +233,7 @@ export default function LyricsBlock(props) {
 
 	const bottomOption = (label, onClick) => {
 		return (
-			<span className="pointer" onClick={onClick}>
+			<span className={ui.pointer} onClick={onClick}>
 				&nbsp;&nbsp;&nbsp;&nbsp;{label}&nbsp;&nbsp;&nbsp;&nbsp;
 			</span>
 		);

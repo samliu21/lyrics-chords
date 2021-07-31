@@ -62,6 +62,7 @@
 	font-weight: bold;
 	width: 100%;
 	text-overflow: ellipsis;
+	text-align: center;
 }
 .subtitle {
 	font-size: var(--h2);

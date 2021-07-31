@@ -10,6 +10,7 @@ import { getToken, getUsername } from "../../util";
 import styles from "./LogoutButton.module.css";
 import design from "../../styles/ui.module.css";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
+import ui from "../../styles/ui.module.css";
 
 const cookie = new Cookie();
 
@@ -71,7 +72,7 @@ export default function LogoutButton(props) {
 	const welcome = () => (
 		<div onClick={profileRedirectHandler}>
 			Welcome&nbsp;&nbsp;
-			<span className="emphasis">{username}</span>.
+			<span className={ui.emphasis}>{username}</span>.
 		</div>
 	);
 
