@@ -34,29 +34,14 @@ function store(store = initialStore, action) {
 			filteredUserSongs: action.userSongs,
 		};
 	} else if (action.type === GET_PUBLIC_SONGS) {
-		if (store.views) {
-			const sortedSongs = [...store.publicSongs];
-			const sortedFilteredSongs = [...store.filteredPublicSongs];
-			sortByViews(store.views, sortedSongs);
-			sortByViews(store.views, sortedFilteredSongs);
-
-			return {
-				...store,
-				publicSongs: sortedSongs,
-				filteredPublicSongs: sortedFilteredSongs,
-			};
-		}
-
 		return {
 			...store,
 			publicSongs: action.publicSongs,
 			filteredPublicSongs: action.publicSongs,
 		};
 	} else if (action.type === ADD_SONG) {
-		const userSongs = store.userSongs.slice().concat(action.song);
-		const filteredUserSongs = store.filteredUserSongs
-			.slice()
-			.concat(action.song);
+		const userSongs = store.userSongs.concat(action.song); // Concat leaves original array untouched, respecting Redux's immutability requirement
+		const filteredUserSongs = store.filteredUserSongs.concat(action.song);
 		sortSongsById(userSongs);
 		sortSongsById(filteredUserSongs);
 

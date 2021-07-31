@@ -10,6 +10,7 @@ const initialStore = {
 };
 
 // Turns flat structure into tree with children property that can be recursively traversed
+// Deep copies the original flatList
 const nestComments = (commentListOriginal) => {
 	const commentMap = {};
 	const commentList = [];
@@ -34,6 +35,7 @@ const nestComments = (commentListOriginal) => {
 
 // Delete comment and all its children
 // Look for all comments with parent rootId, add those ids to the queue, and repeat
+// Filter function leaves original array untouched
 const deleteHelper = (flatList, rootId) => {
 	const q = [rootId];
 	const toRemove = [rootId];
@@ -56,7 +58,6 @@ export default function reducer(store = initialStore, action) {
 			if (!store.flatComments) {
 				// Store is uninitialized
 				return {
-					...store,
 					flatComments: {
 						[songId]: action.comments,
 					},
