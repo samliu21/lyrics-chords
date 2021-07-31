@@ -21,7 +21,9 @@ export default function DropMenu(props) {
 			<div
 				onClick={item.onClick}
 				className={
-					props.white ? styles["white-option"] : styles["dropdown-option"]
+					props.white
+						? styles["white-option"]
+						: styles["dropdown-option"]
 				}
 			>
 				{item.text}
@@ -31,12 +33,14 @@ export default function DropMenu(props) {
 
 	return (
 		<div
-			className={`${layout["column-default"]} ${layout["inline-block"]} ${layout.relative}`}
+			className={`${layout["vertical-center"]} ${layout["inline-block"]} ${layout.relative}`}
 			onMouseEnter={menuOpenHandler}
 			onMouseLeave={menuCloseHandler}
 		>
-			<div className={`${ui["nav-bar-link"]} ${ui["nav-bar-hover"]}`}>{props.title}</div>
-			<div className={`${layout["column-default"]} ${styles.option}`}>
+			<div className={`${ui["nav-bar-link"]} ${ui["nav-bar-hover"]}`}>
+				{props.title}
+			</div>
+			<div className={`${layout["vertical-center"]} ${styles.option}`}>
 				{menuOpen &&
 					props.items &&
 					props.items.map(

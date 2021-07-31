@@ -148,7 +148,7 @@ export default function SongBlock(props) {
 					</div>
 				)}
 
-				<div>
+				<div className={layout["vertical-default"]}>
 					{/* Title and artist  */}
 					<input
 						className={styles.name}
@@ -183,7 +183,10 @@ export default function SongBlock(props) {
 			</div>
 
 			{/* Right side of container  */}
-			<div className={styles["image-container"]} onClick={redirectHandler}>
+			<div
+				className={styles["image-container"]}
+				onClick={redirectHandler}
+			>
 				<img
 					src="https://i.pinimg.com/originals/58/1d/34/581d34b9daddc9f6eec84accc93c7a0c.png"
 					alt="Arrow"
