@@ -145,7 +145,7 @@ export default function Auth() {
 			{isLoading && <LoadingCircle />}
 
 			<div>
-				<h1 className={ui.header}>{login ? "Login" : "Sign Up"}</h1>
+				<h1 className={ui.title}>{login ? "Login" : "Sign Up"}</h1>
 				<form>
 					{/* Username */}
 					<label className={styles.label} htmlFor="username">

@@ -1,3 +1,4 @@
+/* Flex-box containers */
 .vertical-center {
 	display: flex;
 	flex-direction: column;
@@ -26,9 +27,17 @@
 	justify-content: space-between;
 	align-items: center;
 }
+
+/* Display */
 .inline-block {
 	display: inline-block;
 }
+.align-block-right {
+	margin-left: auto;
+	display: block;
+}
+
+/* Positioning */
 .relative {
 	position: relative;
 }
@@ -37,10 +46,8 @@
 	top: 0;
 	width: 100%;
 }
-.align-block-right {
-	margin-left: auto;
-	display: block;
-}
+
+/* Container around all screens */
 .container {
 	padding: 6vmin;
 }
