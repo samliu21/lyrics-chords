@@ -50,14 +50,12 @@ export default function Comments(props) {
 					<p>No comments.</p>
 				) : (
 					comments.map((comment) => (
-						<div>
-							<CommentsBlock
-								key={comment.id}
-								songId={id}
-								commentUsername={comment.username}
-								comment={comment}
-							/>
-						</div>
+						<CommentsBlock
+							key={comment.id}
+							songId={id}
+							commentUsername={comment.username}
+							comment={comment}
+						/>
 					))
 				)}
 				{username && (

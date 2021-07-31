@@ -48,6 +48,14 @@
 }
 
 /* Container around all screens */
-.container {
-	padding: 6vmin;
+@media screen and (max-aspect-ratio: 1/1) {
+	.container {
+		padding: 6vmin;
+	}
+}
+@media (min-aspect-ratio: 1/1) {
+	.container {
+		padding: 6vmin;
+		padding-top: 10vmin;
+	}
 }

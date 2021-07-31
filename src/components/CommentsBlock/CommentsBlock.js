@@ -107,7 +107,7 @@ export default function CommentsBlock(props) {
 
 	const nestedComments = (children || []).map((comment) => (
 		<CommentsBlock
-			key={id}
+			key={comment.id}
 			songId={songId}
 			commentUsername={comment.username}
 			comment={comment}
@@ -115,7 +115,7 @@ export default function CommentsBlock(props) {
 	));
 
 	return (
-		<div className={styles["outer-container"]}>
+		<div className={styles["outer-container"]} key={id}>
 			<div className={styles.container}>
 				<div className={styles["horizontal-container"]}>
 					<div className={layout["horizontal-center"]}>

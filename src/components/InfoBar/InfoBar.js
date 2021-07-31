@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -16,14 +16,19 @@ export default function InfoBar(props) {
 
 	const history = useHistory();
 
-	if (songList && songList.length !== size.current) {
-		size.current = songList.length;
+	useEffect(() => {
+		if (songList && songList.length !== size.current) {
+			size.current = songList.length;
 
-		const sortedList = [...songList].sort((a, b) => a.id < b.id);
-		const obj = sortedList[0];
-		setIsLoading(false);
-		history.push(`/songs/${obj.creator}/${obj.id}`);
-	}
+			const sortedList = [...songList].sort((a, b) => a.id < b.id);
+			const obj = sortedList[0];
+			setIsLoading(false);
+
+			if (obj) {
+				history.push(`/songs/${obj.creator}/${obj.id}`);
+			}
+		}
+	}, [songList, history]);
 
 	const dispatch = useDispatch();
 
@@ -31,6 +36,10 @@ export default function InfoBar(props) {
 		setIsLoading(true);
 		dispatch(songsActions.copySong(props.selectedSong, username));
 	};
+
+	if (!props.selectedSong) {
+		return <p></p>;
+	}
 
 	return (
 		<div>

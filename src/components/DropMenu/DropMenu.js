@@ -16,9 +16,10 @@ export default function DropMenu(props) {
 
 	// Sample item:
 	// { text: "Blah", onClick: () => console.log("Clicked"), condition: isAdmin }
-	const menuOption = (item) => {
+	const menuOption = (item, idx) => {
 		return (
 			<div
+				key={idx}
 				onClick={item.onClick}
 				className={
 					props.white
@@ -44,7 +45,7 @@ export default function DropMenu(props) {
 				{menuOpen &&
 					props.items &&
 					props.items.map(
-						(item) => item.condition && menuOption(item)
+						(item, idx) => item.condition && menuOption(item, idx)
 					)}
 			</div>
 		</div>

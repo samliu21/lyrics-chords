@@ -333,12 +333,11 @@ export default function Song(props) {
 	const inputKwargs = isViewOnly ? { readOnly: true } : {};
 
 	const containerStyles = {
-		...styles.container,
 		backgroundColor: isCopyMode ? Colors.emphasis : "",
 	};
 
 	return (
-		<div className={layout.container}>
+		<div className={layout.container} style={containerStyles}>
 			{isFetching && <LoadingCircle />}
 
 			{/* Information about creator  */}
