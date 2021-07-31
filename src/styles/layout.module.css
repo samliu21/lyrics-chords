@@ -21,6 +21,11 @@
 	justify-content: space-around;
 	align-items: center;
 }
+.horizontal-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 .inline-block {
 	display: inline-block;
 }

@@ -2,7 +2,10 @@ import axios from "axios";
 import React, { createRef } from "react";
 import { getToken } from "../../util";
 
-import { styles } from "./PasswordResetStyles";
+import styles from "./PasswordReset.module.css";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
+import Button from "../../components/Button/Button";
 
 export default function PasswordReset() {
 	const input = createRef();
@@ -32,19 +35,19 @@ export default function PasswordReset() {
 	};
 
 	return (
-		<div style={styles.container}>
-			<h2 style={styles.heading}>Password Reset</h2>
-			<p className="italic">
+		<div className={layout.container}>
+			<h2 className={ui.title}>Password Reset</h2>
+			<p className={ui.italic}>
 				Forgotten your password? Enter your email address below, and
 				we'll email instructions for setting a new one.
 			</p>
-			<div style={styles.emailContainer}>
-				<p style={styles.emailLabel}>Email address:</p>
-				<input ref={input} style={styles.input} />
+			<div className={layout["horizontal-default"]}>
+				<p className={styles.text}>Email address:</p>
+				<input ref={input} className={ui["purple-input"]} />
 			</div>
-			<button style={styles.button} onClick={resetHandler}>
+			<Button onClick={resetHandler} className={styles.button}>
 				Reset my password!
-			</button>
+			</Button>
 		</div>
 	);
 }

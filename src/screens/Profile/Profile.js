@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
-import { styles } from "./ProfileStyles";
+import styles from "./Profile.module.css";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
 
@@ -74,17 +76,17 @@ export default function Profile(props) {
 	}
 
 	return (
-		<div style={styles.container}>
+		<div className={layout.container}>
 			{isLoading && <LoadingCircle />}
 
-			<div style={styles.profile}>
+			<div className={layout["horizontal-default"]}>
 				<img
 					src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
 					alt="profile-pic"
-					style={styles.picture}
+					className={styles.picture}
 				/>
 				<div>
-					<h2 style={styles.name} className="italic">
+					<h2 className={`${ui["plain-h2"]} ${ui.italic}`}>
 						{username}
 					</h2>
 					<p>

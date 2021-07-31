@@ -39,6 +39,7 @@
 	border-color: var(--accent);
 	position: fixed;
 	left: -17px;
+	top: 150px;
 	border-radius: 17px;
 	background-color: var(--accent); /* Default for song list search bar */
 	padding: 5px 8px 5px 27px;
@@ -87,4 +88,12 @@
 .italic {
 	font-style: italic;
 }
-
+.purple-input {
+	background-color: var(--accent);
+	width: 250px;
+	max-width: 60vw;
+	padding: 10px;
+	color: white;
+	border-radius: 10px;
+	border-width: 0;
+}

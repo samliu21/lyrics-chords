@@ -223,7 +223,7 @@ export default function Auth() {
 
 					{login && (
 						<p
-							className={ui["small-text"]}
+							className={`${ui["small-text"]} ${ui.pointer}`}
 							onClick={forgotPasswordHandler}
 						>
 							Forgot your password?

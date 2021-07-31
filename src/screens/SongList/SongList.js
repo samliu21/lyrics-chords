@@ -4,9 +4,10 @@ import * as songsActions from "../../store/actions/songsActions";
 import { useHistory } from "react-router-dom";
 
 import AddSongButton from "../../components/AddSongButton/AddSongButton";
-import DropMenu from "../../components/DropMenu/DropMenu";
-import { styles } from "./SongListStyles";
+import CapitalText from "../../components/CapitalText/CapitalText";
 import { getUsername, getActivationStatus } from "../../util";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SongBlock from "../../components/SongBlock/SongBlock";
@@ -98,18 +99,18 @@ export default function SongList(props) {
 	};
 
 	return (
-		<div style={styles.container}>
-			<div style={styles.buttonContainer}>
+		<div className={layout.container}>
+			<div className={layout["horizontal-between"]}>
 				{!all && (
-					<p className="important" onClick={favouritesHandler}>
+					<CapitalText onClick={favouritesHandler}>
 						{isFavourites ? "ALL" : "FAVOURITES"}
-					</p>
+					</CapitalText>
 				)}
 				{!all && <AddSongButton />}
 			</div>
 			<SearchBar />
 
-			<h1 style={styles.title}>
+			<h1 className={ui.title}>
 				{all
 					? "All Songs"
 					: "Your " + (isFavourites ? "Favourite " : "") + "Songs"}

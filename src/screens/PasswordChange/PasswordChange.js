@@ -4,8 +4,11 @@ import { getToken } from "../../util";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 
-import { styles } from "./PasswordChangeStyles";
+import styles from "./PasswordChange.module.css";
 import * as authActions from "../../store/actions/authActions";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
+import Button from "../../components/Button/Button";
 
 export default function PasswordChange(props) {
 	const password = createRef();
@@ -57,23 +60,27 @@ export default function PasswordChange(props) {
 	};
 
 	return (
-		<div style={styles.container}>
-			<h2 style={styles.heading}>Password Change</h2>
-			<div style={styles.horizontal}>
-				<p style={styles.text}>Password:</p>
-				<input style={styles.input} ref={password} type="password" />
-			</div>
-			<div style={styles.horizontal}>
-				<p style={styles.text}>Retype Password:</p>
+		<div className={layout.container}>
+			<h2 className={ui.title}>Password Change</h2>
+			<div className={layout["horizontal-default"]}>
+				<p className={styles.text}>Password:</p>
 				<input
-					style={styles.input}
+					className={ui["purple-input"]}
+					ref={password}
+					type="password"
+				/>
+			</div>
+			<div className={layout["horizontal-default"]}>
+				<p className={styles.text}>Retype Password:</p>
+				<input
+					className={ui["purple-input"]}
 					ref={retypedPassword}
 					type="password"
 				/>
 			</div>
-			<button style={styles.button} onClick={changePasswordHandler}>
+			<Button onClick={changePasswordHandler} className={styles.button}>
 				Submit
-			</button>
+			</Button>
 		</div>
 	);
 }

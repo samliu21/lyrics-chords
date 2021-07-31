@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import SongBlock from "../../components/SongBlock/SongBlock";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { styles } from "./PublicListStyles";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
 import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
@@ -53,10 +54,10 @@ export default function PublicList() {
 	}
 
 	return (
-		<div style={styles.container}>
+		<div className={layout.container}>
 			<SearchBar public />
 
-			<h1 style={styles.title}>Public Songs</h1>
+			<h1 className={ui.title}>Public Songs</h1>
 
 			{filteredPublicSongs.map((song) => {
 				const kwargs =
