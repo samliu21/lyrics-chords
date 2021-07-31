@@ -6,10 +6,12 @@ import { useHistory } from "react-router";
 
 import * as authActions from "../../store/actions/authActions";
 import * as songsActions from "../../store/actions/songsActions";
-import { styles } from "./AuthStyles";
 import { getToken, getActivationStatus } from "../../util";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import Button from "../../components/Button/Button";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
+import styles from "./Auth.module.css";
 
 const cookie = new Cookie();
 
@@ -130,29 +132,29 @@ export default function Auth() {
 			}
 		} catch (err) {
 			setIsLoading(false);
-			alert(
-				err.response
-					? err.response.data
-					: "There was an error handling your credentials."
-			);
+			let message = "There was an error handling your credentials.";
+			if (err.response && err.response.data) {
+				message = err.response.data;
+			}
+			alert(message);
 		}
 	}
 
 	return (
-		<div style={styles.container}>
+		<div className={layout.container}>
 			{isLoading && <LoadingCircle />}
 
 			<div>
-				<h1 style={styles.header}>{login ? "Login" : "Sign Up"}</h1>
+				<h1 className={ui.header}>{login ? "Login" : "Sign Up"}</h1>
 				<form>
 					{/* Username */}
-					<label style={styles.label} htmlFor="username">
+					<label className={styles.label} htmlFor="username">
 						{login ? "Username/Email" : "Username"}
 					</label>
 					<br />
 					<input
 						id="username"
-						style={styles.field}
+						className={styles.field}
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 					/>
@@ -160,13 +162,13 @@ export default function Auth() {
 
 					{!login && (
 						<div>
-							<label style={styles.label} htmlFor="email">
+							<label className={styles.label} htmlFor="email">
 								Email
 							</label>
 							<br />
 							<input
 								id="email"
-								style={styles.field}
+								className={styles.field}
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
@@ -175,14 +177,14 @@ export default function Auth() {
 					)}
 
 					{/* Password */}
-					<label style={styles.label} htmlFor="password">
+					<label className={styles.label} htmlFor="password">
 						Password
 					</label>
 					<br />
 					<input
 						type="password"
 						id="password"
-						style={styles.field}
+						className={styles.field}
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 					/>
@@ -192,7 +194,7 @@ export default function Auth() {
 					{!login && (
 						<div>
 							<label
-								style={styles.label}
+								className={styles.label}
 								htmlFor="repeated-password"
 							>
 								Re-enter your password
@@ -201,7 +203,7 @@ export default function Auth() {
 							<input
 								type="password"
 								id="repeated-password"
-								style={styles.field}
+								className={styles.field}
 								value={repeatedPassword}
 								onChange={(e) =>
 									setRepeatedPassword(e.target.value)
@@ -212,7 +214,7 @@ export default function Auth() {
 					)}
 
 					{/* Buttons */}
-					<div style={styles.buttonContainer}>
+					<div className={styles["button-container"]}>
 						<Button onClick={submitHandler}>Submit</Button>
 						<Button onClick={switchModeHandler}>
 							Switch to {login ? "Sign up" : "Login"}
@@ -221,7 +223,7 @@ export default function Auth() {
 
 					{login && (
 						<p
-							style={styles.forgotPassword}
+							className={ui["small-text"]}
 							onClick={forgotPasswordHandler}
 						>
 							Forgot your password?

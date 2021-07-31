@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
-import { styles } from "./ConfirmEmailStyles";
 import { getEmail, getUsername, getActivationStatus } from "../../util";
 import axios from "axios";
+import Button from "../../components/Button/Button";
+import ui from "../../styles/ui.module.css";
+import layout from "../../styles/layout.module.css";
 
 export default function ConfirmEmail() {
 	const [email, setEmail] = useState();
@@ -52,21 +54,17 @@ export default function ConfirmEmail() {
 	};
 
 	return (
-		<div style={styles.container}>
+		<div className={layout.container}>
 			{(!email || determiningActivated) && <LoadingCircle />}
-			<h2 style={styles.heading}>Your account is unactivated!</h2>
-			<p style={styles.text}>
-				An activation link has been sent to your inbox at{" "}
-				<span className="emphasis">{email}</span>. Once you've pressed
-				the link, click the button below to get started!
+			<h2 className={ui.subtitle}>Your account is unactivated!</h2>
+			<p className={ui["plain-h4"]}>
+				An activation link has been sent to your inbox at&nbsp;
+				<span className={ui.emphasis}>{email}</span>. Once you've
+				pressed the link, click the button below to get started!
 			</p>
-			<div style={styles.buttonContainer}>
-				<button style={styles.button} onClick={activationHandler}>
-					Done!
-				</button>
-				<button style={styles.button} onClick={resendHandler}>
-					Resend Email
-				</button>
+			<div className={layout["horizontal-around"]}>
+				<Button onClick={activationHandler}>Done!</Button>
+				<Button onClick={resendHandler}>Resend Email</Button>
 			</div>
 		</div>
 	);

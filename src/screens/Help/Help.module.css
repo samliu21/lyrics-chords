@@ -1,9 +1,13 @@
+.border {
+	border: 1px var(--dark) dashed;
+	padding: 10px;
+	font-size: var(--h3);
+}
+/* 
+
 import { Colors } from "../../constants/Colors";
 
 export const styles = {
-	container: {
-		padding: "6vmin",
-	},
 	border: {
 		borderColor: Colors.dark,
 		borderStyle: "dashed",
@@ -11,10 +15,4 @@ export const styles = {
 		padding: 10,
 		fontSize: "2.5vmin",
 	},
-	heading: {
-		fontSize: "6vmin",
-	},
-	subheading: {
-		fontSize: "4vmin",
-	},
-}
+} */

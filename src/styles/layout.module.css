@@ -16,6 +16,11 @@
 	display: flex;
 	align-items: center;
 }
+.horizontal-around {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
 .inline-block {
 	display: inline-block;
 }

@@ -1,18 +1,20 @@
 import React from "react";
 
-import { styles } from "./HelpStyles";
+import styles from "./Help.module.css";
+import layout from "../../styles/layout.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function Help() {
 	return (
-		<div style={styles.container}>
-			<h1 style={styles.heading}>Help Page</h1>
-			<h2 style={styles.subheading}>Song List Page</h2>
-			<div style={styles.border}>
+		<div className={layout.container}>
+			<h1 className={ui.title}>Help Page</h1>
+			<h2 className={ui.subtitle}>Song List Page</h2>
+			<div className={styles.border}>
 				<div>
 					You can find your Song List by clicking on the&nbsp;
-					<span className="italic">Song List</span> section of the
+					<span className={ui.italic}>Song List</span> section of the
 					navigation bar. You can add a song by pressing the&nbsp;
-					<span className="italic">ADD SONG</span> button in the top
+					<span className={ui.italic}>ADD SONG</span> button in the top
 					right corner, delete a song by pressing the trash can,
 					toggle the public visibility by pressing the eye, and start
 					making your songsheet by pressing the arrow at the right!{" "}
@@ -23,28 +25,28 @@ export default function Help() {
 					glass near the top left!
 				</div>
 			</div>
-			<h2 style={styles.subheading}>Song Page</h2>
-			<div style={styles.border}>
+			<h2 className={ui.subtitle}>Song Page</h2>
+			<div className={styles.border}>
 				<div>
 					The song page can be reached by pressing the right arrow on
 					any one of your songs! Start by typing the name and artist
 					of your song at the top of the page. In the options dropdown
 					menu in the navigation bar, selecting&nbsp;
-					<span className="italic">Fetching Lyrics</span> will fetch
+					<span className={ui.italic}>Fetching Lyrics</span> will fetch
 					the lyrics of the song and artist you've inputted. The
 					fetched lyrics will appear in the&nbsp;
-					<span className="italic">Pulled Lyrics</span> section of the
+					<span className={ui.italic}>Pulled Lyrics</span> section of the
 					page. If the lyrics of your song cannot be fetched, another
 					option is to type or copy the lyrics directly into the&nbsp;
-					<span className="italic">Pulled Lyrics</span> section of the
+					<span className={ui.italic}>Pulled Lyrics</span> section of the
 					page.
 				</div>
 				<br />
 				<div>
 					Then, use the&nbsp;
-					<span className="italic">Transfer Lyrics</span> option to
+					<span className={ui.italic}>Transfer Lyrics</span> option to
 					move the pulled lyrics to the{" "}
-					<span className="italic">Lyrics section</span>, where you
+					<span className={ui.italic}>Lyrics section</span>, where you
 					can then enter chords over each line.
 				</div>
 				<br />
@@ -80,16 +82,16 @@ export default function Help() {
 					scroll to stop.
 				</div>
 			</div>
-			<h2 style={styles.subheading}>Public Page</h2>
-			<div style={styles.border}>
+			<h2 className={ui.subtitle}>Public Page</h2>
+			<div className={styles.border}>
 				You can find a public list of songsheets by clicking on
 				the&nbsp;
-				<span className="italic">Public</span> section of the navigation
+				<span className={ui.italic}>Public</span> section of the navigation
 				bar. You can only edit a public songsheet if you are the owner
 				or were explicitly granted editing privelleges.
 			</div>
-			<h2 style={styles.subheading}>Bugs</h2>
-			<div style={styles.border}>
+			<h2 className={ui.subtitle}>Bugs</h2>
+			<div className={styles.border}>
 				If you discover a bug, please email me at sam4button@gmail.com
 				or report an issue on my&nbsp;
 				<a href="https://github.com/samliu21/lyrics-chords-heroku/issues">

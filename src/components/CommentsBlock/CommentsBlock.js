@@ -7,7 +7,7 @@ import { BsArrow90DegLeft } from "react-icons/bs";
 import NewComment from "../NewComment/NewComment";
 import styles from "./CommentsBlock.module.css";
 import layout from "../../styles/layout.module.css";
-import design from "../../styles/design.module.css";
+import design from "../../styles/ui.module.css";
 
 export default function CommentsBlock(props) {
 	const username = useSelector((state) => state.auth.username);

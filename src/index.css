@@ -39,7 +39,6 @@ h2 {
 }
 .pointer {
 	cursor: pointer;
-	/* text-decoration: underline; */
 }
 .italic {
 	font-style: italic;

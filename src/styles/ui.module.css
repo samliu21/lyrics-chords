@@ -9,9 +9,17 @@
 .nav-bar-hover:hover {
 	background-color: var(--dark);
 }
+.header {
+	color: var(--accent);
+	font-size: var(--h1);
+}
 .song-subtitle {
 	color: var(--primary);
 	font-size: var(--h2);
+}
+.small-text {
+	color: var(--accent);
+	font-size: var(--p);
 }
 .dashed-input {
 	white-space: pre-wrap;
@@ -54,3 +62,29 @@
 	width: 100%;
 	text-overflow: ellipsis;
 }
+.subtitle {
+	font-size: var(--h2);
+	color: var(--accent);
+}
+.plain-h2 {
+	font-size: var(--h2);
+}
+.plain-h3 {
+	font-size: var(--h3);
+}
+.plain-h4 {
+	color: black;
+	font-size: var(--h4);
+}
+.pointer {
+	cursor: pointer;
+}
+.emphasis {
+	color: var(--accent);
+	font-style: italic;
+	font-weight: bold;
+}
+.italic {
+	font-style: italic;
+}
+

@@ -8,7 +8,7 @@ import * as authActions from "../../store/actions/authActions";
 import DropMenu from "../DropMenu/DropMenu";
 import { getToken, getUsername } from "../../util";
 import styles from "./LogoutButton.module.css";
-import design from "../../styles/design.module.css";
+import design from "../../styles/ui.module.css";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const cookie = new Cookie();

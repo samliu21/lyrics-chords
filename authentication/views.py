@@ -30,6 +30,10 @@ def auth_signup(request):
 		if len(get_user_model().objects.filter(username=username)) > 0:
 			return HttpResponseBadRequest("Username already exists. Did you mean to login instead?")
 
+		# Check if email is already taken
+		if len(get_user_model().objects.filter(username=username)) > 0:
+			return HttpResponseBadRequest("Email already exists. Did you mean to login instead?")
+
 		user = get_user_model().objects.create_user(username=username, email=email, password=password)
 		user.is_active = False
 		user.save()
@@ -48,8 +52,8 @@ def auth_signup(request):
 			return HttpResponse("User could not be created.")
 		login(request, user)
 		return HttpResponse(f'{username}**{email}**{user.is_superuser}')
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
+	except Exception as e:
+		return HttpResponseBadRequest(e)
 
 # Log user in, attempting to authenticate with email or username
 @require_POST

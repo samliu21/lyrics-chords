@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
-import design from "../../styles/design.module.css";
+import design from "../../styles/ui.module.css";
 import styles from "./InfoBar.module.css";
 
 export default function InfoBar(props) {
