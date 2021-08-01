@@ -10,5 +10,6 @@ urlpatterns = [
 	path('email', views.get_email, name='email'),
 	path('csrf', views.get_csrf, name='csrf'),
 	path('authenticated', views.is_authenticated, name='authenticated'),
+	path('about/<str:username>', views.get_about, name='about'),
 	path('email/', include('emailauth.urls')),
 ]

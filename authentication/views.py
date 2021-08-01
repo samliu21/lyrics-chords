@@ -119,5 +119,15 @@ def get_credentials(request):
 
 # Get CSRF token
 @ensure_csrf_cookie
-def get_csrf(request):
+def get_csrf(_):
 	return HttpResponse("Obtained")
+
+# Get about section
+def get_about(_, username):
+	try:
+		user = get_user_model().objects.get(username=username)
+		return HttpResponse(user.about)
+	except get_user_model().DoesNotExist:
+		return HttpResponseBadRequest('User does not exist')
+	except:
+		return HttpResponseBadRequest('An error occurred')
