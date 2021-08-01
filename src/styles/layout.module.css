@@ -69,3 +69,8 @@
 		padding-top: 10vmin;
 	}
 }
+
+/* Dimensions */
+.full-width {
+	width: 100%;
+}

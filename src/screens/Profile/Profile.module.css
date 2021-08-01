@@ -13,6 +13,7 @@
 	border-bottom: none;
 	cursor: pointer;
 	background-color: white;
+	font-size: var(--h4);
 }
 .menu-button-active {
 	border-top: 3px var(--primary) solid;

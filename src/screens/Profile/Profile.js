@@ -8,6 +8,7 @@ import ui from "../../styles/ui.module.css";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
 import CapitalText from "../../components/CapitalText/CapitalText";
+import TextArea from "../../components/TextArea/TextArea";
 
 export default function Profile(props) {
 	const username = props.match.params.username;
@@ -113,7 +114,7 @@ export default function Profile(props) {
 					alt="profile-pic"
 					className={styles.picture}
 				/>
-				<div>
+				<div className={layout["full-width"]}>
 					<h2 className={`${ui["plain-h2"]} ${ui.italic}`}>
 						{username}
 					</h2>
@@ -122,9 +123,10 @@ export default function Profile(props) {
 						&nbsp;&nbsp;
 						{songCount}
 					</p>
+					{active === "Edit Profile" && <TextArea noLines />}
 				</div>
 			</div>
-			{username === realUsername && (
+			{username === realUsername && active === "About" && (
 				<CapitalText onClick={changePasswordHandler}>
 					Change Password
 				</CapitalText>

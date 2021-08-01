@@ -5,7 +5,7 @@ import styles from "./TextArea.module.css";
 export default function TextArea(props) {
 	return (
 		<div>
-			<hr />
+			{!props.noLines && <hr />}
 			<textarea
 				rows={4}
 				className={styles.input}
@@ -13,7 +13,7 @@ export default function TextArea(props) {
 				defaultValue={props.defaultValue ?? ""}
 				ref={props.refName}
 			/>
-			<hr />
+			{!props.noLines && <hr />}
 		</div>
 	);
 }
