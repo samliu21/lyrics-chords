@@ -14,6 +14,7 @@ export default function Profile(props) {
 	const realUsername = useSelector((state) => state.auth.username);
 	const [songCount, setSongCount] = useState();
 	const [isLoading, setIsLoading] = useState(false);
+	const [active, setActive] = useState("About");
 
 	const history = useHistory();
 
@@ -76,9 +77,35 @@ export default function Profile(props) {
 		return <LoadingCircle />;
 	}
 
+	const menuButton = (text, onClick) => {
+		const className =
+			styles["menu-button"] +
+			" " +
+			(active === text ? styles["menu-button-active"] : "");
+
+		const clickHandler = () => {
+			if (onClick) {
+				onClick();
+			}
+			setActive(text);
+		};
+
+		return (
+			<p className={className} onClick={clickHandler}>
+				{text}
+			</p>
+		);
+	};
+
 	return (
 		<div className={layout.container}>
 			{isLoading && <LoadingCircle />}
+
+			<div className={`${layout["horizontal-end"]}`}>
+				{menuButton("About")}
+				{menuButton("Edit Profile")}
+			</div>
+			<hr className={`${layout["no-margin"]}`} />
 
 			<div className={layout["horizontal-default"]}>
 				<img
@@ -98,8 +125,9 @@ export default function Profile(props) {
 				</div>
 			</div>
 			{username === realUsername && (
-				<CapitalText onClick={changePasswordHandler}>Change Password</CapitalText>
-				
+				<CapitalText onClick={changePasswordHandler}>
+					Change Password
+				</CapitalText>
 			)}
 		</div>
 	);

@@ -5,3 +5,15 @@
 	margin-right: 4vw;
 	margin-top: 6vmin;
 }
+.menu-button {
+	padding: 10px;
+	margin-bottom: 0;
+	margin-left: 2vw;
+	border: 1px black solid;
+	border-bottom: none;
+	cursor: pointer;
+	background-color: white;
+}
+.menu-button-active {
+	border-top: 3px var(--primary) solid;
+}

@@ -27,6 +27,11 @@
 	justify-content: space-between;
 	align-items: center;
 }
+.horizontal-end {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
 
 /* Display */
 .inline-block {
@@ -45,6 +50,11 @@
 	position: fixed;
 	top: 0;
 	width: 100%;
+}
+
+/* Margin */
+.no-margin {
+	margin: 0;
 }
 
 /* Container around all screens */
