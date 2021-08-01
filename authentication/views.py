@@ -131,3 +131,24 @@ def get_about(_, username):
 		return HttpResponseBadRequest('User does not exist')
 	except:
 		return HttpResponseBadRequest('An error occurred')
+
+@require_POST
+def set_about(request):
+	if not request.user.is_authenticated:
+		return HttpResponseBadRequest('You are not authenticated.')
+	try:
+		info = json.loads(request.body)
+		username = info.get('username')
+
+		if username != request.user.username:
+			return HttpResponseBadRequest('This isn\'t your account!')
+
+		about = info.get('about')
+		user = get_user_model().objects.get(username=username)
+		user.about = about
+		user.save()
+		return HttpResponse(user.about)
+	except get_user_model().DoesNotExist:
+		return HttpResponseBadRequest('User does not exist')
+	except:
+		return HttpResponseBadRequest('An error occurred')

@@ -7,7 +7,7 @@ export default function TextArea(props) {
 		<div>
 			{!props.noLines && <hr />}
 			<textarea
-				rows={4}
+				rows={props.lineCount ?? 4}
 				className={styles.input}
 				maxLength={500}
 				defaultValue={props.defaultValue ?? ""}

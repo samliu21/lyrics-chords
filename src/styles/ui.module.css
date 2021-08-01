@@ -103,3 +103,6 @@
 .italic {
 	font-style: italic;
 }
+.white-space {
+	white-space: pre-wrap;
+}

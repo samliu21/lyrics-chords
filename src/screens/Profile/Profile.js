@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -9,13 +9,19 @@ import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
 import CapitalText from "../../components/CapitalText/CapitalText";
 import TextArea from "../../components/TextArea/TextArea";
+import Button from "../../components/Button/Button";
+import { getToken } from "../../util";
 
 export default function Profile(props) {
 	const username = props.match.params.username;
+
 	const realUsername = useSelector((state) => state.auth.username);
 	const [songCount, setSongCount] = useState();
 	const [isLoading, setIsLoading] = useState(false);
 	const [active, setActive] = useState("About");
+	const [about, setAbout] = useState();
+
+	const aboutRef = useRef();
 
 	const history = useHistory();
 
@@ -26,6 +32,25 @@ export default function Profile(props) {
 
 		return () => unlisten();
 	}, [history]);
+
+	useEffect(() => {
+		const getAbout = async () => {
+			try {
+				const response = await axios.get(
+					`/api/auth/about/${username}`,
+					{
+						withCredentials: true,
+					}
+				);
+
+				setAbout(response.data);
+			} catch (err) {
+				console.log(err.message);
+			}
+		};
+
+		getAbout();
+	}, [username]);
 
 	useEffect(() => {
 		const getCount = async () => {
@@ -74,8 +99,35 @@ export default function Profile(props) {
 		history.push(link);
 	};
 
-	if (!songCount) {
-		return <LoadingCircle />;
+	const editAboutHandler = async () => {
+		const inputAbout = aboutRef.current.value;
+
+		setAbout(inputAbout);
+		try {
+			await axios.post(
+				"/api/auth/set_about",
+				{
+					username: username,
+					about: inputAbout,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getToken(),
+					},
+				}
+			);
+
+			setActive("About");
+		} catch (err) {
+			console.log(err.message);
+			alert("Biography couldn't save!");
+		}
+	};
+
+	if (!songCount || about === null) {
+		return <p></p>;
 	}
 
 	const menuButton = (text, onClick) => {
@@ -108,7 +160,7 @@ export default function Profile(props) {
 			</div>
 			<hr className={`${layout["no-margin"]}`} />
 
-			<div className={layout["horizontal-default"]}>
+			<div className={layout["horizontal-default-start"]}>
 				<img
 					src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
 					alt="profile-pic"
@@ -123,7 +175,25 @@ export default function Profile(props) {
 						&nbsp;&nbsp;
 						{songCount}
 					</p>
-					{active === "Edit Profile" && <TextArea noLines />}
+					<h2 className={ui.subtitle}>About</h2>
+					{active === "Edit Profile" ? (
+						<div>
+							<TextArea
+								refName={aboutRef}
+								lineCount={10}
+								noLines
+								defaultValue={about}
+							/>
+							<Button
+								onClick={editAboutHandler}
+								className={layout["align-block-right"]}
+							>
+								Submit
+							</Button>
+						</div>
+					) : (
+						<p className={ui["white-space"]}>{about === "" ? "No biography." : about}</p>
+					)}
 				</div>
 			</div>
 			{username === realUsername && active === "About" && (
