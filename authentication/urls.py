@@ -12,6 +12,7 @@ urlpatterns = [
 	path('authenticated', views.is_authenticated, name='authenticated'),
 	path('about/<str:username>', views.get_about, name='about'),
 	path('set_about', views.set_about, name='set_about'),
+	path('get_image/<str:username>', views.get_image, name='get_image'),
 	path('email/', include('emailauth.urls')),
 	path('images/', views.ImageView.as_view(), name='images'),
 ]

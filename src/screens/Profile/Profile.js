@@ -26,6 +26,15 @@ export default function Profile(props) {
 	const history = useHistory();
 
 	useEffect(() => {
+		const getImage = async () => {
+			const response = await axios.get(`/api/auth/get_image/${username}`);
+			console.log(response.data);
+		};
+		
+		getImage();
+	}, []);
+
+	useEffect(() => {
 		const unlisten = history.listen(() => {
 			setSongCount(null);
 		});
@@ -139,14 +148,14 @@ export default function Profile(props) {
 				{
 					withCredentials: true,
 					headers: {
-						"Content-Type": "application/json",
+						// "Content-Type": "multipart/form-data",
 						"X-CSRFToken": getToken(),
 					},
 				}
 			);
 			console.log(response.data);
 		} catch (err) {
-			console.log(err.response);
+			console.dir(err.response);
 		}
 	};
 
