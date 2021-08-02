@@ -170,7 +170,7 @@ export default function Profile(props) {
 				},
 			});
 
-			const url = response.data;
+			const url = response.data.url;
 			setImgUrl(url);
 		} catch (err) {
 			console.dir(err.response);
