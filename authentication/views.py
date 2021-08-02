@@ -14,7 +14,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import json
 from authentication.models import Image
 from authentication.serializers import ImageSerializer
-from backend.settings import CLOUDINARY_API_KEY, EMAIL_HOST_USER, BACKEND
+from backend.settings import EMAIL_HOST_USER, BACKEND
 import cloudinary
 
 account_activation_token = ConfirmEmailTokenGenerator()
