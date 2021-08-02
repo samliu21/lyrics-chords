@@ -126,6 +126,10 @@ export default function Profile(props) {
 		}
 	};
 
+	const imageChangeHandler = (e) => {
+		console.log(e.target.files);
+	};
+
 	if (!songCount || about === null) {
 		return <p></p>;
 	}
@@ -161,11 +165,20 @@ export default function Profile(props) {
 			<hr className={`${layout["no-margin"]}`} />
 
 			<div className={layout["horizontal-default-start"]}>
-				<img
-					src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
-					alt="profile-pic"
-					className={styles.picture}
-				/>
+				{active === "About" ? (
+					<img
+						src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
+						alt="profile-pic"
+						className={styles.picture}
+					/>
+				) : (
+					<input
+						type="file"
+						id="image"
+						accept="image/png image/jpeg"
+						onChange={imageChangeHandler}
+					/>
+				)}
 				<div className={layout["full-width"]}>
 					<h2 className={`${ui["plain-h2"]} ${ui.italic}`}>
 						{username}
@@ -192,7 +205,9 @@ export default function Profile(props) {
 							</Button>
 						</div>
 					) : (
-						<p className={ui["white-space"]}>{about === "" ? "No biography." : about}</p>
+						<p className={ui["white-space"]}>
+							{about === "" ? "No biography." : about}
+						</p>
 					)}
 				</div>
 			</div>
