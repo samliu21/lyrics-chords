@@ -126,8 +126,28 @@ export default function Profile(props) {
 		}
 	};
 
-	const imageChangeHandler = (e) => {
-		console.log(e.target.files);
+	const imageChangeHandler = async (e) => {
+		const image = e.target.files[0];
+
+		try {
+			const response = await axios.post(
+				"/api/auth/images/",
+				{
+					username: username,
+					image: image,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getToken(),
+					},
+				}
+			);
+			console.log(response.data);
+		} catch (err) {
+			console.log(err.response);
+		}
 	};
 
 	if (!songCount || about === null) {

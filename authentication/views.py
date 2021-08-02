@@ -7,8 +7,11 @@ from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from emailauth.tokens import ConfirmEmailTokenGenerator
+from rest_framework.views import APIView
 
 import json
+from authentication.models import Image
+from authentication.serializers import ImageSerializer
 from backend.settings import EMAIL_HOST_USER, BACKEND
 
 account_activation_token = ConfirmEmailTokenGenerator()
@@ -152,3 +155,16 @@ def set_about(request):
 		return HttpResponseBadRequest('User does not exist')
 	except:
 		return HttpResponseBadRequest('An error occurred')
+
+class ImageView(APIView):
+	def get(self, request):
+		return Image.objects.all()
+
+	def post(self, request):
+		info = request.data
+		username = info.get('username')
+		image_serializer = ImageSerializer(info.get('image'))
+		image = image_serializer.data
+		print(username)
+		print(image)
+		return HttpResponse('Hello')
