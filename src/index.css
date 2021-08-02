@@ -33,3 +33,7 @@ h1,
 h2 {
 	color: var(--accent);
 }
+input[type='file'] {
+	display: none;
+	width: 0;
+}

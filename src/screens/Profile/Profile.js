@@ -17,7 +17,7 @@ export default function Profile(props) {
 
 	const realUsername = useSelector((state) => state.auth.username);
 	const [songCount, setSongCount] = useState();
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [active, setActive] = useState("About");
 	const [about, setAbout] = useState();
 	const [imgUrl, setImgUrl] = useState();
@@ -28,11 +28,20 @@ export default function Profile(props) {
 
 	useEffect(() => {
 		const getImage = async () => {
-			const response = await axios.get(`/api/auth/get_image/${username}`);
-			console.log(response.data);
+			try {
+				const response = await axios.get(
+					`/api/auth/get_image/${username}`
+				);
+
+				const url = `media/${response.data}`;
+				setImgUrl(url);
+			} catch (err) {
+				console.log(err.message);
+			}
+			setIsLoading(false);
 		};
 
-		// getImage();
+		getImage();
 	}, []);
 
 	useEffect(() => {
@@ -138,6 +147,17 @@ export default function Profile(props) {
 
 	const imageChangeHandler = async (e) => {
 		const image = e.target.files[0];
+
+		const validExtensions = [".jpg", ".png"];
+
+		const nameArray = image.name.split(".");
+		const extension = nameArray[nameArray.length - 1].toLowerCase();
+		if (!extension || validExtensions.indexOf(extension) === -1) {
+			alert("Invalid file type.");
+			e.target.value = "";
+			return;
+		}
+
 		const formData = new FormData();
 		formData.append("image", image);
 		formData.append("username", username);
@@ -149,7 +169,7 @@ export default function Profile(props) {
 					"X-CSRFToken": getToken(),
 				},
 			});
-			
+
 			const image = response.data.image;
 			setImgUrl(image);
 		} catch (err) {
@@ -181,10 +201,12 @@ export default function Profile(props) {
 		);
 	};
 
+	if (isLoading) {
+		return <p></p>;
+	}
+
 	return (
 		<div className={layout.container}>
-			{isLoading && <LoadingCircle />}
-
 			<div className={`${layout["horizontal-end"]}`}>
 				{menuButton("About")}
 				{menuButton("Edit Profile")}
@@ -192,20 +214,26 @@ export default function Profile(props) {
 			<hr className={`${layout["no-margin"]}`} />
 
 			<div className={layout["horizontal-default-start"]}>
-				{active === "About" ? (
+				<div className={layout["vertical-default"]}>
 					<img
-						src={imgUrl ?? "https://hoursproject.com/cache/images/square_thumb/images/user/default.png"}
+						src={
+							imgUrl ??
+							"https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
+						}
 						alt="profile-pic"
 						className={styles.picture}
 					/>
-				) : (
-					<input
-						type="file"
-						id="image"
-						accept="image/png image/jpeg"
-						onChange={imageChangeHandler}
-					/>
-				)}
+					{active === "Edit Profile" && (
+						<label class={styles["file-upload"]}>
+							CUSTOM UPLOAD
+							<input
+								type="file"
+								id="image"
+								onChange={imageChangeHandler}
+							/>
+						</label>
+					)}
+				</div>
 				<div className={layout["full-width"]}>
 					<h2 className={`${ui["plain-h2"]} ${ui.italic}`}>
 						{username}

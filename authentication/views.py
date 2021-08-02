@@ -162,9 +162,11 @@ def set_about(request):
 def get_image(request, username):
 	try:
 		user = get_user_model().objects.get(username=username)
-		image = user.image
-		image_serializer = ImageSerializer(image)
-		return Response(image_serializer.data)
+		image_obj = user.image
+		# image_serializer = ImageSerializer(image)
+		# print(image_serializer.data.name)
+		name = image_obj.image.name
+		return HttpResponse(name)
 	except Exception as e:
 		print(e)
 		return HttpResponseBadRequest('An error occurred.')

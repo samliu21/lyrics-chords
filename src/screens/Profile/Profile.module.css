@@ -19,3 +19,10 @@
 .menu-button-active {
 	border-top: 3px var(--primary) solid;
 }
+.file-upload {
+	cursor: pointer;
+	font-size: var(--h4);
+	color: var(--accent);
+	font-weight: bold;
+	margin-top: 20px;
+}
