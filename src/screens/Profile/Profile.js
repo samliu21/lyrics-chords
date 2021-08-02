@@ -20,6 +20,7 @@ export default function Profile(props) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [active, setActive] = useState("About");
 	const [about, setAbout] = useState();
+	const [imgUrl, setImgUrl] = useState();
 
 	const aboutRef = useRef();
 
@@ -139,7 +140,7 @@ export default function Profile(props) {
 		const image = e.target.files[0];
 		const formData = new FormData();
 		formData.append("image", image);
-		// formData.append("user", username);
+		formData.append("username", username);
 
 		try {
 			const response = await axios.post("/api/auth/images/", formData, {
@@ -148,7 +149,9 @@ export default function Profile(props) {
 					"X-CSRFToken": getToken(),
 				},
 			});
-			console.log(response.data);
+			
+			const image = response.data.image;
+			setImgUrl(image);
 		} catch (err) {
 			console.dir(err.response);
 		}
@@ -191,7 +194,7 @@ export default function Profile(props) {
 			<div className={layout["horizontal-default-start"]}>
 				{active === "About" ? (
 					<img
-						src="https://hoursproject.com/cache/images/square_thumb/images/user/default.png"
+						src={imgUrl ?? "https://hoursproject.com/cache/images/square_thumb/images/user/default.png"}
 						alt="profile-pic"
 						className={styles.picture}
 					/>

@@ -30,7 +30,7 @@ if SECRET_KEY == None or API_KEY == None:
 	if SECRET_KEY == None:
 		SECRET_KEY = get_random_secret_key()
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
 	'127.0.0.1',
@@ -137,7 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

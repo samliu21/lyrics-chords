@@ -173,21 +173,26 @@ class ImageView(APIView):
 	parser_classes=(MultiPartParser, FormParser)
 
 	def get(self, request):
-		return Image.objects.all()
+		qs = Image.objects.all()
+		serializer = ImageSerializer(qs, many=True)
+		return Response(serializer.data)
 
 	def post(self, request):
 		try:
-			print(request.data)
 			image_serializer = ImageSerializer(data=request.data)
-			if not image_serializer.is_valid():
+			if image_serializer.is_valid():
+				# Delete existing picture
+				username = image_serializer.validated_data.get('user').get('username')
+				user = get_user_model().objects.get(username=username)
+				images = Image.objects.filter(user=user)
+				for image in images:
+					image.delete()
+
+				print(image_serializer.validated_data)
+				image_serializer.save()
+				return Response(image_serializer.data)
+			else:
 				return HttpResponseBadRequest('Image is invalid.')
-			image_serializer.save()
-
-			# user = get_user_model().objects.get(username=username)
-			# user.image = image
-
-			# print(image)
-			return Response(image_serializer.data)
 		except get_user_model().DoesNotExist:
 			return HttpResponseBadRequest('User does not exist.')
 		except Exception as e:
