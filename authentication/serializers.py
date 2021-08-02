@@ -7,20 +7,20 @@ class ImageSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Image
-		fields = ['image', 'username']
+		fields = ['id', 'username', 'url']
 
-	def create(self, validated_data):
-		try:
-			username = validated_data.get('user').get('username')
-			image_name = validated_data.get('image')
-			user = get_user_model().objects.get(username=username)
+	# def create(self, validated_data):
+	# 	try:
+	# 		username = validated_data.get('user').get('username')
+	# 		image_name = validated_data.get('image')
+	# 		user = get_user_model().objects.get(username=username)
 
-			image = Image.objects.create(image=image_name, user=user)
-			return image
-		except get_user_model().DoesNotExist:
-			return TypeError('User does not exist')
-		except Exception as e:
-			return e
+	# 		image = Image.objects.create(image=image_name, user=user)
+	# 		return image
+	# 	except get_user_model().DoesNotExist:
+	# 		return TypeError('User does not exist')
+	# 	except Exception as e:
+	# 		return e
 
 	# def is_valid(self):
 	# 	return True

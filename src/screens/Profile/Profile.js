@@ -33,7 +33,7 @@ export default function Profile(props) {
 					`/api/auth/get_image/${username}`
 				);
 
-				const url = `media/${response.data}`;
+				const url = response.data;
 				setImgUrl(url);
 			} catch (err) {
 				console.log(err.message);

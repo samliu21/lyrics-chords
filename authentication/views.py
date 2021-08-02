@@ -163,11 +163,12 @@ def set_about(request):
 def get_image(request, username):
 	try:
 		user = get_user_model().objects.get(username=username)
-		image_obj = user.image
-		# image_serializer = ImageSerializer(image)
-		# print(image_serializer.data.name)
-		name = image_obj.image.name
-		return HttpResponse(name)
+		image = Image.objects.get(user=user)
+		return HttpResponse(image.url)
+	except get_user_model().DoesNotExist:
+		return HttpResponseBadRequest('Username does not exist.')
+	except Image.DoesNotExist:
+		return HttpResponseBadRequest('User does not have a profile picture.')
 	except Exception as e:
 		print(e)
 		return HttpResponseBadRequest('An error occurred.')
@@ -178,28 +179,38 @@ class ImageView(APIView):
 	def get(self, request):
 		qs = Image.objects.all()
 		serializer = ImageSerializer(qs, many=True)
+		print(serializer.data)
 		return Response(serializer.data)
 
 	def post(self, request):
+		"""
+		Makes an upload request to Cloudinary servers
+		Returns JSON objects. Sample body:
+		{
+			'id': 2,
+			'url': 'url',
+			'user': 1
+		}
+		"""
 		try:
-			image_serializer = ImageSerializer(data=request.data)
-			if image_serializer.is_valid():
-				# Delete existing picture
-				username = image_serializer.validated_data.get('user').get('username')
-				user = get_user_model().objects.get(username=username)
-				images = Image.objects.filter(user=user)
-				for image in images:
-					image.delete()
+			img = request.data.get('image')
+			response = cloudinary.uploader.upload(img, public_id=2)
+			url = response.get('url')
+			print(url)
+			# url = 'https://google.ca'
 
-				image_serializer.save()
-				image_name = image_serializer.data.get('image')
-				
-				response = cloudinary.uploader.upload(image_name[1:], public_id=user.id)
-				url = response.get('url')
+			username = request.data.get('username')
+			user = get_user_model().objects.get(username=username)
+			print(user)
 
-				return Response(url)
-			else:
-				return HttpResponseBadRequest('Image is invalid.')
+			# Delete existing image. Will be deleted automatically by Cloudinary
+			Image.objects.filter(user=user).delete()
+
+			image = Image.objects.create(user=user, url=url)
+			image_serializer = ImageSerializer(image)
+			data = image_serializer.data
+
+			return Response(data)
 		except get_user_model().DoesNotExist:
 			return HttpResponseBadRequest('User does not exist.')
 		except Exception as e:

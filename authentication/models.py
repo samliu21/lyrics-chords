@@ -12,9 +12,9 @@ class User(AbstractUser):
 		db_table = 'auth_user'
 
 class Image(models.Model):
-	url = models.ImageField(upload_to='user_images')
+	url = models.TextField()
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
 
-	def delete(self):
-		self.image.storage.delete(self.image.name)
-		super().delete()
+	# def delete(self):
+	# 	self.image.storage.delete(self.image.name)
+	# 	super().delete()
