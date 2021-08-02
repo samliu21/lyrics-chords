@@ -30,7 +30,7 @@ export default function Profile(props) {
 			const response = await axios.get(`/api/auth/get_image/${username}`);
 			console.log(response.data);
 		};
-		
+
 		getImage();
 	}, []);
 
@@ -137,22 +137,17 @@ export default function Profile(props) {
 
 	const imageChangeHandler = async (e) => {
 		const image = e.target.files[0];
+		const formData = new FormData();
+		formData.append("image", image);
+		// formData.append("user", username);
 
 		try {
-			const response = await axios.post(
-				"/api/auth/images/",
-				{
-					username: username,
-					image: image,
+			const response = await axios.post("/api/auth/images/", formData, {
+				withCredentials: true,
+				headers: {
+					"X-CSRFToken": getToken(),
 				},
-				{
-					withCredentials: true,
-					headers: {
-						// "Content-Type": "multipart/form-data",
-						"X-CSRFToken": getToken(),
-					},
-				}
-			);
+			});
 			console.log(response.data);
 		} catch (err) {
 			console.dir(err.response);

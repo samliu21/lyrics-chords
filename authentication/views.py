@@ -9,7 +9,7 @@ from django.views.decorators.http import require_GET, require_POST
 from emailauth.tokens import ConfirmEmailTokenGenerator
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 
 import json
 from authentication.models import Image
@@ -170,26 +170,24 @@ def get_image(request, username):
 		return HttpResponseBadRequest('An error occurred.')
 
 class ImageView(APIView):
-	parser_classes=(MultiPartParser,)
+	parser_classes=(MultiPartParser, FormParser)
 
 	def get(self, request):
 		return Image.objects.all()
 
 	def post(self, request):
 		try:
-			info = request.data
-			username = info.get('username')
-			image_serializer = ImageSerializer(data=info.get('image'))
+			print(request.data)
+			image_serializer = ImageSerializer(data=request.data)
 			if not image_serializer.is_valid():
 				return HttpResponseBadRequest('Image is invalid.')
-			image_data = image_serializer.data
-			image = Image(image=image_data)
+			image_serializer.save()
 
-			user = get_user_model().objects.get(username=username)
-			user.image = image
+			# user = get_user_model().objects.get(username=username)
+			# user.image = image
 
-			print(image)
-			return HttpResponse('Hello')
+			# print(image)
+			return Response(image_serializer.data)
 		except get_user_model().DoesNotExist:
 			return HttpResponseBadRequest('User does not exist.')
 		except Exception as e:
