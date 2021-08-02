@@ -15,6 +15,7 @@ python-dotenv = "*"
 whitenoise = "*"
 gunicorn = "*"
 lyricsgenius = "*"
+cloudinary = "*"
 
 [dev-packages]
 

@@ -5,6 +5,7 @@ import django_heroku
 import dotenv
 import os
 from pathlib import Path
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,6 +16,9 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 BACKEND = os.environ.get('BACKEND')
 FRONTEND = os.environ.get('FRONTEND')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 
 if BACKEND is None:
 	BACKEND = "https://lyrics-chords-herokuapp.com"
@@ -48,6 +52,7 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'rest_framework',
 	'whitenoise.runserver_nostatic',
+	'cloudinary',
 	'app',
 	'authentication',
 	'songviews'
@@ -171,3 +176,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
+# cloudinary.config(
+# 	cloud_name = CLOUDINARY_CLOUD_NAME,
+# 	api_key = CLOUDINARY_API_KEY,
+# 	api_secret = CLOUDINARY_API_SECRET,
+# 	secure = True
+# )
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')

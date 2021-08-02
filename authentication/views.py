@@ -14,7 +14,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import json
 from authentication.models import Image
 from authentication.serializers import ImageSerializer
-from backend.settings import EMAIL_HOST_USER, BACKEND
+from backend.settings import CLOUDINARY_API_KEY, EMAIL_HOST_USER, BACKEND
+import cloudinary
 
 account_activation_token = ConfirmEmailTokenGenerator()
 
@@ -190,8 +191,11 @@ class ImageView(APIView):
 				for image in images:
 					image.delete()
 
-				print(image_serializer.validated_data)
 				image_serializer.save()
+				image_name = image_serializer.data.get('image')
+				
+				cloudinary.uploader.upload(image_name)
+
 				return Response(image_serializer.data)
 			else:
 				return HttpResponseBadRequest('Image is invalid.')
