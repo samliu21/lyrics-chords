@@ -32,7 +32,7 @@ export default function Profile(props) {
 			console.log(response.data);
 		};
 
-		getImage();
+		// getImage();
 	}, []);
 
 	useEffect(() => {

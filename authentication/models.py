@@ -14,3 +14,7 @@ class User(AbstractUser):
 class Image(models.Model):
 	image = models.ImageField(upload_to='user_images')
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
+
+	def delete(self):
+		self.image.storage.delete(self.image.name)
+		super().delete()
