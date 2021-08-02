@@ -118,7 +118,7 @@ export default function Profile(props) {
 		history.push(link);
 	};
 
-	const editAboutHandler = async () => {
+	const submitHandler = async () => {
 		const inputAbout = aboutRef.current.value;
 
 		setAbout(inputAbout);
@@ -148,7 +148,7 @@ export default function Profile(props) {
 	const imageChangeHandler = async (e) => {
 		const image = e.target.files[0];
 
-		const validExtensions = [".jpg", ".png"];
+		const validExtensions = ["jpg", "png"];
 
 		const nameArray = image.name.split(".");
 		const extension = nameArray[nameArray.length - 1].toLowerCase();
@@ -253,10 +253,10 @@ export default function Profile(props) {
 								defaultValue={about}
 							/>
 							<Button
-								onClick={editAboutHandler}
+								onClick={submitHandler}
 								className={layout["align-block-right"]}
 							>
-								Submit
+								Save
 							</Button>
 						</div>
 					) : (
