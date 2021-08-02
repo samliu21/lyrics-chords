@@ -42,7 +42,7 @@ export default function Profile(props) {
 		};
 
 		getImage();
-	}, []);
+	}, [username]);
 
 	useEffect(() => {
 		const unlisten = history.listen(() => {
