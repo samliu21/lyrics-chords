@@ -147,6 +147,11 @@ export default function Profile(props) {
 
 	const imageChangeHandler = async (e) => {
 		const image = e.target.files[0];
+		
+		if (image.size > 100000) {
+			alert("Image is too large! Please try again.");
+			return;
+		}
 
 		const validExtensions = ["jpg", "png"];
 

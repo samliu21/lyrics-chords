@@ -14,7 +14,3 @@ class User(AbstractUser):
 class Image(models.Model):
 	url = models.TextField()
 	user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
-
-	# def delete(self):
-	# 	self.image.storage.delete(self.image.name)
-	# 	super().delete()
