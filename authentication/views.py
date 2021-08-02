@@ -194,9 +194,10 @@ class ImageView(APIView):
 				image_serializer.save()
 				image_name = image_serializer.data.get('image')
 				
-				cloudinary.uploader.upload(image_name)
+				response = cloudinary.uploader.upload(image_name[1:], public_id=user.id)
+				url = response.get('url')
 
-				return Response(image_serializer.data)
+				return Response(url)
 			else:
 				return HttpResponseBadRequest('Image is invalid.')
 		except get_user_model().DoesNotExist:
