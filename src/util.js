@@ -36,9 +36,10 @@ export async function getUsername() {
 		const response = await axios.get("/api/auth/user", {
 			withCredentials: true,
 		});
-		cookie.set("username", response.data, { path: "/" });
+		const username = response.data.username;
+		cookie.set("username", username, { path: "/" });
 
-		return response.data;
+		return username;
 	} catch (err) {
 		return null;
 	}

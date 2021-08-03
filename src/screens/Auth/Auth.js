@@ -78,6 +78,14 @@ export default function Auth() {
 
 		try {
 			setIsLoading(true);
+
+			const formData = new FormData();
+			formData.append("username", username);
+			formData.append("password", password);
+			if (state === "signup") {
+				formData.append("email", email);
+				
+			}
 			const response =
 				state === "signup"
 					? await axios.post(
@@ -100,6 +108,7 @@ export default function Auth() {
 								username: username,
 								password: password,
 							},
+							formData, 
 							{
 								withCredentials: true,
 								headers: {
@@ -108,10 +117,11 @@ export default function Auth() {
 							}
 					  );
 			// Login successful or signup successful respectively; set username
-			const [queriedUsername, queriedEmail, queriedAdmin] =
-				response.data.split("**");
-
-			const queriedActivated = await getActivationStatus(true);
+			console.log(response.data);
+			const queriedUsername = response.data.username;
+			const queriedEmail = response.data.email;
+			const queriedAdmin = response.data.is_superuser;
+			const queriedActivated = response.data.confirmed_email;
 
 			cookie.set("username", queriedUsername, { path: "/" });
 			cookie.set("email", queriedEmail, { path: "/" });
@@ -123,7 +133,6 @@ export default function Auth() {
 			// Get the new user's songs
 			dispatch(songsActions.getUserSongs());
 			setIsLoading(false);
-			console.log(login);
 
 			if (login) {
 				history.push(`/songs/${queriedUsername}`);

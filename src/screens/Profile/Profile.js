@@ -30,7 +30,7 @@ export default function Profile(props) {
 		const getImage = async () => {
 			try {
 				const response = await axios.get(
-					`/api/auth/get_image/${username}`
+					`/api/auth/images/get_image/${username}`
 				);
 
 				const url = response.data;
@@ -123,7 +123,6 @@ export default function Profile(props) {
 			await axios.post(
 				"/api/auth/set_about",
 				{
-					username: username,
 					about: inputAbout,
 				},
 				{
@@ -164,7 +163,6 @@ export default function Profile(props) {
 
 		const formData = new FormData();
 		formData.append("image", image);
-		formData.append("username", username);
 
 		try {
 			const response = await axios.post("/api/auth/images/", formData, {

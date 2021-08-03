@@ -1,218 +1,211 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.core.mail import send_mail
-from django.http import HttpResponse
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode 
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
+from rest_framework.decorators import api_view, permission_classes
 from emailauth.tokens import ConfirmEmailTokenGenerator
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
 
+import cloudinary
 import json
 from authentication.models import Image
-from authentication.serializers import ImageSerializer
+from authentication.serializers import ImageSerializer, UserSerializer
 from backend.settings import EMAIL_HOST_USER, BACKEND
-import cloudinary
 
 account_activation_token = ConfirmEmailTokenGenerator()
 
 # Create user account and log them in
 # Send email to user asking them to activate account
-@require_POST
+@api_view(['POST'])
 def auth_signup(request):
+	"""
+	/api/auth/signup
+	Validate the user's inputted credentials
+	Create a hashed token and user id to be used in the email verification URL
+	Send the email
+	"""
 	try:
-		username, email, password = get_credentials(request)
+		username = request.data['username']
+		email = request.data['email']
+		password = request.data['password']
+	except KeyError:
+		return Response('The provided data is in an improper form.', status=status.HTTP_400_BAD_REQUEST)
 
-		if len(username) < 5:
-			return HttpResponseBadRequest("Username must be at least 5 characters long.")
+	if len(username) < 5:
+		return Response('Username should be at least 5 characters.', status=status.HTTP_400_BAD_REQUEST)
 
-		if len(password) < 5:
-			return HttpResponseBadRequest("Password must be at least 5 characters long.")
+	if len(password) < 5:
+		return Response('Password should be at least 5 characters.', status=status.HTTP_400_BAD_REQUEST)
 
-		# Check if username is already taken
-		if len(get_user_model().objects.filter(username=username)) > 0:
-			return HttpResponseBadRequest("Username already exists. Did you mean to login instead?")
+	try:
+		get_user_model().objects.get(username=username)
+		return Response('Username already exists. Did you mean to login instead?', status=status.HTTP_409_CONFLICT)
+	except get_user_model().DoesNotExist:
+		pass
 
-		# Check if email is already taken
-		if len(get_user_model().objects.filter(username=username)) > 0:
-			return HttpResponseBadRequest("Email already exists. Did you mean to login instead?")
+	try:
+		get_user_model().objects.get(email=email)
+		return Response('Email already exists. Did you mean to login instead?', status=status.HTTP_409_CONFLICT)
+	except get_user_model().DoesNotExist:
+		pass
 
-		user = get_user_model().objects.create_user(username=username, email=email, password=password)
-		user.is_active = False
-		user.save()
+	"""
+	is_active is initially set to False, and this is considered in the URL hash
+	When the user verifies their account, is_active is set to True, effectivaly invalidating the URL
+	"""
+	user = get_user_model().objects.create_user(username=username, email=email, password=password)
+	user.is_active = False
+	user.save()
 
-		token = account_activation_token.make_token(user)
-		uid = urlsafe_base64_encode(force_bytes(user.pk))
+	token = account_activation_token.make_token(user)
+	uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-		subject = 'Confirm your email at lyrics-chords!'
-		message = 'Use the following link to activate your account: ' + BACKEND + '/api/auth/email/activate/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
-		email_from = EMAIL_HOST_USER
-		recipient_list = [user.email]
+	subject = 'Confirm your email at lyrics-chords!'
+	message = 'Use the following link to activate your account: ' + BACKEND + '/api/auth/email/activate/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
+	email_from = EMAIL_HOST_USER
+	recipient_list = [user.email]
 
-		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+	send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
-		if user is None:
-			return HttpResponse("User could not be created.")
-		login(request, user)
-		return HttpResponse(f'{username}**{email}**{user.is_superuser}')
-	except Exception as e:
-		return HttpResponseBadRequest(e)
+	login(request, user)
+	user_serializer = UserSerializer(user)
+	return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
-# Log user in, attempting to authenticate with email or username
-@require_POST
+@api_view(['POST'])
 def auth_login(request):
-	if request.user.is_authenticated:
-		return HttpResponseBadRequest("You are already logged in.")
-
+	"""
+	/auth/api/login
+	Given a username and password, attempt to login the user
+	The view also accomodates email as username
+	"""
 	try:
-		username, _, password = get_credentials(request)
-		user = authenticate(username=username, password=password)
-		if user is None:
-			user = authenticate(email=username, password=password)
-			if user is None:
-				return HttpResponseBadRequest("Those credentials do not exist.")
+		username = request.data['username']
+		password = request.data['password']
+	except KeyError:
+		return Response('The provided data is in an improper form.', status=status.HTTP_400_BAD_REQUEST)
 
-		login(request, user)
-		return HttpResponse(f'{user.username}**{user.email}**{user.is_superuser}')
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.");
+	user = authenticate(username=username, password=password)
+	if user is None:
+		user = authenticate(email=username, password=password)
 
-# Logout
+	if user is None:
+		return Response('Login credentials are incorrect.', status=status.HTTP_401_UNAUTHORIZED)
+
+	login(request, user)
+	user_serializer = UserSerializer(user)
+	return Response(user_serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
 def auth_logout(request):
-	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("You aren't logged in.")
-	try:
-		logout(request)
-		return HttpResponse("Logout is successful.")
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
+	"""
+	/api/auth/logout
+	"""
+	logout(request)
+	return Response('Logout is successful.', status=status.HTTP_200_OK)
 
-# Check if user is logged in
+@api_view(['GET'])
 def is_authenticated(request):
-	try:
-		return HttpResponse(request.user.is_authenticated)
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
+	"""
+	/api/auth/authenticated
+	Check if the issuer of the request is authenticated
+	"""
+	return Response(request.user.is_authenticated, status=status.HTTP_200_OK)
 
-# Retrieve the username of the currently logged in user
+@api_view(['GET'])
 def get_user(request):
+	"""
+	/api/auth/user
+	Returns user's information as defined by UserSerializer
+	"""
 	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("User is not authenticated.")
-	try:
-		return HttpResponse(request.user.username)
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
+		return Response('User is not authenticated.', status=status.HTTP_401_UNAUTHORIZED)
+	user_serializer = UserSerializer(request.user)
+	return Response(user_serializer.data)
 
-# Retrieve the email of the currently logged in user
-def get_email(request):
-	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("User is not authenticated.")
-	try:
-		return HttpResponse(request.user.email)
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
-
-# Helper function for extracting username and password from JSON request
-def get_credentials(request):
-	info = json.loads(request.body)
-	username = info.get("username")
-	email = info.get("email")
-	password = info.get("password")
-	return (username, email, password)
-
-# Get CSRF token
 @ensure_csrf_cookie
-def get_csrf(_):
-	return HttpResponse("Obtained")
+@api_view(['GET'])
+def get_csrf():
+	"""
+	/api/auth/csrf
+	User should request a CSRF token at the start of the session
+	"""
+	return Response('CSRF cookie was obtained.', status=status.HTTP_200_OK)
 
-# Get about section
+@api_view(['GET'])
 def get_about(_, username):
+	"""
+	/api/auth/get_about
+	Gets user's biography
+	"""
 	try:
 		user = get_user_model().objects.get(username=username)
-		return HttpResponse(user.about)
 	except get_user_model().DoesNotExist:
-		return HttpResponseBadRequest('User does not exist')
-	except:
-		return HttpResponseBadRequest('An error occurred')
+		return Response('User does not exist.', status=status.HTTP_400_BAD_REQUEST)
+	return Response(user.about, status=status.HTTP_200_OK)
 
-@require_POST
+@api_view(['POST'])
 def set_about(request):
+	"""
+	/api/auth/set_about
+	Receives a biography and sets the about property for the issuer of the request
+	"""
 	if not request.user.is_authenticated:
-		return HttpResponseBadRequest('You are not authenticated.')
+		return Response('User is not authenticated.', status=status.HTTP_401_UNAUTHORIZED)
 	try:
-		info = json.loads(request.body)
-		username = info.get('username')
+		about = request.data['about']
+	except KeyError:
+		return Response('Provided data is of improper format.', status=status.HTTP_400_BAD_REQUEST)
 
-		if username != request.user.username:
-			return HttpResponseBadRequest('This isn\'t your account!')
+	user = get_user_model().objects.get(username=request.user.username)
+	user.about = about
+	user.save()
+	return HttpResponse(user.about)
 
-		about = info.get('about')
-		user = get_user_model().objects.get(username=username)
-		user.about = about
-		user.save()
-		return HttpResponse(user.about)
-	except get_user_model().DoesNotExist:
-		return HttpResponseBadRequest('User does not exist')
-	except:
-		return HttpResponseBadRequest('An error occurred')
-
-@require_GET
-def get_image(request, username):
+@api_view(['GET'])
+def get_image(_, username):
+	"""
+	/api/auth/images/get_image/USERNAME
+	Returns the image URL of the given username
+	"""
 	try:
 		user = get_user_model().objects.get(username=username)
 		image = Image.objects.get(user=user)
-		return HttpResponse(image.url)
+		return Response(image.url, status=status.HTTP_200_OK)
 	except get_user_model().DoesNotExist:
-		return HttpResponseBadRequest('Username does not exist.')
+		return Response('Username does not exist.', status=status.HTTP_404_NOT_FOUND)
 	except Image.DoesNotExist:
-		return HttpResponseBadRequest('User does not have a profile picture.')
-	except Exception as e:
-		print(e)
-		return HttpResponseBadRequest('An error occurred.')
+		return Response('User does not have a profile picture.', status=status.HTTP_404_NOT_FOUND)
 
 class ImageView(APIView):
 	parser_classes=(MultiPartParser, FormParser)
 
-	def get(self, request):
-		qs = Image.objects.all()
-		serializer = ImageSerializer(qs, many=True)
-		print(serializer.data)
-		return Response(serializer.data)
-
 	def post(self, request):
 		"""
-		Makes an upload request to Cloudinary servers
-		Returns JSON objects. Sample body:
-		{
-			'id': 2,
-			'url': 'url',
-			'user': 1
-		}
+		/api/auth/images/
+		Receive an image and upload request to Cloudinary server
+		Delete existing profile picture if exists
+		Returns newly created song (e.g. id, url, username)
 		"""
+		if not request.user.is_authenticated:
+			return Response('User is not authenticated', status=status.HTTP_401_UNAUTHORIZED)
 		try:
-			img = request.data.get('image')
-			response = cloudinary.uploader.upload(img, public_id=2)
-			url = response.get('url')
-			print(url)
-			# url = 'https://google.ca'
+			img = request.data['image']
+		except KeyError:
+			return Response('Input form is invalid.', status=status.HTTP_400_BAD_REQUEST)
 
-			username = request.data.get('username')
-			user = get_user_model().objects.get(username=username)
-			print(user)
+		response = cloudinary.uploader.upload(img, public_id=request.user.id)
+		url = response.get('url')
 
-			# Delete existing image. Will be deleted automatically by Cloudinary
-			Image.objects.filter(user=user).delete()
+		Image.objects.filter(user=request.user).delete()
 
-			image = Image.objects.create(user=user, url=url)
-			image_serializer = ImageSerializer(image)
-			data = image_serializer.data
-
-			return Response(data)
-		except get_user_model().DoesNotExist:
-			return HttpResponseBadRequest('User does not exist.')
-		except Exception as e:
-			print(e)
-			return HttpResponseBadRequest('An error occurred.')
+		image = Image.objects.create(user=request.user, url=url)
+		image_serializer = ImageSerializer(image)
+		return Response(image_serializer.data)
