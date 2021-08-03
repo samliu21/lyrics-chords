@@ -88,9 +88,7 @@ export function addSong(username) {
 		try {
 			const response = await axios.post(
 				"/api/songs/",
-				{
-					creator: username,
-				},
+				{},
 				{
 					withCredentials: true,
 					headers: {
@@ -98,6 +96,7 @@ export function addSong(username) {
 					},
 				}
 			);
+			console.log(response.data);
 			const song = {
 				id: response.data.id,
 				name: "",

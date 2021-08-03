@@ -29,18 +29,11 @@ class SongViewSet(viewsets.ModelViewSet):
 
 	def create(self, request):
 		"""
-		Check that the request's user matches the proposed creator of the song
-		Then, call the super create() function
+		Create user
 		"""
-		try:
-			username = request.data['creator']
-			
-			if username != request.user.username:
-				return Response('Cannot make a song for another user.', status=status.HTTP_403_FORBIDDEN)
-		except KeyError:
-			return Response('Username was not provided.', status=status.HTTP_400_BAD_REQUEST)
-		
-		return super().create(request)
+		song = Song.objects.create(creator=request.user.username)
+		song_serializer = SongSerializer(song)
+		return Response(song_serializer.data, status=status.HTTP_200_OK)
 
 	@action(detail=False)
 	@method_decorator(cache_page(10))
