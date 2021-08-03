@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
@@ -30,6 +31,21 @@ class SongViewSet(viewsets.ModelViewSet):
 			return qs
 		else:
 			return qs.filter(creator=user.username)
+
+	def create(self, request):
+		"""
+		Check that the request's user matches the proposed creator of the song
+		Then, call the super create() function
+		"""
+		try:
+			username = request.data['creator']
+			
+			if username != request.user.username:
+				return Response('Cannot make a song for another user.', status=status.HTTP_403_FORBIDDEN)
+		except KeyError:
+			return Response('Username was not provided.', status=status.HTTP_400_BAD_REQUEST)
+		
+		return super().create(request)
 
 	@action(detail=False)
 	@method_decorator(cache_page(10))
@@ -64,6 +80,10 @@ class SongViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
 	queryset = Comment.objects.all()
+	# permission_classes=(IsAuthenticated,)
+
+	# def get_permissions(self):
+	# 	pass
 
 	def create(self, request):
 		if not request.user.is_authenticated:
