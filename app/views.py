@@ -1,14 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
-from django.http.response import HttpResponseBadRequest
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.decorators.http import require_GET
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework import status
 
 from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
@@ -75,6 +71,27 @@ class SongViewSet(viewsets.ModelViewSet):
 		qs = Song.objects.all()
 		filtered_qs = qs.filter(creator=username)
 		return Response(len(filtered_qs))
+
+	@action(detail=True, permission_classes=(IsAuthenticated,))
+	def lyrics(self, _, pk=None):
+		"""
+		/api/songs/SONG_ID/lyrics/
+		Use the lyrics genius API to fetch the lyrics of the song
+		Only accessible by autenticated users
+		Returns a string of the lyrics
+		"""
+		genius = lg.Genius(API_KEY, skip_non_songs=True, excluded_terms=["(Remix)", "(Live)"], remove_section_headers=True)
+		song = Song.objects.get(pk=pk)
+		song_artist = song.artist
+		song_name = song.name
+
+		artist = genius.search_artist(song_artist, max_songs=0)
+		lyrics = artist.song(song_name).lyrics
+
+		end_str = 'EmbedShare UrlCopyEmbedCopy'
+		if end_str in lyrics:
+			lyrics = lyrics[:lyrics.index(end_str)]
+		return Response(lyrics)
 
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
@@ -148,24 +165,3 @@ class CommentViewSet(viewsets.ModelViewSet):
 		qs = Comment.objects.filter(song=song)
 		serializer = CommentSerializer(qs, many=True)
 		return Response(serializer.data)
-
-# Fetch lyrics using lyricsgenius API
-# Only accessible by authenticated users 
-@require_GET
-def fetch_lyrics(request, info):
-	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("Not authenticated.")
-	try:
-		genius = lg.Genius(API_KEY,
-								skip_non_songs=True, excluded_terms=["(Remix)", "(Live)"],
-								remove_section_headers=True)
-		
-		artist_name, name = info.split('**')
-		artist = genius.search_artist(artist_name, max_songs=0)
-		lyrics = artist.song(name).lyrics
-		end_str = "EmbedShare UrlCopyEmbedCopy"
-		if end_str in lyrics:
-			lyrics = lyrics[:lyrics.index(end_str)]
-		return HttpResponse(lyrics)
-	except:
-		return HttpResponseBadRequest("There was an error retrieving the lyrics. Please check your spelling and spacing to make sure there isn't a typo. If not, please try again in a few moments.")

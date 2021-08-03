@@ -28,7 +28,7 @@ export default function Options() {
 			dispatch(selectedSongActions.setFetching(true));
 
 			const response = await axios.get(
-				`/api/lyrics/${selectedSong.artist}**${selectedSong.name}`
+				`/api/songs/${selectedSong.id}/lyrics/`
 			);
 			const pulledLyrics = response.data.trim();
 			dispatch(

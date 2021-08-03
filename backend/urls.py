@@ -13,9 +13,8 @@ router.register(r'comments', views.CommentViewSet, basename="comments")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('api/views/', include('songviews.urls')),
-	path('api/lyrics/<str:info>', views.fetch_lyrics),
-	path('api/auth/', include('authentication.urls')),
-	path('api/', include(router.urls)),
+	path('api/', include(router.urls)), # Songs and comments
+	path('api/auth/', include('authentication.urls')), # Auth
+	path('api/views/', include('songviews.urls')), # Views
 	path('', never_cache(TemplateView.as_view(template_name='index.html'))),
 ] 
