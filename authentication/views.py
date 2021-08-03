@@ -1,29 +1,22 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.core.mail import send_mail
-from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode 
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.decorators.http import require_GET, require_POST
-from rest_framework.decorators import api_view, permission_classes
-from emailauth.tokens import ConfirmEmailTokenGenerator
 from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 import cloudinary
-import json
 from authentication.models import Image
 from authentication.serializers import ImageSerializer, UserSerializer
 from backend.settings import EMAIL_HOST_USER, BACKEND
+from emailauth.tokens import ConfirmEmailTokenGenerator
 
 account_activation_token = ConfirmEmailTokenGenerator()
 
-# Create user account and log them in
-# Send email to user asking them to activate account
 @api_view(['POST'])
 def auth_signup(request):
 	"""
@@ -167,7 +160,7 @@ def set_about(request):
 	user = get_user_model().objects.get(username=request.user.username)
 	user.about = about
 	user.save()
-	return HttpResponse(user.about)
+	return Response(user.about, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_image(_, username):
