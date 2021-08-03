@@ -63,14 +63,14 @@ export default function Auth() {
 			return;
 		}
 
-		// Check that email is not blank (since this is not built into SQL)
+		// Check that email address is valid
 		if (state === "signup" && email.indexOf("@") === -1) {
 			alert("Invalid email address. Please try again.");
 			return;
 		}
 
 		// Check that username is not a keyword
-		const keywordList = ["accounts", "songs", "help", "user"];
+		const keywordList = ["accounts", "songs", "help", "user", "api"];
 		if (keywordList.indexOf(username) > -1) {
 			alert("The given username cannot be used. Please try again.");
 			return;
@@ -79,13 +79,6 @@ export default function Auth() {
 		try {
 			setIsLoading(true);
 
-			const formData = new FormData();
-			formData.append("username", username);
-			formData.append("password", password);
-			if (state === "signup") {
-				formData.append("email", email);
-				
-			}
 			const response =
 				state === "signup"
 					? await axios.post(
@@ -108,7 +101,6 @@ export default function Auth() {
 								username: username,
 								password: password,
 							},
-							formData, 
 							{
 								withCredentials: true,
 								headers: {
