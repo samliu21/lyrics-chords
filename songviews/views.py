@@ -1,52 +1,54 @@
 from django.db.models import Q
-from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.views.decorators.cache import cache_page
-from django.views.decorators.http import require_GET, require_POST
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-import json
 from .models import View
 from app.models import Song
 
-@require_POST
+@api_view(['POST'])
 def increment_view(request):
+	"""
+	/api/songviews/increment_view
+	Takes a songId in POST body
+	Adds a view to the corresponding song if the issuer of the request has not already added a view for that particular song
+	"""
 	if not request.user.is_authenticated:
-		return HttpResponseBadRequest('You are not authenticated.')
+		return Response('User is unauthenticated.', status=status.HTTP_401_UNAUTHORIZED)
+	
 	try:
-		body = json.loads(request.body)
-		song_id = body.get('songId')
+		song_id = request.data['songId']
+	except KeyError:
+		return Response('Provided data is of an invalid format.', status=status.HTTP_400_BAD_REQUEST)
 
-		qs = View.objects.all()
-		existing_value = qs.filter(Q(user=request.user) & Q(song=song_id))
+	qs = View.objects.all()
+	existing_value = qs.filter(Q(user=request.user) & Q(song=song_id))
 
-		if len(existing_value) == 0:
+	if len(existing_value) == 0:
+		try:
 			song = Song.objects.get(id=song_id)
-			v = View(user=request.user, song=song)
-			v.save()
-			return HttpResponse('View has been recorded.')
-		return HttpResponseBadRequest('Already in the database.')
-	except Exception as e:
-		print(e)
-		return HttpResponseBadRequest('An error occurred')
+		except Song.DoesNotExist:
+			return Response('Given song id does not correspond to a song.', status=status.HTTP_404_NOT_FOUND)
+		view = View(user=request.user, song=song)
+		view.save()
+		return Response('View has been recorded.', status=status.HTTP_200_OK)
 
-@cache_page(10)
-@require_GET
-def get_views(_, id):
+	return Response('View has already been recorded for user.', status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def get_views(request):
+	"""
+	/api/songviews/get_views
+	Takes a list of ids whose views the request issuer wants to know
+	Returns a dictionary of { id: view } whose receive type can be specified by the "Accept" header
+	"""
 	try:
-		qs = View.objects.filter(song=id)
-		return HttpResponse(len(qs))
-	except:
-		return HttpResponseBadRequest('An error occurred.')
+		ids = request.data['ids']
+	except KeyError:
+		return Response('The given request body is of an invalid form.', status=status.HTTP_400_BAD_REQUEST)
 
-@require_POST
-def get_all_views(request):
-	try:
-		body = json.loads(request.body)
-		ids = body.get('ids')
-
-		qs = View.objects.all()
-		views = {}
-		for id in ids:
-			views[id] = len(qs.filter(song=id))
-		return HttpResponse(json.dumps(views))
-	except:
-		return HttpResponseBadRequest('An error occurred.')
+	qs = View.objects.all()
+	views = {}
+	for id in ids:
+		views[id] = len(qs.filter(song=id))
+	return Response(views, status=status.HTTP_200_OK)

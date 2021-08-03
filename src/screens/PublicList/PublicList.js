@@ -24,7 +24,7 @@ export default function PublicList() {
 		const database = async () => {
 			const ids = filteredPublicSongs.map((song) => song.id);
 			const response = await axios.post(
-				"/api/views/get_all_views",
+				"/api/views/get_views",
 				{
 					ids: ids,
 				},
