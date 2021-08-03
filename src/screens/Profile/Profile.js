@@ -82,10 +82,7 @@ export default function Profile(props) {
 
 			try {
 				const response = await axios.get(
-					`/api/songs/${username}/count/`,
-					{
-						username: username,
-					}
+					`/api/songs/${username}/count/`
 				);
 
 				const cnt = response.data;

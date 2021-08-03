@@ -7,6 +7,7 @@ from django.views.decorators.http import require_GET
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
@@ -14,53 +15,52 @@ from backend.settings import API_KEY
 
 import lyricsgenius as lg
 
-# ViewSet for Song model
 class SongViewSet(viewsets.ModelViewSet):
 	serializer_class = SongSerializer
 
 	def get_queryset(self):
 		"""
 		Sets queryset to be songs owned by user
+		This makes it so that a user can only manipulate their own songs
 		Sets queryset to all songs if admin
 		"""
-		try:
-			usr = self.request.user
-			qs = Song.objects.all()
-			if usr.is_superuser:
-				return qs
-			else:
-				return qs.filter(creator=usr.username)
-		except:
-			return None
+		user = self.request.user
+		qs = Song.objects.all()
+		if user.is_superuser:
+			return qs
+		else:
+			return qs.filter(creator=user.username)
 
 	@action(detail=False)
 	@method_decorator(cache_page(10))
 	def public(self, _):
-		try:
-			qs = Song.objects.all()
-			filtered_qs = qs.filter(public=True)
-			serializer = SongSerializer(filtered_qs, many=True)
-			return Response(serializer.data)
-		except:
-			return None
+		"""
+		/api/songs/public/
+		Returns a list of Song objects in the format specified by the "Accept" header
+		Usually returns application/json
+		"""
+		qs = Song.objects.all()
+		filtered_qs = qs.filter(public=True)
+		serializer = SongSerializer(filtered_qs, many=True)
+		return Response(serializer.data)
 
 	@action(detail=True)
 	def count(self, _, pk=None):
+		"""
+		/api/songs/USERNAME/count/
+		Get the number of songs created by a user
+		"""
+		username = pk
+
 		try:
-			username = pk
-
-			# Check that the user exists
 			get_user_model().objects.get(username=username)
-
-			qs = Song.objects.all()
-			filtered_qs = qs.filter(creator=username)
-			return HttpResponse(len(filtered_qs))
 		except get_user_model().DoesNotExist:
-			return HttpResponseBadRequest('The given user does not exist.')
-		except:
-			return HttpResponseBadRequest('Could not determine the number of songs.')
+			return Response('User does not exist', status=status.HTTP_404_NOT_FOUND)
 
-# ViewSet for comments
+		qs = Song.objects.all()
+		filtered_qs = qs.filter(creator=username)
+		return Response(len(filtered_qs))
+
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
 	queryset = Comment.objects.all()
