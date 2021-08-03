@@ -3,6 +3,9 @@ from django.contrib.auth.backends import BaseBackend
 
 class CustomBackend(BaseBackend):
 	def authenticate(self, _, username, password):
+		"""
+		Allows user to login with username or email
+		"""
 		if '@' in username:
 			kwargs = { 'email': username }
 		else:
@@ -15,8 +18,8 @@ class CustomBackend(BaseBackend):
 		except get_user_model().DoesNotExist:
 			return None
 
-	def get_user(self, user_id):
+	def get_user(self, id):
 		try:
-			return get_user_model().objects.get(id=user_id)
+			return get_user_model().objects.get(id=id)
 		except get_user_model().DoesNotExist:
 			return None
