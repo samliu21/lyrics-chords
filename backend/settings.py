@@ -137,9 +137,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -173,10 +170,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
-# cloudinary.config(
-# 	cloud_name = CLOUDINARY_CLOUD_NAME,
-# 	api_key = CLOUDINARY_API_KEY,
-# 	api_secret = CLOUDINARY_API_SECRET,
-# 	secure = True
-# )
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
