@@ -6,7 +6,7 @@ import { useHistory } from "react-router";
 
 import * as authActions from "../../store/actions/authActions";
 import * as songsActions from "../../store/actions/songsActions";
-import { getToken, getActivationStatus } from "../../util";
+import { getToken } from "../../util";
 import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import Button from "../../components/Button/Button";
 import layout from "../../styles/layout.module.css";

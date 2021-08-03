@@ -12,18 +12,16 @@ export const SET_FILTERED_USER_SONGS = "SET_FILTERED_USER_SONGS";
 export const SET_VIEWS = "SET_VIEWS";
 export const INCREMENT_VIEW = "INCREMENT_VIEW";
 
-export function copySong(song, username) {
+export function copySong(song) {
 	return async (dispatch) => {
 		try {
-			const newSong = {};
-			for (const key in song) {
-				if (key !== "id") {
-					newSong[key] = song[key];
-				}
-			}
-			newSong["public"] = false;
-			newSong["is_favourite"] = false;
-			newSong["creator"] = username;
+			const newSong = {
+				...song,
+				public: false,
+				is_favourite: false,
+			};
+			delete newSong["id"];
+			delete newSong["creator"];
 
 			const response = await axios.post("/api/songs/", newSong, {
 				withCredentials: true,
@@ -31,14 +29,13 @@ export function copySong(song, username) {
 					"X-CSRFToken": getToken(),
 				},
 			});
-			newSong["id"] = response.data.id;
 
 			dispatch({
 				type: ADD_SONG,
-				song: newSong,
+				song: response.data,
 			});
 		} catch (err) {
-			console.log(err.message);
+			alert('Song could not be copied');
 		}
 	};
 }
@@ -51,7 +48,6 @@ export function getUserSongs() {
 			});
 
 			const userSongs = response.data;
-			console.log(userSongs);
 			sortSongsById(userSongs);
 
 			dispatch({
@@ -59,7 +55,7 @@ export function getUserSongs() {
 				userSongs: userSongs,
 			});
 		} catch (err) {
-			console.log(err.message);
+			alert('There was an error getting your songs.')
 			throw err;
 		}
 	};
@@ -78,7 +74,7 @@ export function getPublicSongs() {
 				publicSongs: publicSongs,
 			});
 		} catch (err) {
-			console.log(err.message);
+			alert('There was an error getting public songs.')
 			throw err;
 		}
 	};
@@ -97,28 +93,15 @@ export function addSong(username) {
 					},
 				}
 			);
-			console.log(response.data);
-			const song = {
-				id: response.data.id,
-				name: "",
-				artist: "",
-				creator: username,
-				lyrics: "",
-				pulled_lyrics: "",
-				chords: "",
-				strumming_pattern: "",
-				is_favourite: false,
-				public: false,
-			};
 
 			dispatch({
 				type: ADD_SONG,
-				song: song,
+				song: response.data,
 			});
 
 			localStorage.removeItem(username);
 		} catch (err) {
-			console.log(err.message);
+			alert("Failed to add song.")
 			throw err;
 		}
 	};
@@ -139,7 +122,7 @@ export function deleteSong(id) {
 				},
 			});
 		} catch (err) {
-			console.log(err.response ? err.response.data : err.message);
+			alert('There was an error deleting the song.')
 			throw err;
 		}
 	};

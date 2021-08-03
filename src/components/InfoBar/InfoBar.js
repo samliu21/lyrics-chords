@@ -34,7 +34,7 @@ export default function InfoBar(props) {
 
 	const copyHandler = () => {
 		setIsLoading(true);
-		dispatch(songsActions.copySong(props.selectedSong, username));
+		dispatch(songsActions.copySong(props.selectedSong));
 	};
 
 	if (!props.selectedSong) {

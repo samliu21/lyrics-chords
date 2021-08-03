@@ -5,7 +5,6 @@ import { useHistory } from "react-router";
 import styles from "./Profile.module.css";
 import layout from "../../styles/layout.module.css";
 import ui from "../../styles/ui.module.css";
-import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 import axios from "axios";
 import CapitalText from "../../components/CapitalText/CapitalText";
 import TextArea from "../../components/TextArea/TextArea";

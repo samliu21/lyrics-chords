@@ -37,6 +37,7 @@ export default function Router(props) {
 	useEffect(() => {
 		dispatch(songsActions.getPublicSongs());
 		dispatch(songsActions.getUserSongs());
+		// dispatch(songsActions.se)
 
 		const queryUsername = async () => {
 			const username = await getUsername();

@@ -192,6 +192,8 @@ function store(store = initialStore, action) {
 				publicSongs: newPublicSongs,
 				filteredPublicSongs: newFilteredPublicSongs,
 			};
+		} else {
+			return store;
 		}
 	} else {
 		return store;

@@ -29,9 +29,12 @@ class SongViewSet(viewsets.ModelViewSet):
 
 	def create(self, request):
 		"""
-		Create user
+		Create user with given request body
 		"""
-		song = Song.objects.create(creator=request.user)
+		try:
+			song = Song.objects.create(creator=request.user, **request.data)
+		except:
+			return Response('The provided data was of an invalid form.', status=status.HTTP_400_BAD_REQUEST)
 		song_serializer = SongSerializer(song)
 		return Response(song_serializer.data, status=status.HTTP_200_OK)
 

@@ -21,7 +21,7 @@ export const getComments = (id) => {
 				comments: comments,
 			});
 		} catch (err) {
-			console.log(err.message);
+			alert("There was an error getting the comments for this song.")
 		}
 	};
 };
@@ -76,8 +76,7 @@ export const deleteComment = (id, songId) => {
 				id: id,
 			});
 		} catch (err) {
-			console.log(err);
-			// console.log(err.message);
+			alert("There was an error deleting your comment.")
 		}
 	};
 };
@@ -108,6 +107,7 @@ export const editComment = (songId, id, contents) => {
 				id: id,
 			});
 		} catch (err) {
+			alert("There was an error updating your comment.")
 			console.log(err.message);
 		}
 	};

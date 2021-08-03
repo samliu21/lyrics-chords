@@ -74,23 +74,6 @@ export function sortSongsById(list) {
 	list.sort((a, b) => a.id < b.id);
 }
 
-// Get split chords from chords, or set default if null
-export function getSplitChords(unsplitChords, lyrics) {
-	let chords = unsplitChords.split("~");
-	// Default value will produce [""]
-	if (chords.length === 1) {
-		const splitLyrics = lyrics.split("\n");
-		let count =
-			splitLyrics.length -
-			splitLyrics.filter((item) => item === "").length;
-		chords = [];
-		for (let i = 0; i < count; ++i) {
-			chords.push("");
-		}
-	}
-	return chords;
-}
-
 // Update song to database (since updating a song to redux isn't pushed to the database unless it's saved)
 export function updateSongToDatabase(item) {
 	axios.put(`/api/songs/${item.id}/`, item, {
@@ -103,7 +86,7 @@ export function updateSongToDatabase(item) {
 }
 
 export function updateSongAttributeToDatabase(id, type, value) {
-	axios.put(
+	axios.patch(
 		`/api/songs/${id}/`,
 		{
 			[type]: value,

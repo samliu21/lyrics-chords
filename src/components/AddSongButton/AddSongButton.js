@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 
 import * as actions from "../../store/actions/songsActions";
 import CapitalText from "../CapitalText/CapitalText";
-import { getUsername } from "../../util";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 export default function AddSongButton() {
@@ -15,8 +14,7 @@ export default function AddSongButton() {
 	async function addSongHandler() {
 		setIsAdding(true);
 
-		const username = await getUsername();
-		dispatch(actions.addSong(username));
+		dispatch(actions.addSong());
 
 		setTimeout(() => setIsAdding(false), 500);
 	}
