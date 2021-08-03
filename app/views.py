@@ -6,9 +6,9 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_GET
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 
 from .models import Song, Comment
 from .serializers import SongSerializer, CommentSerializer
@@ -23,7 +23,6 @@ class SongViewSet(viewsets.ModelViewSet):
 		"""
 		Sets queryset to be songs owned by user
 		This makes it so that a user can only manipulate their own songs
-		Sets queryset to all songs if admin
 		"""
 		user = self.request.user
 		qs = Song.objects.all()
@@ -79,46 +78,76 @@ class SongViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
-	queryset = Comment.objects.all()
-	# permission_classes=(IsAuthenticated,)
 
-	# def get_permissions(self):
-	# 	pass
+	"""
+	GET actions should be allowed to all users
+	PUT, PATCH, and DELETE should only be available if the author of the comment matches the issuer of the request
+	CREATE should only be allowed if the proposed user matches the issuer of the request
+	"""
+	def get_permissions(self):
+		methods = ['list', 'retrieve', 'get_song_comments']
+		if self.action in methods:
+			permission_classes = [AllowAny]
+		else:
+			permission_classes = [IsAuthenticated]
+		return [permission() for permission in permission_classes]
+
+	def get_queryset(self):
+		methods = ['retrieve', 'update', 'partial_update', 'destroy']
+		if self.action in methods:
+			return Comment.objects.filter(user=self.request.user)
+		else:
+			return Comment.objects.all()
 
 	def create(self, request):
-		if not request.user.is_authenticated:
-			return HttpResponseBadRequest('You are not authenticated.')
+		"""
+		Receives username, comment contents, id of song that the comment exists on, and the id of the parent comment
+		Check that the received username matches the username of the request issuer
+		Creates comment object based on user data
+		"""
 		try:
-			username = request.data.get('user')
-			contents = request.data.get('contents')
-			song_id = request.data.get('songId')
-			parent = request.data.get('parent')
+			username = request.data['user']
+			contents = request.data['contents']
+			song_id = request.data['songId']
+			parent = request.data['parent']
+		except KeyError:
+			return Response('Improper content. Please check that you have included all necessary fields.', status=status.HTTP_400_BAD_REQUEST)
+		
+		if username != request.user.username:
+			return Response('Cannot make a comment for another user.', status=status.HTTP_403_FORBIDDEN)
+
+		try:
 			if parent:
 				parent_comment = Comment.objects.get(pk=parent)
-
+			else:
+				parent_comment = None
 			user = get_user_model().objects.get(username=username)
 			song = Song.objects.get(pk=song_id)
-			if parent:
-				comment = Comment(song=song, user=user, contents=contents, parent=parent_comment)
-			else:
-				comment = Comment(song=song, user=user, contents=contents)
-			comment.save()
-			serializer = CommentSerializer(comment)
-			return Response(serializer.data)
-		except Exception as e:
-			print(e)
-			return HttpResponseBadRequest('An error occurred.')
+		except Comment.DoesNotExist:
+			return Response('Parent comment does not exist.', status=status.HTTP_404_NOT_FOUND)
+		except get_user_model().DoesNotExist:
+			return Response('User does not exist.', status=status.HTTP_404_NOT_FOUND)
+		except Song.DoesNotExist:
+			return Response('Song does not exist.', status=status.HTTP_404_NOT_FOUND)
 
-	@action(detail=True, methods=['GET'])
+		comment = Comment(song=song, user=user, contents=contents, parent=parent_comment)
+		comment.save()
+		serializer = CommentSerializer(comment)
+		return Response(serializer.data)
+
+	@action(detail=True)
 	def get_song_comments(self, _, pk=None):
+		"""
+		/api/comments/get_song_comments/
+		Returns all comments in the format specified by the "Accept" header
+		"""
 		try:
 			song = Song.objects.get(pk=pk)
-			qs = Comment.objects.filter(song=song)
-			serializer = CommentSerializer(qs, many=True)
-			return Response(serializer.data)
-		except Exception as e:
-			print(e)
-			return HttpResponseBadRequest('An error occurred.')
+		except Song.DoesNotExist:
+			return Response('Song does not exist.', status=status.HTTP_404_NOT_FOUND)
+		qs = Comment.objects.filter(song=song)
+		serializer = CommentSerializer(qs, many=True)
+		return Response(serializer.data)
 
 # Fetch lyrics using lyricsgenius API
 # Only accessible by authenticated users 

@@ -85,7 +85,6 @@ export const deleteComment = (id, songId) => {
 export const editComment = (songId, id, contents) => {
 	return async (dispatch) => {
 		try {
-			console.log("Hello!");
 			const response = await axios.patch(
 				`/api/comments/${id}/`,
 				{
