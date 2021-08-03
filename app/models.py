@@ -7,7 +7,7 @@ class Song(models.Model):
 	"""
 	name = models.CharField(max_length=100, blank=True, default="")
 	artist = models.CharField(max_length=100, blank=True, default="")
-	creator = models.CharField(max_length=100, default="samliu12")
+	creator = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 	lyrics = models.TextField(default="", blank=True)
 	pulled_lyrics = models.TextField(default="", blank=True)
 	chords = models.TextField(default="", blank=True)

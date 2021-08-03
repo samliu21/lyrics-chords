@@ -3,6 +3,8 @@ from rest_framework import serializers
 from .models import Song, Comment
 
 class SongSerializer(serializers.ModelSerializer):
+	creator = serializers.CharField(source='creator.username')
+
 	class Meta:
 		model = Song
 		fields = '__all__'

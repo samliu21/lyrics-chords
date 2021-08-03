@@ -25,13 +25,13 @@ class SongViewSet(viewsets.ModelViewSet):
 		if user.is_superuser:
 			return qs
 		else:
-			return qs.filter(creator=user.username)
+			return qs.filter(creator=user)
 
 	def create(self, request):
 		"""
 		Create user
 		"""
-		song = Song.objects.create(creator=request.user.username)
+		song = Song.objects.create(creator=request.user)
 		song_serializer = SongSerializer(song)
 		return Response(song_serializer.data, status=status.HTTP_200_OK)
 

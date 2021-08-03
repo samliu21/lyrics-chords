@@ -51,6 +51,7 @@ export function getUserSongs() {
 			});
 
 			const userSongs = response.data;
+			console.log(userSongs);
 			sortSongsById(userSongs);
 
 			dispatch({
