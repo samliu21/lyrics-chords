@@ -19,6 +19,10 @@ class SongViewSet(viewsets.ModelViewSet):
 	serializer_class = SongSerializer
 
 	def get_queryset(self):
+		"""
+		Sets queryset to be songs owned by user
+		Sets queryset to all songs if admin
+		"""
 		try:
 			usr = self.request.user
 			qs = Song.objects.all()

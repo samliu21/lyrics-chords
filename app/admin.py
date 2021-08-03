@@ -6,7 +6,7 @@ class SongAdmin(admin.ModelAdmin):
 	readonly_fields = ('id')
 
 class CommentAdmin(admin.ModelAdmin):
-	list_display = ('contents', 'user', 'song')
+	list_display = ('user', 'song', 'contents')
 	readonly_fields = ('id', 'date_of_creation')
 
 admin.site.register(Song)
