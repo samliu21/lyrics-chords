@@ -1,22 +1,25 @@
 from django.contrib.auth import get_user_model, logout, login
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
-from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.decorators.http import require_POST
-from emailauth.tokens import ConfirmEmailTokenGenerator
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-import json
+from .tokens import ConfirmEmailTokenGenerator
 from backend.settings import EMAIL_HOST_USER, BACKEND, FRONTEND
 
 account_activation_token = ConfirmEmailTokenGenerator()
 password_reset_token = PasswordResetTokenGenerator()
 
-# Decode the user id and obtain the corresponding user
-# Check the token with the user
-# If they match, login and set the confirmed email status to be true
+@api_view(['GET'])
 def activate(request, uidb64, token):
+	"""
+	Email verification link points at this view
+	Decode the user id to obtain the corresponding user
+	Check the token with the user
+	"""
 	try:
 		uid = force_text(urlsafe_base64_decode(uidb64))
 		user = get_user_model().objects.get(id=uid)
@@ -27,71 +30,81 @@ def activate(request, uidb64, token):
 		user.confirmed_email = True
 		user.save()
 		login(request, user)
-		return HttpResponse("Email has been authenticated!")
-	return HttpResponseBadRequest("Authentication failed.")
+		return Response('Email has been authenticated!', status=status.HTTP_200_OK)
+	return Response('Authentication failed.', status=status.HTTP_401_UNAUTHORIZED)
 
-# Whether the user has activated their email or not
-def get_is_activated(request):
-	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("User is not authenticated.")
-	try:
-		return HttpResponse(request.user.confirmed_email)
-	except Exception:
-		return HttpResponseBadRequest("An error occurred.")
-
-# Resend account activation mail
-# Create a token and user id from the request.user object
-# Send email with new link
+@api_view(['GET'])
 def resend_activation(request):
+	"""
+	Resend account email verification email
+	Create token and user id based on request and send new email
+	"""
 	if not request.user.is_authenticated:
-		return HttpResponseBadRequest("User is not authenticated.")
+		return Response('User is unauthenticated.', status=status.HTTP_401_UNAUTHORIZED)
+
+	token = account_activation_token.make_token(request.user)
+	uid = urlsafe_base64_encode(force_bytes(request.user.pk))
+
+	subject = 'Confirm your email at lyrics-chords!'
+	message = 'Use the following link to activate your account: ' + BACKEND + '/api/auth/email/activate/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
+	email_from = EMAIL_HOST_USER
+	recipient_list = [request.user.email]
+
 	try:
-		token = account_activation_token.make_token(request.user)
-		uid = urlsafe_base64_encode(force_bytes(request.user.pk))
-
-		subject = 'Confirm your email at lyrics-chords!'
-		message = 'Use the following link to activate your account: ' + BACKEND + '/api/auth/email/activate/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
-		email_from = EMAIL_HOST_USER
-		recipient_list = [request.user.email]
-
 		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
-		return HttpResponse("Mail sent.")
-	except Exception:
-		return HttpResponseBadRequest("Mail did not send.")
+		return Response('Mail was sent.', status=status.HTTP_200_OK)
+	except:
+		return Response('Mail could not send.', status=status.HTTP_502_BAD_GATEWAY)
 
-# Get user object from inputted email, and send email with passsword reset link
+@api_view(['POST'])
 def send_password_reset(request):
+	"""
+	Takes in the email of the account the user wants to reset
+	Get the corresponding user and generate a token and uid
+	Password reset link is sent via email
+	"""
 	try:
-		body = json.loads(request.body)
-		email = body.get('email')
+		email = request.data['email']
+	except KeyError:
+		return Response('The provided data is of invalid form.', status=status.HTTP_400_BAD_REQUEST)
+	
+	try:
 		user = get_user_model().objects.get(email=email)
-		token = password_reset_token.make_token(user)
-		uid = urlsafe_base64_encode(force_bytes(user.pk))
+	except get_user_model().DoesNotExist:
+		return Response('Email is not attached to an account.', status=status.HTTP_404_NOT_FOUND)
 
-		subject = 'Reset your password at lyrics-chords!'
-		message = 'Use the following link to reset your password: ' + FRONTEND + '/accounts/password-change/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
-		email_from = EMAIL_HOST_USER
-		recipient_list = [user.email]
+	token = password_reset_token.make_token(user)
+	uid = urlsafe_base64_encode(force_bytes(user.pk))
 
+	subject = 'Reset your password at lyrics-chords!'
+	message = 'Use the following link to reset your password: ' + FRONTEND + '/accounts/password-change/{}/{}. If you didn\'t make an account here, kindly ignore the email.'.format(uid, token)
+	email_from = EMAIL_HOST_USER
+	recipient_list = [user.email]
+
+	try:
 		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
-		return HttpResponse("Mail sent.")
-	except get_user_model().DoesNotExist:
-		return HttpResponseBadRequest("Email is not attached to an account.")
-	except Exception:
-		return HttpResponseBadRequest("Mail did not send.")
+		return Response('Password reset mail was send.', status=status.HTTP_200_OK)
+	except:
+		return Response('Password reset mail did not send.', status=status.HTTP_502_BAD_GATEWAY)
 
 # Get the uid and token from request body and check the valididty of the token
-@require_POST
+@api_view(['POST'])
 def password_change(request):
-	body = json.loads(request.body)
-	uidb64 = body.get('uid')
-	token = body.get('token')
-	password = body.get('password')
+	"""
+	Handles password changing from password reset or change
+	Decodes uid and token, verify them, and change user's password
+	"""
+	try:
+		uidb64 = request.data['uid']
+		token = request.data['token']
+		password = request.data['password']
+	except KeyError:
+		return Response('The given request body is of an invalid form.', status=status.HTTP_400_BAD_REQUEST)
 
 	if len(password) < 5:
-		return HttpResponseBadRequest("Password must be at least 5 characters long!")
+		return Response('Password must be at least 5 characters long!', status=status.HTTP_400_BAD_REQUEST)
 
 	try:
 		uid = force_text(urlsafe_base64_decode(uidb64))
@@ -103,16 +116,18 @@ def password_change(request):
 		user.set_password(password)
 		user.save()
 
-		return HttpResponse("New password has been set!")
-	return HttpResponseBadRequest("Password reset failed. Please try again.")
+		return Response('New password has been set!', status=status.HTTP_200_OK)
+	return Response('Password change failed.', status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(['GET'])
 def password_change_link(request):
+	"""
+	Provides password change link from within a user's account
+	"""
 	if not request.user.is_authenticated:
-		return HttpResponseBadRequest('You are not authenticated.')
-	try:
-		token = password_reset_token.make_token(request.user)
-		uid = urlsafe_base64_encode(force_bytes(request.user.pk))
-		link = '/accounts/password-change/{}/{}'.format(uid, token)
-		return HttpResponse(link)
-	except:
-		return HttpResponseBadRequest('An error occurred.')
+		return Response('User is not authenticatd.', status=status.HTTP_401_UNAUTHORIZED)
+
+	token = password_reset_token.make_token(request.user)
+	uid = urlsafe_base64_encode(force_bytes(request.user.pk))
+	link = '/accounts/password-change/{}/{}'.format(uid, token)
+	return Response(link, status=status.HTTP_200_OK)

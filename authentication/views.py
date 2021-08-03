@@ -125,7 +125,7 @@ def get_user(request):
 
 @ensure_csrf_cookie
 @api_view(['GET'])
-def get_csrf():
+def get_csrf(_):
 	"""
 	/api/auth/csrf
 	User should request a CSRF token at the start of the session
