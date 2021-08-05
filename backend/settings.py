@@ -22,10 +22,10 @@ if FRONTEND is None:
 	FRONTEND = "https://lyrics-chords-herokuapp.com/#"
 
 if BACKEND == 'http://localhost:8000':
-	debug = True
+	DEBUG = True
 	CSRF_COOKIE_SECURE = False 
 else:
-	debug = False
+	DEBUG = False
 	CSRF_COOKIE_SECURE = True
 
 if SECRET_KEY == None or API_KEY == None:

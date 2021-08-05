@@ -26,7 +26,7 @@ def activate(request, uidb64, token):
 	except:
 		user = None
 	if user is not None and account_activation_token.check_token(user, token):
-		user.is_active = True
+		# user.is_active = True
 		user.confirmed_email = True
 		user.save()
 		login(request, user)

@@ -77,6 +77,13 @@ export default function Song(props) {
 
 	const originalSong = useRef(selectedSong);
 
+	useEffect(() => {
+		if (selectedSong) {
+			nameRef.current.value = selectedSong.name;
+			artistRef.current.value = selectedSong.artist;
+		}
+	}, [selectedSong, nameRef, artistRef]);
+
 	// Increment views
 	useEffect(() => {
 		const databaseCall = async () => {
@@ -345,7 +352,7 @@ export default function Song(props) {
 
 			{/* Save bar  */}
 			{!isViewOnly && <SaveBar onClick={dispatchSong} />}
-			<CopyButton onClick={copyHandler} />
+			{!isViewOnly && <CopyButton onClick={copyHandler} />}
 
 			<HelpButton />
 

@@ -94,7 +94,7 @@ export default function Help() {
 			<div className={styles.border}>
 				If you discover a bug, please email me at sam4button@gmail.com
 				or report an issue on my&nbsp;
-				<a href="https://github.com/samliu21/lyrics-chords-heroku/issues">
+				<a href="https://github.com/samliu21/lyrics-chords/issues">
 					GitHub page
 				</a>
 				.

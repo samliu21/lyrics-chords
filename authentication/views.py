@@ -50,13 +50,9 @@ def auth_signup(request):
 	except get_user_model().DoesNotExist:
 		pass
 
-	"""
-	is_active is initially set to False, and this is considered in the URL hash
-	When the user verifies their account, is_active is set to True, effectivaly invalidating the URL
-	"""
-	user = get_user_model().objects.create_user(username=username, email=email, password=password)
-	user.is_active = False
+	user = get_user_model().objects.create(username=username, email=email, password=password)
 	user.save()
+	print(user)
 
 	token = account_activation_token.make_token(user)
 	uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -120,6 +116,7 @@ def get_user(request):
 	"""
 	if not request.user.is_authenticated:
 		return Response('User is not authenticated.', status=status.HTTP_401_UNAUTHORIZED)
+	print(request.user)
 	user_serializer = UserSerializer(request.user)
 	return Response(user_serializer.data)
 

@@ -8,5 +8,5 @@ class ConfirmEmailTokenGenerator(PasswordResetTokenGenerator):
 		3. If the user doesn't confirm their email, Django expires the link in half an hour
 		"""
 		# Timestamp is almost impossible to guess
-		# Once the user confirms their email, is_active is set to True, effectively expiring the activation link
-		return f'{user.pk}{timestamp}{user.is_active}'
+		# Once the user confirms their email, confirmed_email is set to True, effectively expiring the activation link
+		return f'{user.pk}{timestamp}{user.confirmed_email}'
