@@ -37,8 +37,6 @@ if SECRET_KEY == None or API_KEY == None:
 	if SECRET_KEY == None:
 		SECRET_KEY = get_random_secret_key()
 
-DEBUG = True
-
 ALLOWED_HOSTS = [
 	'127.0.0.1',
 	'localhost',

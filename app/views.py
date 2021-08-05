@@ -1,4 +1,6 @@
+from re import search
 from django.contrib.auth import get_user_model
+from django.db.models.query import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework import status, viewsets
@@ -20,13 +22,16 @@ class SongViewSet(viewsets.ModelViewSet):
 		Sets queryset to be songs owned by user
 		This makes it so that a user can only manipulate their own songs
 		"""
+		if not self.request.user.is_authenticated:
+			return []
+
 		user = self.request.user
 		qs = Song.objects.all()
 		if user.is_superuser:
 			return qs
 		else:
 			return qs.filter(creator=user)
-
+	
 	def create(self, request):
 		"""
 		Create user with given request body
