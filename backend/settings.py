@@ -21,6 +21,13 @@ if BACKEND is None:
 if FRONTEND is None:
 	FRONTEND = "https://lyrics-chords-herokuapp.com/#"
 
+if BACKEND == 'http://localhost:8000':
+	debug = True
+	CSRF_COOKIE_SECURE = False 
+else:
+	debug = False
+	CSRF_COOKIE_SECURE = True
+
 if SECRET_KEY == None or API_KEY == None:
 	dotenv_file = BASE_DIR / '.env'
 	if dotenv_file.is_file():
@@ -154,8 +161,6 @@ CORS_ORIGIN_WHITELIST = (
 	'http://localhost:3000',
 	'https://lyrics-chords.herokuapp.com',
 )
-
-CSRF_COOKIE_SECURE = True 
 
 AUTH_USER_MODEL = 'authentication.User'
 

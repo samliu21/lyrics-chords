@@ -130,6 +130,8 @@ def get_csrf(_):
 	/api/auth/csrf
 	User should request a CSRF token at the start of the session
 	"""
+	# csrf = get_token(request)
+	# print(csrf)
 	return Response('CSRF cookie was obtained.', status=status.HTTP_200_OK)
 
 @api_view(['GET'])
