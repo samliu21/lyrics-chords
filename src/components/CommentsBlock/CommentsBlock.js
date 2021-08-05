@@ -7,7 +7,7 @@ import { BsArrow90DegLeft } from "react-icons/bs";
 import NewComment from "../NewComment/NewComment";
 import styles from "./CommentsBlock.module.css";
 import layout from "../../styles/layout.module.css";
-import design from "../../styles/ui.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function CommentsBlock(props) {
 	const username = useSelector((state) => state.auth.username);
@@ -118,8 +118,10 @@ export default function CommentsBlock(props) {
 		<div className={styles["outer-container"]} key={id}>
 			<div className={styles.container}>
 				<div className={styles["horizontal-container"]}>
-					<div className={layout["horizontal-center"]}>
-						<div className={design.emphasis}>{commentUsername}</div>
+					<div className={`${layout["horizontal-center"]} ${ui["plain-h4"]}`}>
+						<div className={`${ui.emphasis}`}>
+							{commentUsername}
+						</div>
 						<div>
 							&nbsp; {edited ? "edited" : "commented"}&nbsp;
 							{dateConverter()}
@@ -129,19 +131,19 @@ export default function CommentsBlock(props) {
 						{username === commentUsername && (
 							<BiPencil
 								onClick={editHandler}
-								className={`${design.pointer}`}
+								className={`${ui.pointer}`}
 							/>
 						)}
 						{username === commentUsername && (
 							<BiTrash
 								onClick={deleteHandler}
-								className={`${design.pointer} ${styles.trash}`}
+								className={`${ui.pointer} ${styles.trash}`}
 							/>
 						)}
 						{username && (
 							<BsArrow90DegLeft
 								onClick={replyHandler}
-								className={`${design.pointer}`}
+								className={`${ui.pointer}`}
 							/>
 						)}
 					</div>

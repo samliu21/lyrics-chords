@@ -35,7 +35,8 @@ export default function Auth() {
 	};
 
 	// On switch between login and sign up
-	const switchModeHandler = () => {
+	const switchModeHandler = (e) => {
+		e.preventDefault();
 		setLogin((state) => !state);
 
 		if (login && username.indexOf("@") > -1) {
@@ -50,11 +51,11 @@ export default function Auth() {
 
 	// Submit handler (login or sign up)
 	async function submitHandler(event) {
-		await axios.get("/api/auth/csrf", {
+		event.preventDefault();
+		await axios.get("http://localhost:8000/api/auth/csrf", {
 			withCredentials: true,
 		});
 
-		event.preventDefault();
 		const state = login ? "login" : "signup";
 
 		// Check that passwords match

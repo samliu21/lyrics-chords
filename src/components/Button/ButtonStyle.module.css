@@ -2,7 +2,7 @@
 	background-color: var(--primary);
 	color: white;
 	border-width: 0;
-	padding: 1vh 2vw;
+	padding: min(1vh, 10px) min(2vw, 20px);
 	font-size: var(--h4);
 	text-align: center;
 	margin: 0;

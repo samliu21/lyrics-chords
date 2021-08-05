@@ -60,12 +60,12 @@ class SongViewSet(viewsets.ModelViewSet):
 		username = pk
 
 		try:
-			get_user_model().objects.get(username=username)
+			user = get_user_model().objects.get(username=username)
 		except get_user_model().DoesNotExist:
 			return Response('User does not exist', status=status.HTTP_404_NOT_FOUND)
 
 		qs = Song.objects.all()
-		filtered_qs = qs.filter(creator=username)
+		filtered_qs = qs.filter(creator=user)
 		return Response(len(filtered_qs))
 
 	@action(detail=True, permission_classes=(IsAuthenticated,))

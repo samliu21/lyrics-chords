@@ -6,11 +6,11 @@
 	--light: #f3f3f3;
 	--primary: #de354c;
 
-	--h1: 6vmin;
-	--h2: 3.8vmin;
-	--h3: 2.5vmin;
-	--h4: 2.1vmin;
-	--p: 1.7vmin;
+	--h1: min(6vmin, 60px);
+	--h2: min(3.8vmin, 40px);
+	--h3: min(2.5vmin, 25px);
+	--h4: min(2.1vmin, 18px);
+	--p: min(1.7vmin, 16px);
 }
 
 /* Set box-sizing */
@@ -24,7 +24,8 @@ html {
 /* Set background, font, and margin */
 body {
 	background-color: #f3f3f3;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 	margin: 0;
 }
 
@@ -33,7 +34,7 @@ h1,
 h2 {
 	color: var(--accent);
 }
-input[type='file'] {
+input[type="file"] {
 	display: none;
 	width: 0;
 }

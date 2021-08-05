@@ -36,13 +36,14 @@ export default function Router(props) {
 	// Every time the page is refreshed, reclaim redux state
 	useEffect(() => {
 		dispatch(songsActions.getPublicSongs());
-		dispatch(songsActions.getUserSongs());
-		// dispatch(songsActions.se)
 
 		const queryUsername = async () => {
 			const username = await getUsername();
 
 			dispatch(authActions.setUsername(username));
+			if (username) {
+				dispatch(songsActions.getUserSongs());
+			}
 		};
 
 		queryUsername();

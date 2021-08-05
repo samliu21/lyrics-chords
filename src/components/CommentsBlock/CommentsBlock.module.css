@@ -21,3 +21,6 @@
 	margin-left: 20px;
 	margin-top: 10px;
 }
+.username {
+	font-size: var(--h4);
+}

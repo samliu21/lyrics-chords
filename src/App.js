@@ -24,16 +24,18 @@ export default function App() {
 			);
 		});
 
+	const iconSize = Math.min(window.screen.width, window.screen.height) * 0.02;
+
 	const iconValues = {
 		color: Colors.primary,
-		size: "1.5em",
+		size: iconSize,
 		style: {
 			cursor: "pointer",
-		}
+		},
 	};
 
 	return (
-		// Redux provider 
+		// Redux provider
 		<Provider store={store}>
 			{/* Redux persistor  */}
 			<PersistGate persistor={persistor} loading={<LoadingCircle />}>
