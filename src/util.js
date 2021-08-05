@@ -133,10 +133,10 @@ export async function getActivationStatus(ignoreCookie = false) {
 	}
 
 	try {
-		const response = await axios.get("/api/auth/email/is_activated", {
+		const response = await axios.get("/api/auth/user", {
 			withCredentials: true,
 		});
-		const is_authenticated = response.data === "True";
+		const is_authenticated = response.data.is_authenticated === "True";
 		cookie.set("activated", is_authenticated, { path: "/" });
 
 		return is_authenticated;
