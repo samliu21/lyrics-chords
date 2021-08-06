@@ -23,7 +23,6 @@ export default function NavContent(props) {
 		(props.direction === "row"
 			? styles["container-horizontal"]
 			: styles["container-vertical"]);
-
 	const leftDivStyle =
 		styles["left-div"] +
 		" " +

@@ -118,11 +118,11 @@ export default function CommentsBlock(props) {
 		<div className={styles["outer-container"]} key={id}>
 			<div className={styles.container}>
 				<div className={styles["horizontal-container"]}>
-					<div className={`${layout["horizontal-center"]} ${ui["plain-h4"]}`}>
+					<div className={`${layout["horizontal-center"]} ${ui["plain-h4"]} ${styles.grow}`}>
 						<div className={`${ui.emphasis}`}>
 							{commentUsername}
 						</div>
-						<div>
+						<div className={styles.grow}>
 							&nbsp; {edited ? "edited" : "commented"}&nbsp;
 							{dateConverter()}
 						</div>
@@ -156,7 +156,7 @@ export default function CommentsBlock(props) {
 						defaultValue={contents}
 					/>
 				) : (
-					<div>
+					<div className={ui["plain-h4"]}>
 						<hr />
 						{contents}
 					</div>

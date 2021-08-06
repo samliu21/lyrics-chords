@@ -89,7 +89,10 @@ export default function LogoutButton(props) {
 				>
 					{username}
 				</span>
-				<span onClick={logoutHandler} className={design.pointer}>
+				<span
+					onClick={logoutHandler}
+					className={`${design.pointer} ${ui["plain-h4"]}`}
+				>
 					Logout here.
 				</span>
 			</div>

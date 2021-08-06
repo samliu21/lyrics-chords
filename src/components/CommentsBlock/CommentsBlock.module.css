@@ -1,6 +1,9 @@
 .children {
 	margin-left: 20px;
 }
+.grow {
+	flex-grow: 1;
+}
 .outer-container {
 	margin: 10px 0;
 }
