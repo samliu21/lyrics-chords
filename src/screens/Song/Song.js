@@ -88,7 +88,11 @@ export default function Song(props) {
 	useEffect(() => {
 		const databaseCall = async () => {
 			try {
-				await incrementViewCount(selectedSong.id);
+				const response = await incrementViewCount(selectedSong.id);
+
+				if (response.data === "View has already been recorded for user.") {
+					return;
+				}
 
 				// If view already exists for this person, error will be thrown so this next line won't be ran
 				dispatch(songsActions.incrementView(selectedSong.id));
