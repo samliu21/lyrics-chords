@@ -1,6 +1,4 @@
-from re import search
 from django.contrib.auth import get_user_model
-from django.db.models.query import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework import status, viewsets

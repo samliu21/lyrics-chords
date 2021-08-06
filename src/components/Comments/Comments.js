@@ -29,12 +29,18 @@ export default function Comments(props) {
 	}, [dispatch, comments, id]);
 
 	const newCommentHandler = async () => {
+		const value = newCommentRef.current.value;
+		if (value === "") {
+			console.log("Comment cannot be empty!");
+			return;
+		}
+
 		setIsLoading(true);
 		dispatch(
 			commentActions.addComment(
 				id,
 				username,
-				newCommentRef.current.value,
+				value,
 				null
 			)
 		);

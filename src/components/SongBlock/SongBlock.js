@@ -152,7 +152,7 @@ export default function SongBlock(props) {
 					<input
 						className={styles.name}
 						defaultValue={props.item.name}
-						placeholder="Enter an artist"
+						placeholder="Enter a song name"
 						onBlur={inputBlur}
 						onKeyDown={preventEnterHandler}
 						ref={nameRef}
