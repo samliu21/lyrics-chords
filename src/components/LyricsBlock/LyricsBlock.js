@@ -79,7 +79,7 @@ export default function LyricsBlock(props) {
 			return;
 		}
 
-		const id = +e.target.id.substr(1);
+		const id = +e.target.id;
 
 		// While selecting
 		if (pasteMode === "none") {
@@ -99,19 +99,21 @@ export default function LyricsBlock(props) {
 		}
 
 		// While pasting
-		const sortedChords = [...clickedChords].sort((a, b) => a.id - b.id);
+		const sortedChords = [...clickedChords].sort((a, b) => a - b);
 		const start = sortedChords[0];
 		const range = sortedChords[sortedChords.length - 1] - start + 1;
 
 		props.setUnsavedChanges(true);
 
+		const chordRefsCopy = chordRefs.map((ref) => ref.current.value);
+
 		if (pasteMode === "paste") {
 			for (const i of sortedChords) {
 				const newId = id + i - start;
-				const copyFrom = chordRefs[i].current.value;
+				const copyFrom = chordRefsCopy[i];
 
 				const copyTo = chordRefs[newId];
-				if (!copyTo || !copyTo.current) {
+				if (!copyTo || copyTo.current === undefined) {
 					break;
 				}
 				copyTo.current.value = copyFrom;
@@ -123,10 +125,10 @@ export default function LyricsBlock(props) {
 				// Same as above, except we use multiple + range to offset the new sequence
 				for (const i of sortedChords) {
 					const newId = id + i - start + multiple * range;
-					const copyFrom = chordRefs[i].current.value;
+					const copyFrom = chordRefsCopy[i];
 
 					const copyTo = chordRefs[newId];
-					if (!copyTo || !copyTo.current) {
+					if (!copyTo || copyTo.current === undefined) {
 						shouldBreak = true;
 						break;
 					}
@@ -205,6 +207,7 @@ export default function LyricsBlock(props) {
 				<div key={idx}>
 					<input
 						ref={chordRefs[idx]}
+						id={idx}
 						className={ui["dashed-input"]}
 						style={chordStyles}
 						defaultValue={
