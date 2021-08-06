@@ -15,16 +15,18 @@ export default function LyricsBlock(props) {
 	const { chordRefs, setChordRefs, lyricRefs, setLyricRefs } = props;
 
 	useEffect(() => {
-		if (!chordRefs) {
-			const arrLength = selectedSong.lyrics.split("\n").length;
+		const arrLength = selectedSong.lyrics.split("\n").length;
+
+		if (!chordRefs || arrLength !== chordRefs.length) {
 			const newRefs = new Array(arrLength).fill().map(() => createRef());
 			setChordRefs(newRefs);
 		}
 	}, [selectedSong, chordRefs, setChordRefs]);
 
 	useEffect(() => {
-		if (!lyricRefs) {
-			const arrLength = selectedSong.lyrics.split("\n").length;
+		const arrLength = selectedSong.lyrics.split("\n").length;
+
+		if (!lyricRefs || arrLength !== lyricRefs.length) {
 			const newRefs = new Array(arrLength).fill().map(() => createRef());
 			setLyricRefs(newRefs);
 		}

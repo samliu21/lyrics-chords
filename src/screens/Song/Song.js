@@ -108,7 +108,6 @@ export default function Song(props) {
 			const unblock = history.block(() => {
 				const ogSong = originalSong.current;
 
-				setIsCopyMode(false);
 				if (
 					hasUnsavedChanges.current ||
 					!compareSongsByValue(ogSong, selectedSong)

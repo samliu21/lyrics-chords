@@ -76,7 +76,9 @@ export function sortSongsById(list) {
 
 // Update song to database (since updating a song to redux isn't pushed to the database unless it's saved)
 export function updateSongToDatabase(item) {
-	axios.put(`/api/songs/${item.id}/`, item, {
+	const songCopy = { ...item }
+	delete songCopy["creator"];
+	axios.patch(`/api/songs/${item.id}/`, songCopy, {
 		withCredentials: true,
 		headers: {
 			"Content-Type": "application/json",

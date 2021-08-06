@@ -6,7 +6,7 @@ import LoadingCircle from "../LoadingCircle/LoadingCircle";
 import ui from "../../styles/ui.module.css";
 
 export default function PulledLyricsBlock(props) {
-	const selectedSong = props.selectedSong;
+	const { selectedSong, pulledLyricsRef } = props;
 
 	const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ export default function PulledLyricsBlock(props) {
 		);
 	};
 
-	if (!props.pulledLyricsRef) {
+	if (!pulledLyricsRef) {
 		return <LoadingCircle />;
 	}
 
@@ -37,14 +37,13 @@ export default function PulledLyricsBlock(props) {
 		<div>
 			<h2 className={ui["song-subtitle"]}>Pulled Lyrics</h2>
 			<p
-				ref={props.pulledLyricsRef}
+				ref={pulledLyricsRef}
 				className={ui["dashed-input"]}
 				contentEditable={true}
 				suppressContentEditableWarning={true}
 				onKeyDown={keyDownHandler}
 				onBlur={blurHandler}
 				spellCheck={false}
-				// onChange={() => console.log("Hello!")}
 			>
 				{selectedSong.pulled_lyrics
 					? selectedSong.pulled_lyrics
