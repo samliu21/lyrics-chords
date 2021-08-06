@@ -52,7 +52,7 @@ export default function Auth() {
 	// Submit handler (login or sign up)
 	async function submitHandler(event) {
 		event.preventDefault();
-		await axios.get("http://localhost:8000/api/auth/csrf", {
+		await axios.get("/api/auth/csrf", {
 			withCredentials: true,
 		});
 
