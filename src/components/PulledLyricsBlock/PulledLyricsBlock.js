@@ -44,6 +44,7 @@ export default function PulledLyricsBlock(props) {
 				onKeyDown={keyDownHandler}
 				onBlur={blurHandler}
 				spellCheck={false}
+				// onChange={() => console.log("Hello!")}
 			>
 				{selectedSong.pulled_lyrics
 					? selectedSong.pulled_lyrics

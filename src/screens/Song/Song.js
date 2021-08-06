@@ -130,7 +130,7 @@ export default function Song(props) {
 
 			return () => unblock();
 		}
-	}, [selectedSong, history, dispatch, isViewOnly]);
+	}, [selectedSong, history, dispatch, isViewOnly, originalSong]);
 
 	// Show are you sure you want to leave upon refresh or closing the page (not for react routing)
 	// We don't need to dispatch originalSong.current to the redux state because the redux state is being reset anyways after refresh
@@ -208,7 +208,7 @@ export default function Song(props) {
 
 				// Attempt to redirect to view page (if the user wants to share and displays a public link), but if song truly doesn't exist, will be handled there
 				history.push(`/songs/${linkUsername}/${id}/view`);
-			} else if (selectedSong) {
+			} else if (selectedSong && !originalSong.current) {
 				originalSong.current = selectedSong;
 			}
 		};
