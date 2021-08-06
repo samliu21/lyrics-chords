@@ -108,7 +108,7 @@ DATABASES = {
 	}
 }
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'] = dj_database_url.config()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,6 +136,7 @@ USE_L10N = True
 USE_TZ = True
 
 django_heroku.settings(locals())
+DATABASES['default']['CONN_MAX_AGE'] = 0
 
 STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
