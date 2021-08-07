@@ -267,7 +267,7 @@ $ curl https://lyrics-chords.herokuapp.com/api/auth/images/ -X POST -H "Content-
 
 Note: `image` can be obtained with a `<input type="file" />`, then getting `event.target.files[0]` on a `change` event listener
 
-## 📧 <a name="email">Email</a>
+## 🍎 <a name="email">Email</a>
 
 #### `/api/auth/email/activate/<uid>/<token>`, methods = `GET`
 
@@ -319,7 +319,7 @@ $ curl https://lyrics-chords.herokuapp.com/api/auth/email/password-change -X POS
 "New password has been set!"
 ```
 
-## 👀 <a name="views">Views</a>
+## 🎯 <a name="views">Views</a>
 
 #### $$ `/api/views/increment`, methods = `POST`
 
