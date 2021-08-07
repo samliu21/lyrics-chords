@@ -9,7 +9,7 @@
 
 Each sample interaction will consist of a request, preceded by the `$` character and the response on the next line. Any required request bodies will be clear in the sample request. Note that the API calls that start with `$$` require authentication.
 
-## <a name="songs">Songs</a>
+## 🎸 <a name="songs">Songs</a>
 
 #### $$ `/api/songs/`, methods = [`GET`, `POST`]
 
@@ -112,7 +112,7 @@ Sample interaction:
 $ curl -u <username>:<password> https://lyrics-chords.herokuapp.com/api/songs/142/lyrics/
 "Loving him is like\nDriving a new Maserati down a dead-end street\nFaster than the wind, passionate as sin\nEnding so suddenly\nLoving him is like tryin' to change your mind\nOnce you're already flying through the free fall\nLike the colors in autumn, so bright\nJust before they lose it all\n\nLosing him was blue like I'd never known\nMissing him was dark gray, all alone\nForgetting him was like\nTryin' to know somebody you never met\nBut loving him was red\n\n(Red, red)\n(Red, red)\nLoving him was red\n(Red, red)\n(Red, red)\n\nTouching him was like\nRealizing all you ever wanted was right there in front of you\nMemorizing him was as\nEasy as knowing all the words to your old favorite song\nFighting with him was like\nTrying to solve a crossword and realizing there's no right answer\nRegretting him was like\nWishing you never found out that love could be that strong"
 ```
-## <a name="comments">Comments</a>
+## 🔥 <a name="comments">Comments</a>
 
 #### `/api/comments/`, methods = [`GET`, `POST`]
 
@@ -164,7 +164,7 @@ $ curl https://lyrics-chords.heokuapp.com/api/comments/157/get_song_comments/
 ]
 ```
 
-## <a name="auth">Auth</a>
+## 🚨 <a name="auth">Auth</a>
 
 #### `/api/auth/signup`, methods = `POST`
 
@@ -267,7 +267,7 @@ $ curl https://lyrics-chords.herokuapp.com/api/auth/images/ -X POST -H "Content-
 
 Note: `image` can be obtained with a `<input type="file" />`, then getting `event.target.files[0]` on a `change` event listener
 
-## <a name="email">Email</a>
+## 📧 <a name="email">Email</a>
 
 #### `/api/auth/email/activate/<uid>/<token>`, methods = `GET`
 
@@ -319,7 +319,7 @@ $ curl https://lyrics-chords.herokuapp.com/api/auth/email/password-change -X POS
 "New password has been set!"
 ```
 
-## <a name="views">Views</a>
+## 👀 <a name="views">Views</a>
 
 #### $$ `/api/views/increment`, methods = `POST`
 
