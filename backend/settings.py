@@ -150,7 +150,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
-    ]
+    ],
+	'DEFAULT_THROTTLE_CLASSES': [
+		'backend.throttles.BurstAnonRateThrottle',
+		'backend.throttles.SustainedAnonRateThrottle',
+		'backend.throttles.BurstUserRateThrottle',
+		'backend.throttles.SustainedUserRateThrottle',
+	],
+	'DEFAULT_THROTTLE_RATES': {
+		'anon_burst': '20/minute',
+		'anon_sustained': '200/day',
+		'user_burst': '60/minute',
+		'user_sustained': '500/day',
+	}
 }
 
 CORS_ALLOW_CREDENTIALS = True
