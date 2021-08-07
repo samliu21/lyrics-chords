@@ -154,7 +154,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 	@action(detail=True)
 	def get_song_comments(self, _, pk=None):
 		"""
-		/api/comments/get_song_comments/
+		/api/comments/PK/get_song_comments/
 		Returns all comments in the format specified by the "Accept" header
 		"""
 		try:

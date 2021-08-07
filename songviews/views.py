@@ -9,7 +9,7 @@ from app.models import Song
 @api_view(['POST'])
 def increment_view(request):
 	"""
-	/api/songviews/increment_view
+	/api/views/increment
 	Takes a songId in POST body
 	Adds a view to the corresponding song if the issuer of the request has not already added a view for that particular song
 	"""
@@ -38,7 +38,7 @@ def increment_view(request):
 @api_view(['POST'])
 def get_views(request):
 	"""
-	/api/songviews/get_views
+	/api/views/get_views
 	Takes a list of ids whose views the request issuer wants to know
 	Returns a dictionary of { id: view } whose receive type can be specified by the "Accept" header
 	"""

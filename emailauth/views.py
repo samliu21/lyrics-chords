@@ -85,9 +85,9 @@ def send_password_reset(request):
 	try:
 		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
-		return Response('Password reset mail was send.', status=status.HTTP_200_OK)
+		return Response('Password reset mail was sent.', status=status.HTTP_200_OK)
 	except:
-		return Response('Password reset mail did not send.', status=status.HTTP_502_BAD_GATEWAY)
+		return Response('Password reset mail did not sent.', status=status.HTTP_502_BAD_GATEWAY)
 
 # Get the uid and token from request body and check the valididty of the token
 @api_view(['POST'])
