@@ -7,13 +7,15 @@ https://lyrics-chords.herokuapp.com/
 https://github.com/samliu21/lyrics-chords/blob/master/API_Documentation.md
 
 ## Usage
-This website was created for my needs as a learning guitarist, but I thought I'd share it with the GitHub community! It offers a broad range of songsheet capabilities that include lyric scraping, adding chords and strumming patterns, auto scrolling, and more!
+This website was created for my needs as a learning guitarist, but I thought I'd share it with the GitHub community! It offers a broad range of songsheet capabilities that include lyric scraping, adding chords and strumming patterns, auto scrolling, and more! 
 
 You can also look at public songsheets that other guitarists have publicized! 
 
-The website was created using React and Django. A sample session can be found here:
+**Technologies Used**: React, Django, PostgreSQL, SQLite, Redux, DRF, Python, JavaScript, HTML, CSS
 
-<img src="https://github.com/samliu21/lyrics-chords/blob/master/sample-screen.png" alt="Sample Screen" />
+A sample session can be found here:
+
+<img src="./sample-screen.png" alt="Sample Screen" />
 
 ## Local Installation
 
