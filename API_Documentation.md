@@ -168,7 +168,7 @@ $ curl https://lyrics-chords.heokuapp.com/api/comments/157/get_song_comments/
 
 #### `/api/auth/signup`, methods = `POST`
 
-Usage: Make an account
+Usage: Make an account. Send a verification email to user at `email`
 
 Sample interaction:
 ```json
@@ -269,4 +269,79 @@ Note: `image` can be obtained with a `<input type="file" />`, then getting `even
 
 ## <a name="email">Email</a>
 
+#### `/api/auth/email/activate/<uid>/<token>`, methods = `GET`
+
+Usage: Activate the user's account. Link can be found in user's inbox upon signup
+
+Sample interaction:
+```json
+$ curl https://lyrics-chords.herokuapp.com/api/auth/email/activate/uid/token
+"Email has been authenticated!"
+```
+
+#### $$ `/api/auth/email/resend_activation`, methods = `GET`
+
+Usage: Resend account activation email for account attached to the credentials of the requester
+
+Sample interaction:
+```json
+$ curl https://lyrics-chords.herokuapp.com/api/auth/email/resend-activation
+"Mail was sent."
+```
+
+#### `/api/auth/email/password_reset`, methods = `POST`
+
+Usage: Send email to reset password
+
+Sample interaction:
+```json
+$ curl https://lyrics-chords.herokuapp.com/api/auth/email/password-reset -X POST -H "Content-Type: application/json" -d '{"email": "<email>"}'
+"Password reset mail was sent."
+```
+
+#### $$ `/api/auth/email/password_change_link`, methods = `GET`
+
+Usage: If the requester is already authenticated, a password change link will be generated for the user to change their password. Note that this is the same link that is sent to a user's email on password reset
+
+Sample interaction:
+```json
+$ curl -u <username>:<password> https://lyrics-chords.herokuapp.com/api/auth/email/password-change-link
+"New password has been set!"
+```
+
+#### `/api/auth/email/password_change`, methods = `POST`
+
+Usage: Accept password, token, and uid from `POST` body and change the user's password. This is used to both change and reset password
+
+Sample interaction:
+```json
+$ curl https://lyrics-chords.herokuapp.com/api/auth/email/password-change -X POST -H "Content-Type: application/json" -d '{"password": "<password>", "uid": "<uid>", "token": "<token>"}'
+"New password has been set!"
+```
+
 ## <a name="views">Views</a>
+
+#### $$ `/api/views/increment`, methods = `POST`
+
+Usage: Increments the view count of a song
+
+Sample interaction:
+```json
+$ curl -u <username>:<password> https://lyrics-chords.herokuapp.com/api/views/increment -X POST -H "Content-Type: application/json" -d '{"songId": 62}' 
+"View has been recorded."
+```
+
+#### `/api/views/get_views`, methods = `POST`
+
+Usage: Gets the view counts for all songs specified in `ids` body
+
+Sample interaction:
+```json
+$ curl https://lyrics-chords.herokuapp.com/api/views/get_views -X POST -H "Content-Type: application/json" -d '{"ids": [1, 2]}' 
+{
+   "1": 0,
+   "2": 2
+}
+```
+
+
