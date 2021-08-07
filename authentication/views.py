@@ -132,7 +132,7 @@ def get_csrf(_):
 	return Response('CSRF cookie was obtained.', status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def about(_, username):
+def get_about(_, username):
 	"""
 	/api/auth/get_about/<username>
 	Gets user's biography
