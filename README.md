@@ -3,6 +3,9 @@
 ## Live Website
 https://lyrics-chords.herokuapp.com/
 
+## API Documentation
+https://github.com/samliu21/lyrics-chords/blob/master/API_Documentation.md
+
 ## Usage
 This website was created for my needs as a learning guitarist, but I thought I'd share it with the GitHub community! It offers a broad range of songsheet capabilities that include lyric scraping, adding chords and strumming patterns, auto scrolling, and more!
 
@@ -12,7 +15,7 @@ The website was created using React and Django. A sample session can be found he
 
 <img src="https://github.com/samliu21/lyrics-chords/blob/master/sample-screen.png" alt="Sample Screen" />
 
-## Installation
+## Local Installation
 
 ### General
 1. Run `git clone https://github.com/samliu21/lyrics-chords` in bash. 
