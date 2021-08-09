@@ -1,5 +1,3 @@
-from django.core.management.utils import get_random_secret_key
-
 import dj_database_url
 import django_heroku
 import dotenv
@@ -93,6 +91,7 @@ PASSWORD_RESET_TIMEOUT = 1800
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+# """
 DATABASES = {
     'new': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -109,6 +108,21 @@ DATABASES = {
 }
 
 DATABASES['default'] = dj_database_url.config()
+# """
+
+SERVER_PASSWORD = os.environ.get('SERVER_PASSWORD') 
+
+if SERVER_PASSWORD:
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'lyrics_chords',
+                'USER': 'postgres',
+                'PASSWORD': SERVER_PASSWORD,
+                'HOST': 'localhost',
+                'PORT': 5432,
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
