@@ -41,10 +41,7 @@ export default function SongList(props) {
 				);
 			} else {
 				return state.songs.filteredUserSongs.filter(
-					(song) => {
-						console.log(song.creator);
-						return song.creator === username;
-					}
+					(song) => song.creator === username
 				);
 			}
 		};
