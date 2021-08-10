@@ -98,6 +98,8 @@ export default function SongList(props) {
 		setIsFavourites((state) => !state);
 	};
 
+	const allKwargs = all ? { public: true } : {};
+
 	return (
 		<div className={layout.container}>
 			<div className={layout["horizontal-between"]}>
@@ -117,7 +119,7 @@ export default function SongList(props) {
 			</h1>
 
 			{songList.map((item) => (
-				<SongBlock key={item.id} item={item} editable />
+				<SongBlock key={item.id} item={item} editable {...allKwargs} />
 			))}
 		</div>
 	);
