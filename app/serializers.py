@@ -4,6 +4,9 @@ from .models import Song, Comment
 
 class SongSerializer(serializers.ModelSerializer):
 	creator = serializers.CharField(source='creator.username')
+	chords = serializers.CharField(trim_whitespace=False)
+	lyrics = serializers.CharField(trim_whitespace=False)
+	pulled_lyrics = serializers.CharField(trim_whitespace=False)
 
 	class Meta:
 		model = Song
