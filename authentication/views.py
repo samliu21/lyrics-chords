@@ -64,7 +64,7 @@ def auth_signup(request):
 
 	try:
 		print('Sending email...')
-		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+		send_mail(subject, message, email_from, recipient_list, fail_silently=True)
 		print('Email sent!')
 	except Exception as e:
 		print('Email failed to send: ' + e)
