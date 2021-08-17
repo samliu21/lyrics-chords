@@ -1,7 +1,9 @@
 # Lyrics & Chords Songsheet Creator
 
 ## Live Website
-https://lyrics-chords.herokuapp.com/
+https://lyricschords.ca. 
+
+If that doesn't work, try https://lyrics-chords.herokuapp.com/
 
 ## API Documentation
 https://github.com/samliu21/lyrics-chords/blob/master/API_Documentation.md
@@ -11,7 +13,7 @@ This website was created for my needs as a learning guitarist, but I thought I'd
 
 You can also look at public songsheets that other guitarists have publicized! 
 
-**Technologies Used**: React, Django, PostgreSQL, SQLite, Redux, DRF, Python, JavaScript, HTML, CSS
+**Technologies Used**: React, Django, PostgreSQL, NGINX, SQLite, Redux, DRF, Python, JavaScript, HTML, CSS
 
 A sample session can be found here:
 
