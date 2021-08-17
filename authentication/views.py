@@ -62,7 +62,10 @@ def auth_signup(request):
 	email_from = EMAIL_HOST_USER
 	recipient_list = [user.email]
 
-	send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+	try:
+		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+	except Exception as e:
+		return Response('Email could not be sent at this time: ' + e, status=status.HTTP_502_BAD_GATEWAY)
 
 	login(request, user)
 	user_serializer = UserSerializer(user)
