@@ -63,11 +63,15 @@ def auth_signup(request):
 	recipient_list = [user.email]
 
 	try:
+		print('Sending email...')
 		send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+		print('Email sent!')
 	except Exception as e:
+		print('Email failed to send: ' + e)
 		return Response('Email could not be sent at this time: ' + e, status=status.HTTP_502_BAD_GATEWAY)
 
 	login(request, user)
+	print('User logged in...')
 	user_serializer = UserSerializer(user)
 	return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
