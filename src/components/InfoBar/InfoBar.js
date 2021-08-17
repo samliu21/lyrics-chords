@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 import * as songsActions from "../../store/actions/songsActions";
 import LoadingCircle from "../LoadingCircle/LoadingCircle";
-import design from "../../styles/ui.module.css";
+import ui from "../../styles/ui.module.css";
 import styles from "./InfoBar.module.css";
 
 export default function InfoBar(props) {
@@ -37,6 +37,10 @@ export default function InfoBar(props) {
 		dispatch(songsActions.copySong(props.selectedSong));
 	};
 
+	const profileNavigateHandler = () => {
+		history.push(`/user/${props.selectedSong.creator}`)
+	}
+
 	if (!props.selectedSong) {
 		return <p></p>;
 	}
@@ -44,10 +48,10 @@ export default function InfoBar(props) {
 	return (
 		<div>
 			<p className={styles.text}>
-				{props.selectedSong.creator}
+				<span onClick={profileNavigateHandler} className={ui.pointer}>{props.selectedSong.creator}</span>
 				&nbsp;&nbsp;&nbsp;|
 				{username && (
-					<span onClick={copyHandler} className={design.pointer}>
+					<span onClick={copyHandler} className={ui.pointer}>
 						&nbsp;&nbsp;&nbsp;COPY THIS SONG
 					</span>
 				)}

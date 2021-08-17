@@ -13,6 +13,7 @@ import { BsTrashFill } from "react-icons/bs";
 import { getUsername, updateSongAttributeToDatabase } from "../../util";
 import layout from "../../styles/layout.module.css";
 import styles from "./SongBlock.module.css";
+import ui from "../../styles/ui.module.css";
 
 export default function SongBlock(props) {
 	const dispatch = useDispatch();
@@ -114,6 +115,10 @@ export default function SongBlock(props) {
 		}
 	};
 
+	const profileNavigateHandler = () => {
+		history.push(`/user/${props.item.creator}`);
+	};
+
 	// Star (favourite)
 	const Star = (starProps) =>
 		props.item.is_favourite ? (
@@ -138,9 +143,7 @@ export default function SongBlock(props) {
 			<div className={layout["horizontal-default"]}>
 				{/* Control bar  */}
 				{props.editable && (
-					<div
-						className={styles["button-container"]}
-					>
+					<div className={styles["button-container"]}>
 						<Star onClick={favouriteHandler} />
 						<Eye onClick={publicHandler} className={styles.eye} />
 						<BsTrashFill onClick={deleteHandler} />
@@ -172,7 +175,10 @@ export default function SongBlock(props) {
 					{props.public && (
 						<div className={styles.creator}>
 							Created by&nbsp;
-							<span className={styles["creator-name"]}>
+							<span
+								onClick={profileNavigateHandler}
+								className={`${styles["creator-name"]} ${ui.pointer}`}
+							>
 								{props.item.creator}
 							</span>
 							.
