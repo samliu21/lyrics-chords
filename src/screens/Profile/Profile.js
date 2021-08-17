@@ -46,6 +46,9 @@ export default function Profile(props) {
 	useEffect(() => {
 		const unlisten = history.listen(() => {
 			setSongCount(null);
+			setImgUrl(null);
+			setAbout(null);
+			setActive("about");
 		});
 
 		return () => unlisten();
@@ -210,7 +213,7 @@ export default function Profile(props) {
 		<div className={layout.container}>
 			<div className={`${layout["horizontal-end"]}`}>
 				{menuButton("About")}
-				{menuButton("Edit Profile")}
+				{username === realUsername && menuButton("Edit Profile")}
 			</div>
 			<hr className={`${layout["no-margin"]}`} />
 
