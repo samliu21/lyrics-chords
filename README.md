@@ -1,12 +1,12 @@
 # Lyrics & Chords Songsheet Creator
 
 ## Live Website
-https://lyricschords.ca. 
+https://lyricschords.ca
 
-If that doesn't work, try https://lyrics-chords.herokuapp.com/
+<img src="./sample-screen.png" alt="Sample Screen" />
 
 ## API Documentation
-https://github.com/samliu21/lyrics-chords/blob/master/API_Documentation.md
+<a href="https://github.com/samliu21/lyrics-chords/blob/master/API_Documentation.md">API Documentation</a>
 
 ## Usage
 This website was created for my needs as a learning guitarist, but I thought I'd share it with the GitHub community! It offers a broad range of songsheet capabilities that include lyric scraping, adding chords and strumming patterns, auto scrolling, and more! 
@@ -14,10 +14,6 @@ This website was created for my needs as a learning guitarist, but I thought I'd
 You can also look at public songsheets that other guitarists have publicized! 
 
 **Technologies Used**: React, Django, PostgreSQL, NGINX, SQLite, Redux, DRF, Python, JavaScript, HTML, CSS
-
-A sample session can be found here:
-
-<img src="./sample-screen.png" alt="Sample Screen" />
 
 ## Local Installation
 
