@@ -3,6 +3,8 @@
 ## Live Website
 https://lyricschords.ca
 
+![Sample Session](video.mov)
+
 <img src="./sample-screen.png" alt="Sample Screen" />
 
 ## API Documentation
