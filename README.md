@@ -1,9 +1,9 @@
 # Lyrics & Chords Songsheet Creator
 
 ## Live Website
-https://lyricschords.ca
+https://lyrics-chords.herokuapp.com
 
-![Sample Session](video.mov)
+https://user-images.githubusercontent.com/64169932/135955679-19db042c-2443-40a3-8a6e-6868a1f995c0.mov
 
 <img src="./sample-screen.png" alt="Sample Screen" />
 
