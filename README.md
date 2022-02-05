@@ -30,13 +30,9 @@ You can also look at public songsheets that other guitarists have publicized!
 
 ### Frontend Installation
 1. Call `npm ci`.
-2. Run the server with `npm start`
+2. Run the server with `npm start`.
 
 ### API Key
-1. Create an API token here: https://genius.com/api-clients (note that this is NOT the client ID or the client secret). This API key is used for the lyric scraping feature of the website
-3. Make a `/.env` file and add `API_KEY=<your_api_key` into the file.
+1. Create an API token <a href="https://genius.com/api-clients">here</a>. This API key is used for the lyric scraping feature of the website
+3. Make a `.env` file and add `API_KEY=<your_api_key` into the file.
 
-### Prerequisites
-- If you don't have `pip` installed, you can do so here: https://pip.pypa.io/en/stable/installing/.
-- If you don't have `npm` installed, you can do so here: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm 
-- Note that it is necessary to have Python 3.9 available on your machine
